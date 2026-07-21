@@ -1,0 +1,26 @@
+# AI Capital Investment
+
+AI Capital Investment is a premium, intelligent wealth management platform powered by advanced AI algorithms. It provides automated portfolio optimization, real-time risk assessment, personalized strategies, and AI-driven advisory.
+
+## Pages & Routing
+- `/` - Landing Page containing main marketing copy, features grid, assets metrics, core wealth services, and footer.
+- `/login` - Secure login gateway.
+- `/signup` - Registration form collecting user preferences, investment amount, and risk profile.
+- `/otp-verify` - Verification screen validating registration OTPs.
+- `/forgot-password` - Password recovery and reset flow.
+- `/dashboard` - Interactive investor control panel including real-time charts, portfolios, risk tolerance adjusting, and AI Advisor tips.
+
+## API Endpoints
+All backend APIs are prefixed with `/api/auth/`:
+- `POST /api/auth/signup` - Registers new pending accounts and generates OTP.
+- `POST /api/auth/verify-otp` - Verifies the account using a 6-digit code.
+- `POST /api/auth/resend-otp` - Resends a new OTP to the pending user.
+- `POST /api/auth/login` - Authenticates user credentials.
+- `POST /api/auth/forgot-password` - Sends a recovery OTP.
+- `POST /api/auth/reset-password` - Updates account passwords.
+
+## Design & Styling System
+Built using a custom CSS utility system in `index.css`:
+- **Main Background**: `#060e08` (rich dark green)
+- **Main Accent colors**: Gold (`#d4af37`), Green (`#00e676`)
+- **Aesthetics**: Glassmorphic cards, smooth animations, canvas particle grids.

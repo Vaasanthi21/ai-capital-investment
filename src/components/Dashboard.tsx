@@ -1,0 +1,1535 @@
+import { useState, useEffect } from 'react';
+import {
+    LayoutDashboard, Wallet, Sparkles, BarChart3, Settings, LogOut,
+    ArrowUpRight, Lightbulb, CheckCircle2, BookOpen, ChevronRight, X
+} from 'lucide-react';
+import { Line, Doughnut } from 'react-chartjs-2';
+import {
+    Chart as ChartJS, CategoryScale, LinearScale, PointElement,
+    LineElement, Title, Tooltip, Legend, ArcElement
+} from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Title, Tooltip, Legend);
+
+interface UserData {
+    name: string;
+    email: string;
+    investmentAmount: number;
+    riskTolerance: string;
+    goal: string;
+    role?: string;
+    advisorMessage?: string;
+    activeProposal?: {
+        equities: number;
+        bonds: number;
+        cash: number;
+        gold: number;
+        text: string;
+    } | null;
+}
+
+interface DashboardProps {
+    userData: UserData;
+    onLogout: () => void;
+    onUpdateUser?: (updatedUser: any) => void;
+}
+
+const AnimatedValue = ({ value }: { value: number }) => {
+    const [displayVal, setDisplayVal] = useState(value);
+
+    useEffect(() => {
+        let startTimestamp: number | null = null;
+        const startVal = displayVal;
+        const duration = 400;
+        let frameId: number;
+
+        const step = (timestamp: number) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const current = startVal + progress * (value - startVal);
+            setDisplayVal(current);
+            if (progress < 1) {
+                frameId = window.requestAnimationFrame(step);
+            } else {
+                setDisplayVal(value);
+            }
+        };
+        frameId = window.requestAnimationFrame(step);
+        return () => window.cancelAnimationFrame(frameId);
+    }, [value]);
+
+    return <span>{"$" + Math.round(displayVal).toLocaleString()}</span>;
+};
+
+const assetDataConfig: Record<string, {
+    allocation: number[];
+    labels: string[];
+    aiAnnualYield: number;
+    tradAnnualYield: number;
+    volatility: number;
+}> = {
+    Conservative: {
+        allocation: [20, 50, 20, 10],
+        labels: ["Cash Reserves", "High-Yield Bonds", "Global Equities", "Gold Hedging"],
+        aiAnnualYield: 0.058, tradAnnualYield: 0.042, volatility: 0.03
+    },
+    Balanced: {
+        allocation: [10, 20, 55, 10, 5],
+        labels: ["Cash Reserves", "Corporate Bonds", "Growth Equities", "Physical Gold", "Digital Assets (BTC/ETH)"],
+        aiAnnualYield: 0.095, tradAnnualYield: 0.071, volatility: 0.08
+    },
+    Aggressive: {
+        allocation: [5, 5, 60, 10, 20],
+        labels: ["Liquidity Vault", "Advisory Bonds", "High-Beta Equities", "Gold Hedging", "Emerging Tech / Crypto"],
+        aiAnnualYield: 0.152, tradAnnualYield: 0.114, volatility: 0.16
+    }
+};
+
+const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
+    const [sliderAmount, setSliderAmount] = useState(userData.investmentAmount || 10000);
+    const [sliderYears, setSliderYears] = useState(10);
+    const [executingProposal, setExecutingProposal] = useState(false);
+    const [proposalSuccess, setProposalSuccess] = useState(false);
+
+    // Crisis simulation states
+    const [simulatedCrisis, setSimulatedCrisis] = useState('');
+    const [simulationLogs, setSimulationLogs] = useState<string[]>([]);
+
+    // Volatility shield states
+    const [volatilityShieldActive, setVolatilityShieldActive] = useState(false);
+    const [maxDrawdownLimit, setMaxDrawdownLimit] = useState(8);
+    const [shieldLogs, setShieldLogs] = useState<string[]>([
+        'Shield calibrated successfully. Monitoring active volatility matrices.',
+        'No active breaches detected. System risk index stable.'
+    ]);
+
+    const handleExecuteProposal = async () => {
+        if (!userData.activeProposal) return;
+        setExecutingProposal(true);
+        try {
+            const res = await fetch('/api/investor/execute-proposal', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: userData.email })
+            });
+            if (!res.ok) throw new Error('Failed to execute rebalancing proposal.');
+            const data = await res.json();
+            
+            setProposalSuccess(true);
+            setTimeout(() => {
+                setProposalSuccess(false);
+                if (onUpdateUser) {
+                    onUpdateUser(data.user);
+                }
+            }, 1800);
+        } catch (err: any) {
+            alert(err.message || 'Error executing proposal');
+        } finally {
+            setExecutingProposal(false);
+        }
+    };
+
+    const handleTriggerCrisis = (crisis: string) => {
+        setSimulatedCrisis(crisis);
+        if (!crisis) {
+            setSimulationLogs([]);
+            return;
+        }
+
+        const timeStr = new Date().toLocaleTimeString();
+        let logs: string[] = [];
+        if (crisis === '2008') {
+            logs = [
+                `[${timeStr}] ALERT: S&P 500 Index drawdown exceeds -4.5%.`,
+                `[${timeStr}] INFO: VIX volatility index spiking to 48.`,
+                `[${timeStr}] SYSTEM: Activating defensive volatility hedge.`,
+                `[${timeStr}] ROTATION: Reduced Equities exposure to 15%.`,
+                `[${timeStr}] TRANSACTION: Shifted 40% capital to Gold & High-Yield Bonds.`,
+                `[${timeStr}] SUCCESS: Drawdown minimized to -12% vs market -35%.`
+            ];
+        } else if (crisis === '2020') {
+            logs = [
+                `[${timeStr}] ALERT: Extreme equity liquidation triggered globally.`,
+                `[${timeStr}] SYSTEM: Deploying rapid response liquid hedges.`,
+                `[${timeStr}] REALLOCATION: Pruned equities; shifted 20% to USD and Gold.`,
+                `[${timeStr}] CAPTURE: Re-entered equities at Q3 bottoms automatically.`,
+                `[${timeStr}] SUCCESS: Net year-end return stabilized at +6.4% VS Market decline.`
+            ];
+        } else if (crisis === '2022') {
+            logs = [
+                `[${timeStr}] ALERT: High-beta tech assets multiple compression active.`,
+                `[${timeStr}] SYSTEM: Trimmed technology sector exposures by 25%.`,
+                `[${timeStr}] ROTATION: Allocated to commodity hedges & short cash yields.`,
+                `[${timeStr}] SUCCESS: Outperformed standard equity index by +14.2%.`
+            ];
+        }
+        setSimulationLogs(logs);
+    };
+
+    const [riskTolerance, setRiskTolerance] = useState(userData.riskTolerance || 'Balanced');
+    const [selectedTab, setSelectedTab] = useState('home');
+    const [isTransitioning, setIsTransitioning] = useState(false);
+    const [aiBubbleText, setAiBubbleText] = useState('');
+    const [aiBubbleFade, setAiBubbleFade] = useState(false);
+
+    const [tickers, setTickers] = useState({
+        btc: { price: 64250, change: 1.2, flash: '' },
+        spy: { price: 524.30, change: 0.4, flash: '' },
+        gld: { price: 218.10, change: -0.2, flash: '' }
+    });
+
+    const handleTabSwitch = (tab: string) => {
+        setIsTransitioning(true);
+        setTimeout(() => { setSelectedTab(tab); setIsTransitioning(false); }, 250);
+    };
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTickers(prev => {
+                const copy = { ...prev };
+                for (const key in copy) {
+                    const asset = { ...copy[key as keyof typeof copy] };
+                    const percentMove = (Math.random() - 0.48) * 0.4;
+                    asset.price += asset.price * (percentMove / 100);
+                    asset.change += percentMove;
+                    asset.flash = percentMove >= 0 ? 'flash-up' : 'flash-down';
+                    (copy as any)[key] = asset;
+                }
+                return copy;
+            });
+            setTimeout(() => {
+                setTickers(prev => {
+                    const copy = { ...prev };
+                    for (const key in copy) (copy as any)[key].flash = '';
+                    return copy;
+                });
+            }, 1200);
+        }, 3000);
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        setAiBubbleFade(true);
+        const timer = setTimeout(() => {
+            let message = '';
+            if (riskTolerance === 'Conservative') {
+                message = `"Under a Conservative risk index, our primary target is capital preservation. We have shifted 70% of allocations into highly secure cash vaults and high-yield index bonds."`;
+            } else if (riskTolerance === 'Balanced') {
+                message = `"Based on your Balanced risk tolerance, I recommend maintaining a 30% allocation in global equities to hedge against inflation while capital growth peaks."`;
+            } else {
+                message = `"With an Aggressive layout active, we leverage 20% index exposure on cryptocurrency and blockchain networks, yielding higher target APRs but adding double volatility variance."`;
+            }
+            setAiBubbleText(message);
+            setAiBubbleFade(false);
+        }, 300);
+        return () => clearTimeout(timer);
+    }, [riskTolerance]);
+
+    const getDynamicConfig = () => {
+        const base = assetDataConfig[riskTolerance];
+        if (!simulatedCrisis) return base;
+
+        if (riskTolerance === 'Conservative') {
+            return {
+                ...base,
+                allocation: [35, 50, 5, 10]
+            };
+        } else if (riskTolerance === 'Balanced') {
+            return {
+                ...base,
+                allocation: [25, 25, 25, 20, 5]
+            };
+        } else {
+            return {
+                ...base,
+                allocation: [15, 15, 30, 20, 20]
+            };
+        }
+    };
+
+    const currentConfig = getDynamicConfig();
+
+    const calculateProjections = () => {
+        const config = assetDataConfig[riskTolerance];
+        const labels: string[] = [];
+        const aiValues: number[] = [];
+        const tradValues: number[] = [];
+
+        labels.push("Year 0");
+        aiValues.push(sliderAmount);
+        tradValues.push(sliderAmount);
+
+        let currentAiVal = sliderAmount;
+        let currentTradVal = sliderAmount;
+
+        for (let i = 1; i <= sliderYears; i++) {
+            labels.push("Year " + i);
+            currentAiVal = currentAiVal * (1 + config.aiAnnualYield);
+            currentTradVal = currentTradVal * (1 + config.tradAnnualYield);
+            
+            let crisisMultiplier = 1;
+            if (simulatedCrisis === '2008') {
+                if (i === 1) crisisMultiplier = 0.65;
+                else if (i === 2) crisisMultiplier = 0.72;
+                else if (i === 3) crisisMultiplier = 0.85;
+            } else if (simulatedCrisis === '2020') {
+                if (i === 1) crisisMultiplier = 0.78;
+                else if (i === 2) crisisMultiplier = 1.05;
+            } else if (simulatedCrisis === '2022') {
+                if (i === 1) crisisMultiplier = 0.88;
+                else if (i === 2) crisisMultiplier = 0.82;
+                else if (i === 3) crisisMultiplier = 0.90;
+            }
+
+            const valBeforeNoiseAi = currentAiVal * crisisMultiplier;
+            const valBeforeNoiseTrad = currentTradVal * (crisisMultiplier * 0.9);
+
+            const aiNoise = valBeforeNoiseAi * (Math.random() - 0.48) * config.volatility * 0.6;
+            const tradNoise = valBeforeNoiseTrad * (Math.random() - 0.5) * config.volatility;
+            aiValues.push(Math.round(valBeforeNoiseAi + aiNoise));
+            tradValues.push(Math.round(valBeforeNoiseTrad + tradNoise));
+        }
+        return { labels, aiValues, tradValues };
+    };
+
+    const simData = calculateProjections();
+    const finalAiVal = simData.aiValues[simData.aiValues.length - 1];
+    const initialVal = simData.aiValues[0];
+    const profit = finalAiVal - initialVal;
+    const allTimeReturnPercent = ((profit / initialVal) * 100).toFixed(1);
+
+    const lineData = {
+        labels: simData.labels,
+        datasets: [
+            {
+                label: 'AI Optimized Portfolio',
+                data: simData.aiValues,
+                borderColor: '#00e676', borderWidth: 3, fill: true,
+                backgroundColor: 'rgba(0, 230, 118, 0.05)', tension: 0.3, pointRadius: 2, pointHoverRadius: 6,
+            },
+            {
+                label: 'Traditional Portfolio',
+                data: simData.tradValues,
+                borderColor: '#d4af37', borderWidth: 2, borderDash: [5, 5], fill: true,
+                backgroundColor: 'rgba(212, 175, 55, 0.02)', tension: 0.3, pointRadius: 0, pointHoverRadius: 4,
+            }
+        ]
+    };
+
+    const lineOptions = {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+            legend: { display: true, labels: { color: '#a1b3b8', font: { family: 'Outfit', size: 12 } } },
+            tooltip: {
+                mode: 'index' as const, intersect: false,
+                backgroundColor: 'rgba(6, 18, 22, 0.9)', borderColor: 'rgba(212, 175, 55, 0.2)', borderWidth: 1,
+                titleColor: '#fff', bodyColor: '#a1b3b8',
+                titleFont: { family: 'Outfit', weight: 'bold' as const }, bodyFont: { family: 'Outfit' },
+            }
+        },
+        scales: {
+            x: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#a1b3b8', font: { family: 'Outfit' } } },
+            y: {
+                grid: { color: 'rgba(255,255,255,0.03)' },
+                ticks: { color: '#a1b3b8', font: { family: 'Outfit' }, callback: function(value: any) { return '$' + value.toLocaleString(); } }
+            }
+        }
+    };
+
+    const doughnutData = {
+        labels: currentConfig.labels,
+        datasets: [{
+            data: currentConfig.allocation,
+            backgroundColor: ['#00e676', '#d4af37', '#0288d1', '#ffb300', '#8e24aa'],
+            borderWidth: 2, borderColor: '#03080a', hoverOffset: 10
+        }]
+    };
+
+    const doughnutOptions = {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: { backgroundColor: 'rgba(6, 18, 22, 0.9)', borderColor: 'rgba(0, 230, 118, 0.2)', borderWidth: 1 }
+        },
+        cutout: '70%'
+    };
+
+    const symbols = ["CASH", "BOND", "EQUITY", "GOLD", "CRYPTO"];
+    const colors = ["#00e676", "#d4af37", "#0288d1", "#ffb300", "#8e24aa"];
+    const initials = userData.name.split(" ").map((n: string) => n[0]).join("").substring(0, 2).toUpperCase();
+
+    const showStats     = selectedTab === 'home' || selectedTab === 'analytics';
+    const showSimulator = selectedTab === 'home';
+    const showHoldings  = selectedTab === 'home' || selectedTab === 'portfolio' || selectedTab === 'analytics';
+    const showAI        = selectedTab === 'home' || selectedTab === 'advisory';
+    const showCrisisSim = selectedTab === 'analytics';
+
+    return (
+        <div id="dashboard-view" className="dashboard-wrapper active">
+            <div className="dashboard-container">
+                <aside className="dash-sidebar">
+                    <div className="logo">
+                        <div className="logo-symbol">AI</div>
+                        <div className="logo-text">AI Capital<span>Investment</span></div>
+                    </div>
+
+                    <ul className="dash-menu">
+                        {[
+                            { id: 'home', icon: <LayoutDashboard size={20} />, label: 'Overview' },
+                            { id: 'portfolio', icon: <Wallet size={20} />, label: 'My Assets' },
+                            { id: 'advisory', icon: <Sparkles size={20} />, label: 'AI Advisory' },
+                            { id: 'analytics', icon: <BarChart3 size={20} />, label: 'Analytics' },
+                            { id: 'blogs', icon: <BookOpen size={20} />, label: 'Blogs' },
+                            { id: 'settings', icon: <Settings size={20} />, label: 'Settings' },
+                        ].map(item => (
+                            <li key={item.id} className={`dash-menu-item ${selectedTab === item.id ? 'active' : ''}`} onClick={() => handleTabSwitch(item.id)}>
+                                <a>{item.icon} {item.label}</a>
+                            </li>
+                        ))}
+                    </ul>
+
+                    <div className="dash-sidebar-footer">
+                        <div className="user-profile-badge">
+                            <div className="user-avatar">{initials}</div>
+                            <div className="user-info">
+                                <p className="user-name">{userData.name}</p>
+                                <p className="user-tier">Premium Account</p>
+                            </div>
+                        </div>
+                        <button className="btn btn-green-outline" style={{ width: '100%', fontSize: '0.85rem', padding: '8px 16px' }} onClick={onLogout}>
+                            <LogOut size={16} /> Log Out
+                        </button>
+                    </div>
+                </aside>
+
+                <main
+                    className="dash-content"
+                    style={{ opacity: isTransitioning ? 0 : 1, transform: isTransitioning ? 'translateY(10px)' : 'translateY(0)', transition: 'opacity 0.25s ease, transform 0.25s ease' }}
+                >
+                    <header className="dash-header">
+                        <div className="dash-header-left">
+                            <h1 className="glow-text-green">Welcome Back, {userData.name.split(" ")[0]}!</h1>
+                            <p>Here is your real-time portfolio analysis and AI insights.</p>
+                        </div>
+                        <div className="dash-header-right">
+                            <div className="market-ticker">
+                                {Object.entries(tickers).map(([key, asset]) => (
+                                    <div key={key} className={`ticker-item ${asset.flash}`}>
+                                        <span className="ticker-name">{key.toUpperCase()}</span>
+                                        <span className="ticker-value">
+                                            {"$" + asset.price.toLocaleString(undefined, {
+                                                minimumFractionDigits: key !== 'btc' ? 2 : 0,
+                                                maximumFractionDigits: key !== 'btc' ? 2 : 0
+                                            })}
+                                        </span>
+                                        <span className={`ticker-change ${asset.change >= 0 ? 'up' : 'down'}`}>
+                                            {asset.change >= 0 ? '+' : ''}{asset.change.toFixed(2)}%
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </header>
+
+                    {selectedTab === 'blogs' ? (
+                        <BlogsSection />
+                    ) : selectedTab === 'settings' ? (
+                        <SettingsSection userData={userData} />
+                    ) : selectedTab === 'advisory' ? (
+                        <AIChatbotSection 
+                            userData={userData} 
+                            executingProposal={executingProposal}
+                            proposalSuccess={proposalSuccess}
+                            handleExecuteProposal={handleExecuteProposal}
+                        />
+                    ) : (
+                        <div className="dash-grid">
+                            <div className="dash-left-col">
+                                {showStats && (
+                                    <div className="widget">
+                                        <div className="portfolio-summary-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
+                                            <div className="summary-card">
+                                                <p className="summary-label">Total Portfolio Value</p>
+                                                <p className="summary-val glow-text-gold"><AnimatedValue value={finalAiVal} /></p>
+                                                <p className="summary-change up"><ArrowUpRight size={14} /> +$120.45 Today</p>
+                                            </div>
+                                            <div className="summary-card">
+                                                <p className="summary-label">AI Generated Profit</p>
+                                                <p className="summary-val glow-text-green"><AnimatedValue value={profit} /></p>
+                                                <p className="summary-change up"><ArrowUpRight size={14} /> +{allTimeReturnPercent}% All-Time</p>
+                                            </div>
+                                            <div className="summary-card">
+                                                <p className="summary-label">Current Risk Profile</p>
+                                                <p className="summary-val" style={{ color: riskTolerance === 'Conservative' ? 'var(--color-gold)' : riskTolerance === 'Balanced' ? 'var(--color-green)' : '#ff5252' }}>
+                                                    {riskTolerance}
+                                                </p>
+                                                <p className="summary-change" style={{ color: 'var(--text-secondary)' }}>Optimal Stability</p>
+                                            </div>
+                                            <div className="summary-card">
+                                                <p className="summary-label">Portfolio Health Index</p>
+                                                <p className="summary-val glow-text-green">
+                                                    {simulatedCrisis ? '88/100' : '96/100'}
+                                                </p>
+                                                <p className="summary-change" style={{ color: 'var(--text-secondary)' }}>
+                                                    {simulatedCrisis ? '⚠ High Drift Detected' : '✓ Highly Diversified'}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="widget-title">
+                                            <span>Future Projections & Historical Growth</span>
+                                            <span>{sliderYears} Year Target</span>
+                                        </div>
+                                        <div className="main-chart-container">
+                                            <Line data={lineData} options={lineOptions} />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {showHoldings && (
+                                    <div className="widget">
+                                        <div className="widget-title">
+                                            <span>Your Asset Distribution</span>
+                                            <button className="btn btn-green-outline" style={{ fontSize: '0.75rem', padding: '6px 12px' }}>Rebalance Assets</button>
+                                        </div>
+                                        <div className="holdings-table-wrapper">
+                                            <table className="holdings-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Asset Class</th>
+                                                        <th>Symbol</th>
+                                                        <th style={{ textAlign: 'center' }}>Target</th>
+                                                        <th style={{ textAlign: 'center' }}>Current</th>
+                                                        <th style={{ textAlign: 'center' }}>Drift / Status</th>
+                                                        <th>Balance</th>
+                                                        <th>Day Return</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {currentConfig.allocation.map((percent, index) => {
+                                                        const assetValue = finalAiVal * (percent / 100);
+                                                        const dayReturn = (Math.sin(index + 3) * 1.5 + 0.2).toFixed(2);
+                                                        const targetPercent = assetDataConfig[riskTolerance].allocation[index] || percent;
+                                                        const drift = percent - targetPercent;
+                                                        return (
+                                                            <tr key={index}>
+                                                                <td>
+                                                                    <div className="holdings-asset-name">
+                                                                        <div className="asset-logo-placeholder" style={{ color: colors[index % colors.length] }}>
+                                                                            {symbols[index % symbols.length][0]}
+                                                                        </div>
+                                                                        {currentConfig.labels[index]}
+                                                                    </div>
+                                                                </td>
+                                                                <td><strong>{symbols[index % symbols.length]}</strong></td>
+                                                                <td style={{ textAlign: 'center' }}>{targetPercent}%</td>
+                                                                <td style={{ textAlign: 'center' }}><span className="alloc-badge">{percent}%</span></td>
+                                                                <td style={{ textAlign: 'center' }}>
+                                                                    {drift === 0 ? (
+                                                                        <span style={{ fontSize: '0.72rem', background: 'rgba(0, 230, 118, 0.08)', color: 'var(--color-green)', padding: '2px 8px', borderRadius: '12px', border: '1px solid rgba(0, 230, 118, 0.15)', fontWeight: 600 }}>✓ Stable</span>
+                                                                    ) : (
+                                                                        <span style={{ fontSize: '0.72rem', background: 'rgba(212, 175, 55, 0.08)', color: 'var(--color-gold)', padding: '2px 8px', borderRadius: '12px', border: '1px solid rgba(212, 175, 55, 0.15)', fontWeight: 600 }}>
+                                                                            {drift > 0 ? `+${drift}` : drift}% Drift
+                                                                        </span>
+                                                                    )}
+                                                                </td>
+                                                                <td>{"$" + Math.round(assetValue).toLocaleString()}</td>
+                                                                <td style={{ color: parseFloat(dayReturn) >= 0 ? 'var(--color-green)' : '#ff5252', fontWeight: 600 }}>
+                                                                    {parseFloat(dayReturn) >= 0 ? '+' : ''}{dayReturn}%
+                                                                </td>
+                                                            </tr>
+                                                        );
+                                                    })}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="dash-right-col">
+                                {(selectedTab === 'home' || selectedTab === 'analytics') && (
+                                    <div className="widget">
+                                        <div className="widget-title">Allocation Breakdown</div>
+                                        <div className="doughnut-chart-container">
+                                            <Doughnut data={doughnutData} options={doughnutOptions} />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {showCrisisSim && (
+                                    <div className="widget glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px', border: '1px solid rgba(212,175,55,0.15)' }}>
+                                        <div className="widget-title" style={{ color: 'var(--color-gold)' }}>AI Stress-Test Simulator</div>
+                                        <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>
+                                            Simulate how our algorithmic hedging engine handles extreme historical market drawdowns by updating allocation weights instantly.
+                                        </p>
+                                        
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                            {[
+                                                { id: '2008', name: '2008 Financial Crash (-35%)' },
+                                                { id: '2020', name: '2020 Pandemic Panic (-22%)' },
+                                                { id: '2022', name: '2022 Tech Selloff (-15%)' }
+                                            ].map(c => (
+                                                <button
+                                                    key={c.id}
+                                                    type="button"
+                                                    onClick={() => handleTriggerCrisis(c.id)}
+                                                    style={{
+                                                        width: '100%', padding: '10px', fontSize: '0.8rem', borderRadius: '6px',
+                                                        border: '1px solid ' + (simulatedCrisis === c.id ? '#ff5252' : 'rgba(255,255,255,0.08)'),
+                                                        background: simulatedCrisis === c.id ? 'rgba(255, 82, 82, 0.08)' : 'rgba(255,255,255,0.02)',
+                                                        color: simulatedCrisis === c.id ? '#ff5252' : '#fff',
+                                                        fontWeight: 600, cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s'
+                                                    }}
+                                                >
+                                                    {c.id === simulatedCrisis ? '● ' : '○ '} {c.name}
+                                                </button>
+                                            ))}
+                                            {simulatedCrisis && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleTriggerCrisis('')}
+                                                    className="btn btn-green-outline"
+                                                    style={{ width: '100%', padding: '8px', fontSize: '0.78rem', cursor: 'pointer' }}
+                                                >
+                                                    Reset & Clear Simulation
+                                                </button>
+                                            )}
+                                        </div>
+
+                                        {simulationLogs.length > 0 && (
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>Live Rebalancing Logs:</span>
+                                                <div style={{
+                                                    background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.05)',
+                                                    borderRadius: '6px', padding: '10px', maxHeight: '140px', overflowY: 'auto',
+                                                    fontFamily: 'monospace', fontSize: '0.7rem', color: '#00e676', display: 'flex', flexDirection: 'column', gap: '4px'
+                                                }}>
+                                                    {simulationLogs.map((log, index) => (
+                                                        <div key={index}>{log}</div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+
+                                {selectedTab === 'portfolio' && (
+                                    <div className="widget glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px', border: '1px solid rgba(0,230,118,0.15)' }}>
+                                        <div className="widget-title" style={{ display: 'flex', alignItems: 'center', justifyItems: 'center', justifyContent: 'space-between' }}>
+                                            <span style={{ color: 'var(--color-green)' }}>AI Volatility Shield</span>
+                                            <label className="toggle-switch" style={{ position: 'relative', display: 'inline-block', width: '46px', height: '24px' }}>
+                                                <input 
+                                                    type="checkbox" 
+                                                    checked={volatilityShieldActive} 
+                                                    onChange={e => {
+                                                        const active = e.target.checked;
+                                                        setVolatilityShieldActive(active);
+                                                        const timeStr = new Date().toLocaleTimeString();
+                                                        setShieldLogs(prev => [
+                                                            `[${timeStr}] Shield state set to: ${active ? 'ACTIVE' : 'INACTIVE'}`,
+                                                            ...prev
+                                                        ]);
+                                                    }}
+                                                    style={{ opacity: 0, width: 0, height: 0 }}
+                                                />
+                                                <span style={{
+                                                    position: 'absolute', cursor: 'pointer', inset: 0,
+                                                    backgroundColor: volatilityShieldActive ? 'var(--color-green)' : 'rgba(255,255,255,0.1)',
+                                                    transition: '0.3s', borderRadius: '24px',
+                                                    boxShadow: volatilityShieldActive ? '0 0 10px rgba(0,230,118,0.4)' : 'none'
+                                                }}>
+                                                    <span style={{
+                                                        position: 'absolute', content: '""', height: '18px', width: '18px',
+                                                        left: volatilityShieldActive ? '24px' : '4px', bottom: '3px',
+                                                        backgroundColor: '#fff', transition: '0.3s', borderRadius: '50%'
+                                                    }} />
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>
+                                            Mitigates extreme drawdown risks for high-beta holdings. Automatically rotates capital into USD cash vaults when target limits are breached.
+                                        </p>
+
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '6px' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem' }}>
+                                                <span style={{ color: 'var(--text-secondary)' }}>Max Acceptable Drawdown:</span>
+                                                <span style={{ color: 'var(--color-green)', fontWeight: 600 }}>-{maxDrawdownLimit}%</span>
+                                            </div>
+                                            <input 
+                                                type="range" min="2" max="15" step="1" 
+                                                value={maxDrawdownLimit} 
+                                                onChange={e => {
+                                                    const val = parseInt(e.target.value);
+                                                    setMaxDrawdownLimit(val);
+                                                    const timeStr = new Date().toLocaleTimeString();
+                                                    setShieldLogs(prev => [
+                                                        `[${timeStr}] Target drawdown ceiling updated to: -${val}%`,
+                                                        ...prev
+                                                    ]);
+                                                }}
+                                                style={{ width: '100%' }}
+                                            />
+                                        </div>
+
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '10px' }}>
+                                            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>Active Shield Ledger:</span>
+                                            <div style={{
+                                                background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.05)',
+                                                borderRadius: '6px', padding: '10px', maxHeight: '120px', overflowY: 'auto',
+                                                fontFamily: 'monospace', fontSize: '0.7rem', color: '#a1b3b8', display: 'flex', flexDirection: 'column', gap: '4px'
+                                            }}>
+                                                {shieldLogs.map((log, index) => (
+                                                    <div key={index} style={{ color: log.includes('ACTIVE') ? 'var(--color-green)' : log.includes('INACTIVE') ? '#ff5252' : '#a1b3b8' }}>
+                                                        {log}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {showSimulator && (
+                                    <div className="widget">
+                                        <div className="widget-title">Growth Simulator</div>
+                                        <div className="simulator-sliders">
+                                            <div className="slider-group">
+                                                <div className="slider-header">
+                                                    <span className="slider-label">Investment Amount</span>
+                                                    <span className="slider-val">{"$" + sliderAmount.toLocaleString()}</span>
+                                                </div>
+                                                <input type="range" min="1000" max="100000" step="1000" value={sliderAmount} onChange={(e) => setSliderAmount(parseFloat(e.target.value))} />
+                                            </div>
+                                            <div className="slider-group">
+                                                <div className="slider-header">
+                                                    <span className="slider-label">Investment Period</span>
+                                                    <span className="slider-val">{sliderYears} Years</span>
+                                                </div>
+                                                <input type="range" min="1" max="30" step="1" value={sliderYears} onChange={(e) => setSliderYears(parseInt(e.target.value))} />
+                                            </div>
+                                            <div className="slider-group" style={{ marginTop: '8px' }}>
+                                                <label className="slider-label" style={{ fontSize: '0.85rem', marginBottom: '8px', display: 'block' }}>Target Risk Profile</label>
+                                                <div className="risk-tolerance-selector">
+                                                    {['Conservative', 'Balanced', 'Aggressive'].map((level) => (
+                                                        <button key={level} type="button" className={`risk-btn ${riskTolerance === level ? 'active' : ''}`} onClick={() => setRiskTolerance(level)}>
+                                                            {level}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {showAI && (
+                                    <div className="widget">
+                                        <div className="ai-advisor-panel">
+                                            <div className="ai-avatar-header">
+                                                <div className="ai-avatar">AI</div>
+                                                <div className="ai-avatar-info">
+                                                    <h5>Capital Advisor</h5>
+                                                    <p>Online &amp; Monitoring</p>
+                                                </div>
+                                            </div>
+                                            <div className={`ai-message-bubble ${aiBubbleFade ? 'fade-out' : ''}`}>
+                                                {aiBubbleText}
+                                            </div>
+                                            {userData.advisorMessage && (
+                                                <div style={{ marginTop: '16px', padding: '12px', background: 'rgba(212, 175, 55, 0.08)', border: '1px solid rgba(212, 175, 55, 0.2)', borderRadius: '8px' }}>
+                                                    <h6 style={{ color: 'var(--color-gold)', fontSize: '0.8rem', fontWeight: 600, margin: '0 0 6px 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Personal Advisor Recommendation</h6>
+                                                    <p style={{ color: '#fff', fontSize: '0.82rem', margin: 0, lineHeight: 1.4 }}>"{userData.advisorMessage}"</p>
+                                                </div>
+                                            )}
+                                            <div className="ai-tips-list">
+                                                <div className="ai-tip-item">
+                                                    <Lightbulb size={16} />
+                                                    <span>Automated balancing active. Next evaluation in 4 hours.</span>
+                                                </div>
+                                                <div className="ai-tip-item">
+                                                    <CheckCircle2 size={16} />
+                                                    <span>Optimal yield detected in Bond Index. +0.8% efficiency gain.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+                <footer className="dashboard-footer" style={{
+                    padding: '24px',
+                    marginTop: '40px',
+                    borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+                    textAlign: 'center',
+                    fontSize: '0.72rem',
+                    color: 'var(--text-muted)',
+                    lineHeight: 1.6,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '12px'
+                }}>
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', opacity: 0.8 }}>
+                        <span>SIPC MEMBER</span>
+                        <span>•</span>
+                        <span>FDIC INSURED PARTNER BANKS</span>
+                        <span>•</span>
+                        <span>SEC REGISTERED ADVISER</span>
+                    </div>
+                    <p style={{ margin: 0, maxWidth: '900px', alignSelf: 'center' }}>
+                        AI Capital Investment is an SEC-registered investment adviser. Brokerage services are provided by Apex Clearing Corporation, member FINRA/SIPC.
+                        FDIC insurance is provided through partner banks up to $250,000 per depositor. 
+                        Past performance is no guarantee of future results. All yield estimates, target projections, and historical stress-test scenarios are simulated returns for illustrative purposes and do not represent actual performance.
+                        Please read our full Form CRS and Risk Disclosures before executing investment reallocations.
+                    </p>
+                    <p style={{ margin: 0, fontSize: '0.68rem', opacity: 0.6 }}>
+                        © 2026 AI Capital Investment LLC. All rights reserved.
+                    </p>
+                </footer>
+                </main>
+            </div>
+        </div>
+    );
+};
+
+interface BlogArticle {
+    id: string;
+    title: string;
+    category: string;
+    author: string;
+    date: string;
+    readTime: string;
+    abstract: string;
+    content: string[];
+    icon: React.ReactNode;
+    gold?: boolean;
+}
+
+const blogArticles: BlogArticle[] = [
+    {
+        id: '1',
+        title: 'The Future of AI-Driven Wealth Management',
+        category: 'AI & Tech',
+        author: 'AI Capital Research',
+        date: 'July 15, 2026',
+        readTime: '4 min read',
+        abstract: 'How neural networks and automated rebalancing are replacing traditional financial advisors, minimizing portfolio volatility by 30%.',
+        icon: <Sparkles size={32} />,
+        gold: false,
+        content: [
+            'The wealth management industry is undergoing a monumental paradigm shift. For decades, investors relied on human advisors to make asset allocation decisions, perform manual rebalancing, and predict market trends. However, high fees and cognitive biases often eroded long-term returns.',
+            'Enter Artificial Intelligence. By utilizing complex neural networks and machine learning models, modern platforms can analyze millions of data points in real time. This includes macro-economic indicators, stock price histories, interest rate spreads, and even global news sentiment.',
+            'One of the key advantages of AI wealth management is continuous, automated rebalancing. While human advisors typically rebalance portfolios quarterly or annually, algorithmic systems evaluate asset weights daily. If a sudden market movement causes equities to exceed their target allocation, the system instantly executes trades to lock in profits and purchase undervalued assets.',
+            'Backtested data suggests that automated rebalancing reduces total portfolio volatility by up to 30% compared to static allocation models. Furthermore, it completely removes the emotional panic that often leads retail investors to sell during market downturns.'
+        ]
+    },
+    {
+        id: '2',
+        title: 'Decoding Digital Assets: BTC & ETH in a Balanced Portfolio',
+        category: 'Crypto',
+        author: 'Marcus Vance, Senior Advisor',
+        date: 'July 12, 2026',
+        readTime: '6 min read',
+        abstract: 'Evaluating the optimal allocation index for crypto assets under a balanced risk profile to maximize returns while shielding capital.',
+        icon: <Wallet size={32} />,
+        gold: true,
+        content: [
+            'Cryptocurrencies like Bitcoin (BTC) and Ethereum (ETH) have matured from speculative tokens into established institutional asset classes. However, due to their high volatility index, many traditional investors remain hesitant to include them in their retirement profiles.',
+            'Our research indicates that completely excluding digital assets from a modern portfolio may be a missed opportunity for capital growth. Under a Balanced risk profile, a small, controlled allocation of 5% to 10% offers substantial upside potential with manageable downside risk.',
+            'The primary strength of cryptocurrency lies in its low correlation with traditional fixed-income bonds and cash reserves. During periods of high monetary expansion, Bitcoin often acts as a digital gold hedge, preserving purchasing power. Ethereum, on the other hand, operates as a utility layer for smart contracts, capturing growth from decentralized finance (DeFi) networks.',
+            'Our algorithmic model uses volatility-weighted budgeting. Instead of fixed dollar amounts, the AI dynamically increases crypto allocations when historical volatility contracts, and scales back exposure to lock in gains when volatility spikes. This systematic approach allows investors to participate in crypto runs safely.'
+        ]
+    },
+    {
+        id: '3',
+        title: 'Interest Rates & Bond Yields: Navigating Inflationary Cycles',
+        category: 'Macro Strategy',
+        author: 'Helena Ross, Macro Analyst',
+        date: 'July 08, 2026',
+        readTime: '5 min read',
+        abstract: 'Understanding the relationship between central bank policies, corporate bonds, and physical gold hedges in capital preservation.',
+        icon: <BarChart3 size={32} />,
+        gold: false,
+        content: [
+            'In times of macroeconomic uncertainty, understanding interest rate cycles is vital for preserving capital. When central banks hike interest rates to combat inflation, bond prices naturally decline, and bond yields rise.',
+            'For conservative and balanced portfolios, this creates an opportunity to lock in high yields on secure short-term government bonds. AI Capital manages this exposure through dynamic duration matching—automatically shifting funds into shorter-maturity bonds when rates are rising, and extending duration when yields peak.',
+            'However, fixed-income yields alone are often insufficient to match high inflation rates. To protect purchasing power, we allocate a portion of portfolios to physical gold and inflation-linked securities. Gold is a timeless hedge that appreciates when real interest rates (rates minus inflation) fall into negative territory.',
+            'By balancing corporate bonds, liquid cash, and gold hedges, our system ensures that your portfolio stays resilient against inflation while maintaining liquidity for opportunistic equity purchases.'
+        ]
+    },
+    {
+        id: '4',
+        title: 'Tax-Loss Harvesting: Maximizing Your Net Investment Returns',
+        category: 'Tax Strategy',
+        author: 'Sarah Chen, CPA',
+        date: 'July 03, 2026',
+        readTime: '8 min read',
+        abstract: 'A deep dive into automated tax-loss harvesting mechanisms that help lock in net capital gains and optimize year-end tax returns.',
+        icon: <Settings size={32} />,
+        gold: true,
+        content: [
+            'It is not just about how much your portfolio makes; it is about how much you keep after taxes. Tax-loss harvesting is one of the most powerful wealth-building strategies, yet it is rarely practiced by retail investors due to its complexity.',
+            'The process involves selling an investment that has experienced a temporary decline, realizing the loss, and immediately replacing it with a similar asset to maintain your portfolio\'s risk profile. The realized loss can then be used to offset capital gains taxes from other profitable investments or write off up to $3,000 of ordinary income.',
+            'Doing this manually is incredibly difficult because of the "Wash-Sale Rule" (which disallows tax deductions if you buy the same or substantially identical asset within 30 days of selling). Our automated AI system scans your portfolio daily for harvesting opportunities.',
+            'When it finds a qualifying asset, it executes the sale and simultaneously swaps it for a highly correlated companion asset. This keeps you fully invested in the market while booking tax write-offs that boost your annual net returns by an average of 1.2%.'
+        ]
+    }
+];
+
+const BlogsSection = () => {
+    const [selectedCategory, setSelectedCategory] = useState('All');
+    const [activeArticle, setActiveArticle] = useState<BlogArticle | null>(null);
+
+    const categories = ['All', 'AI & Tech', 'Crypto', 'Macro Strategy', 'Tax Strategy'];
+    const filteredArticles = selectedCategory === 'All'
+        ? blogArticles
+        : blogArticles.filter(art => art.category === selectedCategory);
+
+    return (
+        <div className="blogs-container">
+            <div className="blog-filters" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                    {categories.map(cat => (
+                        <button
+                            key={cat}
+                            type="button"
+                            className={`blog-filter-btn ${selectedCategory === cat ? 'active' : ''}`}
+                            onClick={() => setSelectedCategory(cat)}
+                        >
+                            {cat}
+                        </button>
+                    ))}
+                </div>
+                <a 
+                    href="https://www.udenai.com/blog-studio" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="btn btn-green-outline"
+                    style={{ fontSize: '0.8rem', padding: '6px 14px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
+                >
+                    Write a Blog <ArrowUpRight size={14} />
+                </a>
+            </div>
+
+            <div className="blogs-grid">
+                {filteredArticles.map(article => (
+                    <div
+                        key={article.id}
+                        className={`widget blog-card glass-card ${article.gold ? 'gold-border' : 'green-border'}`}
+                        style={{ padding: 0 }}
+                    >
+                        <div className="blog-thumbnail">
+                            {article.icon}
+                        </div>
+                        <div className="blog-card-content">
+                            <span className="blog-badge">{article.category}</span>
+                            <h3 className="blog-card-title">{article.title}</h3>
+                            <p className="blog-card-abstract">{article.abstract}</p>
+                            <div className="blog-meta-footer">
+                                <div className="blog-meta-left">
+                                    <span>{article.author}</span>
+                                    <span>•</span>
+                                    <span>{article.date}</span>
+                                </div>
+                                <span className="blog-read-link" onClick={() => setActiveArticle(article)}>
+                                    Read Article <ChevronRight size={14} />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Detailed Article Reader Overlay */}
+            {activeArticle && (
+                <div style={{
+                    position: 'fixed', inset: 0, zIndex: 1000,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    backgroundColor: 'rgba(2, 8, 4, 0.75)', backdropFilter: 'blur(10px)',
+                    padding: '20px'
+                }}>
+                    <div className="glass-card" style={{
+                        maxWidth: '640px', width: '100%', padding: '32px',
+                        position: 'relative', border: activeArticle.gold ? '1px solid rgba(212, 175, 55, 0.22)' : '1px solid rgba(0, 230, 118, 0.22)',
+                        background: 'rgba(6, 18, 10, 0.95)', boxShadow: activeArticle.gold ? '0 0 40px rgba(212, 175, 55, 0.1)' : '0 0 40px rgba(0, 230, 118, 0.1)',
+                        transform: 'none'
+                    }}>
+                        <button onClick={() => setActiveArticle(null)} style={{
+                            position: 'absolute', top: '16px', right: '16px',
+                            background: 'transparent', border: 'none', color: '#62777d',
+                            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            transition: 'color 0.2s'
+                        }} onMouseEnter={e => e.currentTarget.style.color = '#00e676'} onMouseLeave={e => e.currentTarget.style.color = '#62777d'}>
+                            <X size={20} />
+                        </button>
+                        
+                        <span className="blog-badge" style={{ marginBottom: '12px' }}>{activeArticle.category}</span>
+                        <h2 style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: '8px', color: '#ffffff', lineHeight: 1.3 }} className={activeArticle.gold ? 'glow-text-gold' : 'glow-text-green'}>
+                            {activeArticle.title}
+                        </h2>
+                        
+                        <div style={{ display: 'flex', gap: '10px', fontSize: '0.74rem', color: 'var(--text-muted)', marginBottom: '22px' }}>
+                            <span>By {activeArticle.author}</span>
+                            <span>•</span>
+                            <span>{activeArticle.date}</span>
+                            <span>•</span>
+                            <span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>{activeArticle.readTime}</span>
+                        </div>
+
+                        <div style={{
+                            maxHeight: '340px', overflowY: 'auto', paddingRight: '8px',
+                            fontSize: '0.9rem', color: '#a1b3b8', lineHeight: '1.65',
+                            textAlign: 'left'
+                        }}>
+                            {activeArticle.content.map((paragraph, index) => (
+                                <p key={index} style={{ marginBottom: '14px' }}>{paragraph}</p>
+                            ))}
+                        </div>
+                        
+                        <button className="btn btn-green-outline" onClick={() => setActiveArticle(null)} style={{ marginTop: '22px', width: '100%' }}>
+                            Close Article
+                        </button>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+const SettingsSection = ({ userData }: { userData: UserData }) => {
+    const [name, setName] = useState(userData.name);
+    const [email, setEmail] = useState(userData.email);
+    const [phone, setPhone] = useState('(555) 019-2834');
+    const [risk, setRisk] = useState(userData.riskTolerance || 'Balanced');
+    const [goal, setGoal] = useState(userData.goal || 'Growth');
+    const [emailReports, setEmailReports] = useState(true);
+    const [aiAlerts, setAiAlerts] = useState(true);
+    const [twoFactor, setTwoFactor] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+    const [saveSuccess, setSaveSuccess] = useState(false);
+
+    const handleSave = (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSaving(true);
+        setTimeout(() => {
+            setIsSaving(false);
+            setSaveSuccess(true);
+            setTimeout(() => setSaveSuccess(false), 3000);
+        }, 1200);
+    };
+
+    return (
+        <form onSubmit={handleSave} className="settings-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', width: '100%' }}>
+            <div className="widget" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                <div className="widget-title">Profile Settings</div>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Full Name</label>
+                    <input 
+                        type="text" 
+                        value={name} 
+                        onChange={e => setName(e.target.value)} 
+                        style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 12px', color: '#fff', fontSize: '0.9rem', outline: 'none' }}
+                        required
+                    />
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Email Address</label>
+                    <input 
+                        type="email" 
+                        value={email} 
+                        disabled
+                        style={{ background: 'rgba(255,255,255,0.01)', border: '1px solid rgba(255,255,255,0.03)', borderRadius: '8px', padding: '10px 12px', color: 'var(--text-muted)', fontSize: '0.9rem', cursor: 'not-allowed' }}
+                    />
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Phone Number</label>
+                    <input 
+                        type="text" 
+                        value={phone} 
+                        onChange={e => setPhone(e.target.value)} 
+                        style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 12px', color: '#fff', fontSize: '0.9rem', outline: 'none' }}
+                    />
+                </div>
+
+                <div className="widget-title" style={{ marginTop: '10px' }}>Security</div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div>
+                        <h6 style={{ fontSize: '0.9rem', color: '#fff', margin: 0 }}>Two-Factor Authentication (2FA)</h6>
+                        <p style={{ fontSize: '0.74rem', color: 'var(--text-muted)', margin: '4px 0 0' }}>Secure your portfolio transactions with a phone OTP code.</p>
+                    </div>
+                    <label className="toggle-switch" style={{ position: 'relative', display: 'inline-block', width: '46px', height: '24px' }}>
+                        <input 
+                            type="checkbox" 
+                            checked={twoFactor} 
+                            onChange={e => setTwoFactor(e.target.checked)}
+                            style={{ opacity: 0, width: 0, height: 0 }}
+                        />
+                        <span style={{
+                            position: 'absolute', cursor: 'pointer', inset: 0,
+                            backgroundColor: twoFactor ? 'var(--color-green)' : 'rgba(255,255,255,0.1)',
+                            transition: '0.3s', borderRadius: '24px',
+                            boxShadow: twoFactor ? '0 0 10px rgba(0,230,118,0.4)' : 'none'
+                        }}>
+                            <span style={{
+                                position: 'absolute', content: '""', height: '18px', width: '18px',
+                                left: twoFactor ? '24px' : '4px', bottom: '3px',
+                                backgroundColor: '#fff', transition: '0.3s', borderRadius: '50%'
+                            }} />
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <div className="widget" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                <div className="widget-title">Investment Configuration</div>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Target Risk Profile</label>
+                    <div style={{ display: 'flex', gap: '8px', marginTop: '4px' }}>
+                        {['Conservative', 'Balanced', 'Aggressive'].map(r => (
+                            <button 
+                                key={r} 
+                                type="button" 
+                                className={`risk-btn ${risk === r ? 'active' : ''}`} 
+                                onClick={() => setRisk(r)}
+                                style={{ flex: 1, padding: '8px', fontSize: '0.82rem' }}
+                            >
+                                {r}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Primary Investment Goal</label>
+                    <select 
+                        value={goal} 
+                        onChange={e => setGoal(e.target.value)} 
+                        style={{ background: 'rgba(6,18,10,0.95)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px', color: '#fff', fontSize: '0.9rem', outline: 'none' }}
+                    >
+                        <option value="Retirement">Retirement Planning</option>
+                        <option value="Growth">Aggressive Capital Growth</option>
+                        <option value="Passive">Passive Income Generation</option>
+                        <option value="Education">Education Funding</option>
+                    </select>
+                </div>
+
+                <div className="widget-title" style={{ marginTop: '10px' }}>Notification Preferences</div>
+                
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div>
+                        <h6 style={{ fontSize: '0.9rem', color: '#fff', margin: 0 }}>Email Reports</h6>
+                        <p style={{ fontSize: '0.74rem', color: 'var(--text-muted)', margin: '4px 0 0' }}>Receive monthly portfolio rebalancing updates.</p>
+                    </div>
+                    <label className="toggle-switch" style={{ position: 'relative', display: 'inline-block', width: '46px', height: '24px' }}>
+                        <input 
+                            type="checkbox" 
+                            checked={emailReports} 
+                            onChange={e => setEmailReports(e.target.checked)}
+                            style={{ opacity: 0, width: 0, height: 0 }}
+                        />
+                        <span style={{
+                            position: 'absolute', cursor: 'pointer', inset: 0,
+                            backgroundColor: emailReports ? 'var(--color-green)' : 'rgba(255,255,255,0.1)',
+                            transition: '0.3s', borderRadius: '24px',
+                            boxShadow: emailReports ? '0 0 10px rgba(0,230,118,0.4)' : 'none'
+                        }}>
+                            <span style={{
+                                position: 'absolute', content: '""', height: '18px', width: '18px',
+                                left: emailReports ? '24px' : '4px', bottom: '3px',
+                                backgroundColor: '#fff', transition: '0.3s', borderRadius: '50%'
+                            }} />
+                        </span>
+                    </label>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4px' }}>
+                    <div>
+                        <h6 style={{ fontSize: '0.9rem', color: '#fff', margin: 0 }}>AI Advisory Alerts</h6>
+                        <p style={{ fontSize: '0.74rem', color: 'var(--text-muted)', margin: '4px 0 0' }}>Real-time notifications on optimal yield changes.</p>
+                    </div>
+                    <label className="toggle-switch" style={{ position: 'relative', display: 'inline-block', width: '46px', height: '24px' }}>
+                        <input 
+                            type="checkbox" 
+                            checked={aiAlerts} 
+                            onChange={e => setAiAlerts(e.target.checked)}
+                            style={{ opacity: 0, width: 0, height: 0 }}
+                        />
+                        <span style={{
+                            position: 'absolute', cursor: 'pointer', inset: 0,
+                            backgroundColor: aiAlerts ? 'var(--color-green)' : 'rgba(255,255,255,0.1)',
+                            transition: '0.3s', borderRadius: '24px',
+                            boxShadow: aiAlerts ? '0 0 10px rgba(0,230,118,0.4)' : 'none'
+                        }}>
+                            <span style={{
+                                position: 'absolute', content: '""', height: '18px', width: '18px',
+                                left: aiAlerts ? '24px' : '4px', bottom: '3px',
+                                backgroundColor: '#fff', transition: '0.3s', borderRadius: '50%'
+                            }} />
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <div style={{ gridColumn: 'span 2', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '20px', marginTop: '10px' }}>
+                <div>
+                    {saveSuccess && (
+                        <span style={{ color: 'var(--color-green)', fontSize: '0.88rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <CheckCircle2 size={16} /> Settings saved successfully!
+                        </span>
+                    )}
+                </div>
+                <button type="submit" className="btn btn-green" disabled={isSaving} style={{ minWidth: '160px' }}>
+                    {isSaving ? <span className="auth-spinner" style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff' }} /> : 'Save Configurations'}
+                </button>
+            </div>
+        </form>
+    );
+};
+
+const CuteRobot = ({ isTyping }: { isTyping: boolean }) => {
+    return (
+        <div style={{ position: 'relative', width: '180px', height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <style>{`
+                @keyframes blink {
+                    0%, 90%, 100% { transform: scaleY(1); }
+                    95% { transform: scaleY(0.1); }
+                }
+                @keyframes wave {
+                    0%, 100% { transform: rotate(0deg); }
+                    50% { transform: rotate(-20deg); }
+                }
+                @keyframes head-bob {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-4px); }
+                }
+                @keyframes eye-talk {
+                    0%, 100% { filter: drop-shadow(0 0 2px #00e676); }
+                    50% { filter: drop-shadow(0 0 8px #00e676); transform: scale(1.15); }
+                }
+                .robot-head-group {
+                    animation: head-bob 3.2s infinite ease-in-out;
+                    transform-origin: 50px 62px;
+                }
+                .robot-eye {
+                    transform-origin: center;
+                    animation: blink 4s infinite;
+                }
+                .robot-eye-talk {
+                    transform-origin: center;
+                    animation: eye-talk 0.2s infinite ease-in-out;
+                }
+                .robot-arm-left-group {
+                    transform-origin: 28px 74px;
+                    animation: wave 2s infinite ease-in-out;
+                }
+            `}</style>
+            <svg width="100%" height="100%" viewBox="0 0 100 220" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ overflow: 'visible' }}>
+                <defs>
+                    {/* Glossy 3D Metallic White Gradient */}
+                    <linearGradient id="glossy-white" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stopColor="#ffffff" />
+                        <stop offset="35%" stopColor="#f1f5f9" />
+                        <stop offset="70%" stopColor="#cbd5e1" />
+                        <stop offset="100%" stopColor="#94a3b8" />
+                    </linearGradient>
+                    {/* Rose Gold/Gold Accent Gradient */}
+                    <linearGradient id="gold-accent" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stopColor="#ffe082" />
+                        <stop offset="50%" stopColor="#ffb300" />
+                        <stop offset="100%" stopColor="#ff8f00" />
+                    </linearGradient>
+                    {/* Joint Core Dark */}
+                    <linearGradient id="core-dark" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stopColor="#475569" />
+                        <stop offset="100%" stopColor="#0f172a" />
+                    </linearGradient>
+                    {/* Dark Visor */}
+                    <linearGradient id="visor-grad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#0f172a" />
+                        <stop offset="100%" stopColor="#1e293b" />
+                    </linearGradient>
+                    {/* Drop Shadow */}
+                    <filter id="shadow-filter" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="1" dy="3" stdDeviation="2.5" floodColor="#061208" floodOpacity="0.25" />
+                    </filter>
+                </defs>
+
+                {/* Left Leg (Straight down, fully visible) */}
+                <g filter="url(#shadow-filter)">
+                    {/* Joint */}
+                    <circle cx="38" cy="120" r="5.5" fill="url(#core-dark)" />
+                    {/* Thigh */}
+                    <rect x="33" y="120" width="10" height="36" rx="5" fill="url(#glossy-white)" />
+                    <rect x="33" y="132" width="10" height="4" fill="url(#gold-accent)" />
+                    {/* Knee */}
+                    <circle cx="38" cy="156" r="4.5" fill="url(#core-dark)" />
+                    {/* Calf */}
+                    <rect x="33" y="156" width="10" height="36" rx="5" fill="url(#glossy-white)" />
+                    {/* Foot */}
+                    <ellipse cx="38" cy="192" rx="7.5" ry="3.5" fill="url(#core-dark)" />
+                    <path d="M30 192 C30 188, 46 188, 46 192 C46 195, 30 195, 30 192 Z" fill="url(#glossy-white)" stroke="#cbd5e1" strokeWidth="0.5" />
+                </g>
+
+                {/* Right Leg (Straight down, parallel) */}
+                <g filter="url(#shadow-filter)">
+                    {/* Joint */}
+                    <circle cx="62" cy="120" r="5.5" fill="url(#core-dark)" />
+                    {/* Thigh */}
+                    <rect x="57" y="120" width="10" height="36" rx="5" fill="url(#glossy-white)" />
+                    <rect x="57" y="132" width="10" height="4" fill="url(#gold-accent)" />
+                    {/* Knee */}
+                    <circle cx="62" cy="156" r="4.5" fill="url(#core-dark)" />
+                    {/* Calf */}
+                    <rect x="57" y="156" width="10" height="36" rx="5" fill="url(#glossy-white)" />
+                    {/* Foot */}
+                    <ellipse cx="62" cy="192" rx="7.5" ry="3.5" fill="url(#core-dark)" />
+                    <path d="M54 192 C54 188, 70 188, 70 192 C70 195, 54 195, 54 192 Z" fill="url(#glossy-white)" stroke="#cbd5e1" strokeWidth="0.5" />
+                </g>
+
+                {/* Torso / Body */}
+                <rect x="28" y="70" width="44" height="54" rx="22" fill="url(#glossy-white)" stroke="#cbd5e1" strokeWidth="1" filter="url(#shadow-filter)" />
+                {/* Chest Indicator */}
+                <rect x="36" y="82" width="28" height="16" rx="4" fill="url(#visor-grad)" stroke="url(#gold-accent)" strokeWidth="1" />
+                <circle cx="50" cy="90" r="3" fill="#00e676" style={{ filter: 'drop-shadow(0 0 3px #00e676)' }} />
+                {/* Gold collar accent */}
+                <path d="M35 70 C35 76, 65 76, 65 70" stroke="url(#gold-accent)" strokeWidth="2.5" fill="none" />
+
+                {/* Leaning Right Arm (Resting Elbow) */}
+                <g filter="url(#shadow-filter)">
+                    {/* Shoulder */}
+                    <circle cx="72" cy="74" r="5" fill="url(#gold-accent)" />
+                    {/* Upper Arm */}
+                    <rect x="67" y="74" width="10" height="22" rx="5" fill="url(#glossy-white)" transform="rotate(-45 72 74)" />
+                    {/* Elbow */}
+                    <circle cx="87" cy="90" r="4.5" fill="url(#core-dark)" />
+                    {/* Forearm */}
+                    <rect x="82" y="90" width="22" height="10" rx="5" fill="url(#glossy-white)" transform="rotate(-15 87 90)" />
+                    {/* Hand */}
+                    <circle cx="104" cy="85" r="4.5" fill="url(#gold-accent)" />
+                </g>
+
+                {/* Left Arm Waving Raised */}
+                <g className="robot-arm-left-group" filter="url(#shadow-filter)">
+                    {/* Shoulder */}
+                    <circle cx="28" cy="74" r="5" fill="url(#gold-accent)" />
+                    {/* Upper Arm */}
+                    <rect x="23" y="56" width="10" height="20" rx="5" fill="url(#glossy-white)" transform="rotate(-30 28 74)" />
+                    {/* Elbow */}
+                    <circle cx="16" cy="52" r="4.5" fill="url(#core-dark)" />
+                    {/* Forearm */}
+                    <rect x="11" y="32" width="10" height="22" rx="5" fill="url(#glossy-white)" transform="rotate(-60 16 52)" />
+                    {/* Hand */}
+                    <circle cx="4" cy="22" r="4.5" fill="url(#gold-accent)" />
+                </g>
+
+                {/* Head Group (Bobbing) */}
+                <g className="robot-head-group" filter="url(#shadow-filter)">
+                    {/* Neck */}
+                    <rect x="46" y="60" width="10" height="12" rx="2" fill="url(#core-dark)" />
+
+                    {/* Headphones/Ears left/right */}
+                    <rect x="20" y="28" width="8" height="24" rx="4" fill="url(#gold-accent)" />
+                    <rect x="72" y="28" width="8" height="24" rx="4" fill="url(#gold-accent)" />
+
+                    {/* Head Shell */}
+                    <ellipse cx="50" cy="40" rx="24" ry="20" fill="url(#glossy-white)" stroke="#cbd5e1" strokeWidth="1" />
+                    <ellipse cx="50" cy="27" rx="14" ry="5" fill="#ffffff" opacity="0.4" />
+
+                    {/* Antennae */}
+                    <line x1="36" y1="21" x2="30" y2="10" stroke="url(#gold-accent)" strokeWidth="2.5" strokeLinecap="round" />
+                    <circle cx="30" cy="10" r="3" fill="url(#gold-accent)" />
+                    <line x1="64" y1="21" x2="70" y2="10" stroke="url(#gold-accent)" strokeWidth="2.5" strokeLinecap="round" />
+                    <circle cx="70" cy="10" r="3" fill="url(#gold-accent)" />
+
+                    {/* Dark Visor */}
+                    <rect x="31" y="31" width="38" height="17" rx="8.5" fill="url(#visor-grad)" stroke="#475569" strokeWidth="1.2" />
+
+                    {/* Glowing Eyes */}
+                    {isTyping ? (
+                        <>
+                            <ellipse cx="42" cy="40" rx="4.5" ry="4.5" fill="#00e676" className="robot-eye-talk" />
+                            <ellipse cx="58" cy="40" rx="4.5" ry="4.5" fill="#00e676" className="robot-eye-talk" />
+                        </>
+                    ) : (
+                        <>
+                            <ellipse cx="42" cy="40" rx="4.5" ry="4.5" fill="#00e676" className="robot-eye" style={{ transformOrigin: '42px 40px' }} />
+                            <ellipse cx="58" cy="40" rx="4.5" ry="4.5" fill="#00e676" className="robot-eye" style={{ transformOrigin: '58px 40px' }} />
+                        </>
+                    )}
+                </g>
+            </svg>
+        </div>
+    );
+};
+
+const AIChatbotSection = ({ 
+    userData, 
+    executingProposal, 
+    proposalSuccess, 
+    handleExecuteProposal 
+}: { 
+    userData: UserData; 
+    executingProposal: boolean; 
+    proposalSuccess: boolean; 
+    handleExecuteProposal: () => void; 
+}) => {
+    const [messages, setMessages] = useState([
+        { sender: 'ai', text: `Hello ${userData.name.split(" ")[0]}, I am your AI Capital Advisor. I actively monitor market yields and adjust your portfolio reallocations. How can I assist you today?` },
+        { sender: 'ai', text: `Based on your profile, you are currently on a ${userData.riskTolerance} allocation trajectory with a primary goal of ${userData.goal} Planning.` }
+    ]);
+    const [input, setInput] = useState('');
+    const [isTyping, setIsTyping] = useState(false);
+
+    const handleSend = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!input.trim()) return;
+
+        const userMsg = input.trim();
+        setMessages(prev => [...prev, { sender: 'user', text: userMsg }]);
+        setInput('');
+        setIsTyping(true);
+
+        setTimeout(() => {
+            setIsTyping(false);
+            let reply = '';
+            const query = userMsg.toLowerCase();
+
+            if (query.includes('risk') || query.includes('tolerance') || query.includes('profile')) {
+                reply = `Under your current ${userData.riskTolerance} risk profile, we allocate assets to optimize annual yields while keeping volatility around ${userData.riskTolerance === 'Conservative' ? '3%' : userData.riskTolerance === 'Balanced' ? '8%' : '16%'}. You can adjust these tolerances in the Settings tab.`;
+            } else if (query.includes('crypto') || query.includes('btc') || query.includes('bitcoin') || query.includes('eth')) {
+                reply = `For digital assets, your profile target allocation is ${userData.riskTolerance === 'Conservative' ? '10%' : userData.riskTolerance === 'Balanced' ? '5% (BTC/ETH)' : '20% (Emerging Tech)'}. These are volatility-weighted to prevent drawdown cycles.`;
+            } else if (query.includes('fee') || query.includes('fees') || query.includes('withdraw')) {
+                reply = `AI Capital Investment has a 0.25% annual management fee. Withdrawals are processed within 1-2 business days to your funded account.`;
+            } else if (query.includes('hello') || query.includes('hi')) {
+                reply = `Hello! How can I assist you with your asset rebalancing or yield projections today?`;
+            } else {
+                reply = `I have logged your query. Our algorithmic index engines indicate optimal rebalancing efficiency is active. Let me know if you would like me to detail specific allocations for cash, bonds, or equities.`;
+            }
+
+            setMessages(prev => [...prev, { sender: 'ai', text: reply }]);
+        }, 1000);
+    };
+
+    return (
+        <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-end', width: '100%', position: 'relative' }}>
+            <div style={{ width: '180px', flexShrink: 0, marginBottom: '10px' }}>
+                <CuteRobot isTyping={isTyping} />
+            </div>
+
+            <div className="widget glass-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '540px', padding: '24px', border: '1px solid rgba(0, 230, 118, 0.2)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '14px', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '16px' }}>
+                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--color-green)', boxShadow: '0 0 8px var(--color-green)' }} />
+                    <div>
+                        <h5 style={{ color: '#fff', fontSize: '0.98rem', fontWeight: 600, margin: 0 }}>Interactive AI Advisor</h5>
+                        <p style={{ color: 'var(--color-green)', fontSize: '0.74rem', margin: 0, fontWeight: 500 }}>Online • Algorithmic Engine Active</p>
+                    </div>
+                </div>
+
+                <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '14px', padding: '20px 0', paddingRight: '8px' }}>
+                    {userData.activeProposal && (
+                        <div style={{
+                            background: 'linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(0,230,118,0.08) 100%)',
+                            border: '1.2px solid var(--color-gold)',
+                            borderRadius: '8px',
+                            padding: '16px',
+                            marginBottom: '10px',
+                            boxShadow: '0 0 20px rgba(212,175,55,0.1)'
+                        }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                                <span style={{ fontSize: '0.8rem', color: 'var(--color-gold)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                    Pending Rebalancing Proposal
+                                </span>
+                                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                                    Deployed by Senior Advisor
+                                </span>
+                            </div>
+                            <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '0 0 12px' }}>
+                                "{userData.activeProposal.text}"
+                            </p>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px', marginBottom: '16px', background: 'rgba(0,0,0,0.2)', padding: '10px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.03)' }}>
+                                <div style={{ textAlign: 'center' }}>
+                                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Equities</div>
+                                    <div style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.equities}%</div>
+                                </div>
+                                <div style={{ textAlign: 'center' }}>
+                                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Bonds</div>
+                                    <div style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.bonds}%</div>
+                                </div>
+                                <div style={{ textAlign: 'center' }}>
+                                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Cash</div>
+                                    <div style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.cash}%</div>
+                                </div>
+                                <div style={{ textAlign: 'center' }}>
+                                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Gold</div>
+                                    <div style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.gold}%</div>
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <div>
+                                    {proposalSuccess && (
+                                        <span style={{ color: 'var(--color-green)', fontSize: '0.84rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                            <CheckCircle2 size={16} /> Rebalanced successfully!
+                                        </span>
+                                    )}
+                                </div>
+                                <button 
+                                    type="button" 
+                                    className="btn btn-gold" 
+                                    onClick={handleExecuteProposal} 
+                                    disabled={executingProposal} 
+                                    style={{ padding: '8px 16px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                                >
+                                    {executingProposal ? (
+                                        <span className="auth-spinner" style={{ width: '12px', height: '12px' }} />
+                                    ) : (
+                                        'Approve & Execute Reallocation'
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                    {messages.map((m, i) => (
+                        <div key={i} style={{ display: 'flex', justifyContent: m.sender === 'user' ? 'flex-end' : 'flex-start' }}>
+                            <div style={{
+                                maxWidth: '75%', padding: '12px 16px', borderRadius: '12px',
+                                fontSize: '0.86rem', lineHeight: '1.45',
+                                background: m.sender === 'user' ? 'rgba(0, 230, 118, 0.08)' : 'rgba(255, 255, 255, 0.03)',
+                                border: m.sender === 'user' ? '1px solid rgba(0, 230, 118, 0.15)' : '1px solid rgba(255, 255, 255, 0.05)',
+                                color: m.sender === 'user' ? '#fff' : '#a1b3b8',
+                                borderBottomRightRadius: m.sender === 'user' ? '2px' : '12px',
+                                borderBottomLeftRadius: m.sender === 'user' ? '12px' : '2px',
+                                textAlign: 'left'
+                            }}>
+                                {m.text}
+                            </div>
+                        </div>
+                    ))}
+                    {isTyping && (
+                        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                            <div style={{ padding: '10px 16px', borderRadius: '12px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                                <span className="auth-spinner" style={{ width: '12px', height: '12px', border: '1.5px solid rgba(255,255,255,0.3)', borderTopColor: '#fff' }} />
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                <form onSubmit={handleSend} style={{ display: 'flex', gap: '10px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '16px' }}>
+                    <input
+                        type="text"
+                        value={input}
+                        onChange={e => setInput(e.target.value)}
+                        placeholder="Ask about your risk tolerance, rebalancing, crypto, or fees..."
+                        style={{ flex: 1, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 14px', color: '#fff', fontSize: '0.9rem', outline: 'none' }}
+                    />
+                    <button type="submit" className="btn btn-green" style={{ padding: '0 20px', fontSize: '0.84rem' }}>
+                        Send
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
+};
+
+export default Dashboard;
