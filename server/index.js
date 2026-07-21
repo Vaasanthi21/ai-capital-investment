@@ -21,7 +21,7 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
-let DB_FILE = path.join(__dirname, 'db.json');
+let DB_FILE = path.join(process.cwd(), 'server', 'db.json');
 
 // Vercel serverless environment compatibility (ephemeral writable DB)
 if (process.env.VERCEL) {
