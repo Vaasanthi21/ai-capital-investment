@@ -111,25 +111,74 @@ async function sendEmailOtp(email, otpCode, purpose) {
     }
 }
 
+// In-memory fallback database for serverless environments (Vercel)
+const fallbackDatabase = {
+  "users": [
+    {
+      "name": "John Doe",
+      "email": "john@gmail.com",
+      "phone": "+911234567890",
+      "investmentAmount": 10000,
+      "riskTolerance": "Balanced",
+      "goal": "Retirement",
+      "password": "$2b$10$/ysKCmDaCs.91gn0izVSNOzhopDnH6yMIXE6swcCs0u/Cw/Omjf9e",
+      "is_verified": true,
+      "created_at": "2026-07-17T12:32:28.355Z",
+      "activeProposal": null
+    },
+    {
+      "name": "John Doe",
+      "email": "johndoe@gmail.com",
+      "phone": "1234567890",
+      "investmentAmount": 25000,
+      "riskTolerance": "Balanced",
+      "goal": "Growth",
+      "password": "$2b$10$/ysKCmDaCs.91gn0izVSNOzhopDnH6yMIXE6swcCs0u/Cw/Omjf9e",
+      "role": "advisor",
+      "advisorMessage": "",
+      "activeProposal": null,
+      "is_verified": true,
+      "created_at": "2026-07-18T12:40:52.494Z"
+    }
+  ],
+  "otps": []
+};
+
+let inMemoryDB = null;
+
 // Helper to load DB
 function loadDB() {
-    if (!fs.existsSync(DB_FILE)) {
-        const initial = { users: [], otps: [] };
-        fs.writeFileSync(DB_FILE, JSON.stringify(initial, null, 2), 'utf8');
-        return initial;
-    }
+    if (inMemoryDB) return inMemoryDB;
+    
     try {
+        if (!fs.existsSync(DB_FILE)) {
+            // Try copying from root as absolute backup
+            const rootDbPath = path.join(process.cwd(), 'server', 'db.json');
+            if (fs.existsSync(rootDbPath)) {
+                const data = fs.readFileSync(rootDbPath, 'utf8');
+                fs.writeFileSync(DB_FILE, data, 'utf8');
+            } else {
+                fs.writeFileSync(DB_FILE, JSON.stringify(fallbackDatabase, null, 2), 'utf8');
+            }
+        }
         const raw = fs.readFileSync(DB_FILE, 'utf8');
-        return JSON.parse(raw);
+        inMemoryDB = JSON.parse(raw);
+        return inMemoryDB;
     } catch (e) {
-        console.error("Error reading database file, resetting:", e);
-        return { users: [], otps: [] };
+        console.error("Database load error, falling back to memory:", e);
+        inMemoryDB = JSON.parse(JSON.stringify(fallbackDatabase));
+        return inMemoryDB;
     }
 }
 
 // Helper to save DB
 function saveDB(db) {
-    fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2), 'utf8');
+    inMemoryDB = db;
+    try {
+        fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2), 'utf8');
+    } catch (e) {
+        console.error("Database save failed (expected in read-only serverless):", e);
+    }
 }
 
 // Ensure database file is initialized
