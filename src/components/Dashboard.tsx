@@ -1941,12 +1941,59 @@ const AIChatbotSection = ({
     proposalSuccess: boolean; 
     handleExecuteProposal: () => void; 
 }) => {
+    const [subTab, setSubTab] = useState<'ai' | 'advisor'>('ai');
     const [messages, setMessages] = useState([
         { sender: 'ai', text: `Hello ${userData.name.split(" ")[0]}, I am your AI Capital Advisor. I actively monitor market yields and adjust your portfolio reallocations. How can I assist you today?` },
         { sender: 'ai', text: `Based on your profile, you are currently on a ${userData.riskTolerance} allocation trajectory with a primary goal of ${userData.goal} Planning.` }
     ]);
     const [input, setInput] = useState('');
     const [isTyping, setIsTyping] = useState(false);
+
+    const [advisorMessages, setAdvisorMessages] = useState<any[]>([]);
+    const [advisorInput, setAdvisorInput] = useState('');
+
+    const fetchAdvisorMessages = async () => {
+        try {
+            const res = await fetch(`/api/chat/history?user1=${userData.email}&user2=johndoe@gmail.com`);
+            if (res.ok) {
+                const data = await res.json();
+                setAdvisorMessages(data);
+            }
+        } catch (e) {
+            console.error("Error fetching advisor messages:", e);
+        }
+    };
+
+    useEffect(() => {
+        if (subTab === 'advisor') {
+            fetchAdvisorMessages();
+            const interval = setInterval(fetchAdvisorMessages, 3000);
+            return () => clearInterval(interval);
+        }
+    }, [subTab]);
+
+    const handleSendToAdvisor = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!advisorInput.trim()) return;
+        const text = advisorInput.trim();
+        setAdvisorInput('');
+        try {
+            const res = await fetch('/api/chat/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sender: userData.email,
+                    receiver: 'johndoe@gmail.com',
+                    text
+                })
+            });
+            if (res.ok) {
+                fetchAdvisorMessages();
+            }
+        } catch (err) {
+            console.error("Error sending message to advisor:", err);
+        }
+    };
 
     const handleSend = (e: React.FormEvent) => {
         e.preventDefault();
@@ -1980,119 +2027,210 @@ const AIChatbotSection = ({
 
     return (
         <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-end', width: '100%', position: 'relative' }}>
-            <div style={{ width: '180px', flexShrink: 0, marginBottom: '10px' }}>
-                <CuteRobot isTyping={isTyping} />
+            <div style={{ width: '180px', flexShrink: 0, marginBottom: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+                {subTab === 'ai' ? (
+                    <CuteRobot isTyping={isTyping} />
+                ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', padding: '20px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '12px', width: '100%' }}>
+                        <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--color-gold)', color: '#03080a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', fontWeight: 'bold', boxShadow: '0 0 15px rgba(212,175,55,0.3)' }}>
+                            JD
+                        </div>
+                        <div style={{ textAlign: 'center' }}>
+                            <h6 style={{ color: '#fff', fontSize: '0.85rem', margin: '0 0 2px 0', fontWeight: 700 }}>John Doe</h6>
+                            <p style={{ color: 'var(--text-muted)', fontSize: '0.7rem', margin: 0 }}>Senior Wealth Manager</p>
+                        </div>
+                    </div>
+                )}
             </div>
 
             <div className="widget glass-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '540px', padding: '24px', border: '1px solid rgba(0, 230, 118, 0.2)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '14px', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '16px' }}>
-                    <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--color-green)', boxShadow: '0 0 8px var(--color-green)' }} />
-                    <div>
-                        <h5 style={{ color: '#fff', fontSize: '0.98rem', fontWeight: 600, margin: 0 }}>Interactive AI Advisor</h5>
-                        <p style={{ color: 'var(--color-green)', fontSize: '0.74rem', margin: 0, fontWeight: 500 }}>Online • Algorithmic Engine Active</p>
+                {/* Header with Sub-Tabs */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '16px', marginBottom: '4px' }}>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <button
+                            type="button"
+                            onClick={() => setSubTab('ai')}
+                            style={{
+                                padding: '6px 12px', fontSize: '0.78rem', borderRadius: '4px',
+                                border: '1px solid ' + (subTab === 'ai' ? 'var(--color-green)' : 'rgba(255,255,255,0.08)'),
+                                background: subTab === 'ai' ? 'rgba(0, 230, 118, 0.08)' : 'transparent',
+                                color: subTab === 'ai' ? 'var(--color-green)' : 'var(--text-secondary)',
+                                cursor: 'pointer', fontWeight: 600
+                            }}
+                        >
+                            🤖 AI Advisor Bot
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setSubTab('advisor')}
+                            style={{
+                                padding: '6px 12px', fontSize: '0.78rem', borderRadius: '4px',
+                                border: '1px solid ' + (subTab === 'advisor' ? 'var(--color-gold)' : 'rgba(255,255,255,0.08)'),
+                                background: subTab === 'advisor' ? 'rgba(212, 175, 55, 0.08)' : 'transparent',
+                                color: subTab === 'advisor' ? 'var(--color-gold)' : 'var(--text-secondary)',
+                                cursor: 'pointer', fontWeight: 600
+                            }}
+                        >
+                            🔒 Secure Advisor Chat
+                        </button>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--color-green)', boxShadow: '0 0 6px var(--color-green)' }} />
+                        <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Online</span>
                     </div>
                 </div>
 
-                <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '14px', padding: '20px 0', paddingRight: '8px' }}>
-                    {userData.activeProposal && (
-                        <div style={{
-                            background: 'linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(0,230,118,0.08) 100%)',
-                            border: '1.2px solid var(--color-gold)',
-                            borderRadius: '8px',
-                            padding: '16px',
-                            marginBottom: '10px',
-                            boxShadow: '0 0 20px rgba(212,175,55,0.1)'
-                        }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                                <span style={{ fontSize: '0.8rem', color: 'var(--color-gold)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                    Pending Rebalancing Proposal
-                                </span>
-                                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                                    Deployed by Senior Advisor
-                                </span>
-                            </div>
-                            <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '0 0 12px' }}>
-                                "{userData.activeProposal.text}"
-                            </p>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px', marginBottom: '16px', background: 'rgba(0,0,0,0.2)', padding: '10px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.03)' }}>
-                                <div style={{ textAlign: 'center' }}>
-                                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Equities</div>
-                                    <div style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.equities}%</div>
-                                </div>
-                                <div style={{ textAlign: 'center' }}>
-                                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Bonds</div>
-                                    <div style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.bonds}%</div>
-                                </div>
-                                <div style={{ textAlign: 'center' }}>
-                                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Cash</div>
-                                    <div style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.cash}%</div>
-                                </div>
-                                <div style={{ textAlign: 'center' }}>
-                                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Gold</div>
-                                    <div style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.gold}%</div>
-                                </div>
-                            </div>
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <div>
-                                    {proposalSuccess && (
-                                        <span style={{ color: 'var(--color-green)', fontSize: '0.84rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                            <CheckCircle2 size={16} /> Rebalanced successfully!
+                {subTab === 'ai' ? (
+                    <>
+                        <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '14px', padding: '20px 0', paddingRight: '8px' }}>
+                            {userData.activeProposal && (
+                                <div style={{
+                                    background: 'linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(0,230,118,0.08) 100%)',
+                                    border: '1.2px solid var(--color-gold)',
+                                    borderRadius: '8px',
+                                    padding: '16px',
+                                    marginBottom: '10px',
+                                    boxShadow: '0 0 20px rgba(212,175,55,0.1)'
+                                }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                                        <span style={{ fontSize: '0.8rem', color: 'var(--color-gold)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                            Pending Rebalancing Proposal
                                         </span>
-                                    )}
+                                        <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                                            Deployed by Senior Advisor
+                                        </span>
+                                    </div>
+                                    <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '0 0 12px' }}>
+                                        "{userData.activeProposal.text}"
+                                    </p>
+                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px', marginBottom: '16px', background: 'rgba(0,0,0,0.2)', padding: '10px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.03)' }}>
+                                        <div style={{ textAlign: 'center' }}>
+                                            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Equities</div>
+                                            <div style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.equities}%</div>
+                                        </div>
+                                        <div style={{ textAlign: 'center' }}>
+                                            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Bonds</div>
+                                            <div style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.bonds}%</div>
+                                        </div>
+                                        <div style={{ textAlign: 'center' }}>
+                                            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Cash</div>
+                                            <div style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.cash}%</div>
+                                        </div>
+                                        <div style={{ textAlign: 'center' }}>
+                                            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Gold</div>
+                                            <div style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.gold}%</div>
+                                        </div>
+                                    </div>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <div>
+                                            {proposalSuccess && (
+                                                <span style={{ color: 'var(--color-green)', fontSize: '0.84rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                                    <CheckCircle2 size={16} /> Rebalanced successfully!
+                                                </span>
+                                            )}
+                                        </div>
+                                        <button 
+                                            type="button" 
+                                            className="btn btn-gold" 
+                                            onClick={handleExecuteProposal} 
+                                            disabled={executingProposal} 
+                                            style={{ padding: '8px 16px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                                        >
+                                            {executingProposal ? (
+                                                <span className="auth-spinner" style={{ width: '12px', height: '12px' }} />
+                                            ) : (
+                                                'Approve & Execute Reallocation'
+                                            )}
+                                        </button>
+                                    </div>
                                 </div>
-                                <button 
-                                    type="button" 
-                                    className="btn btn-gold" 
-                                    onClick={handleExecuteProposal} 
-                                    disabled={executingProposal} 
-                                    style={{ padding: '8px 16px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '6px' }}
-                                >
-                                    {executingProposal ? (
-                                        <span className="auth-spinner" style={{ width: '12px', height: '12px' }} />
-                                    ) : (
-                                        'Approve & Execute Reallocation'
-                                    )}
-                                </button>
-                            </div>
+                            )}
+                            {messages.map((m, i) => (
+                                <div key={i} style={{ display: 'flex', justifyContent: m.sender === 'user' ? 'flex-end' : 'flex-start' }}>
+                                    <div style={{
+                                        maxWidth: '75%', padding: '12px 16px', borderRadius: '12px',
+                                        fontSize: '0.86rem', lineHeight: '1.45',
+                                        background: m.sender === 'user' ? 'rgba(0, 230, 118, 0.08)' : 'rgba(255, 255, 255, 0.03)',
+                                        border: m.sender === 'user' ? '1px solid rgba(0, 230, 118, 0.15)' : '1px solid rgba(255, 255, 255, 0.05)',
+                                        color: m.sender === 'user' ? '#fff' : '#a1b3b8',
+                                        borderBottomRightRadius: m.sender === 'user' ? '2px' : '12px',
+                                        borderBottomLeftRadius: m.sender === 'user' ? '12px' : '2px',
+                                        textAlign: 'left'
+                                    }}>
+                                        {m.text}
+                                    </div>
+                                </div>
+                            ))}
+                            {isTyping && (
+                                <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                                    <div style={{ padding: '10px 16px', borderRadius: '12px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                                        <span className="auth-spinner" style={{ width: '12px', height: '12px', border: '1.5px solid rgba(255,255,255,0.3)', borderTopColor: '#fff' }} />
+                                    </div>
+                                </div>
+                            )}
                         </div>
-                    )}
-                    {messages.map((m, i) => (
-                        <div key={i} style={{ display: 'flex', justifyContent: m.sender === 'user' ? 'flex-end' : 'flex-start' }}>
-                            <div style={{
-                                maxWidth: '75%', padding: '12px 16px', borderRadius: '12px',
-                                fontSize: '0.86rem', lineHeight: '1.45',
-                                background: m.sender === 'user' ? 'rgba(0, 230, 118, 0.08)' : 'rgba(255, 255, 255, 0.03)',
-                                border: m.sender === 'user' ? '1px solid rgba(0, 230, 118, 0.15)' : '1px solid rgba(255, 255, 255, 0.05)',
-                                color: m.sender === 'user' ? '#fff' : '#a1b3b8',
-                                borderBottomRightRadius: m.sender === 'user' ? '2px' : '12px',
-                                borderBottomLeftRadius: m.sender === 'user' ? '12px' : '2px',
-                                textAlign: 'left'
-                            }}>
-                                {m.text}
-                            </div>
-                        </div>
-                    ))}
-                    {isTyping && (
-                        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                            <div style={{ padding: '10px 16px', borderRadius: '12px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}>
-                                <span className="auth-spinner" style={{ width: '12px', height: '12px', border: '1.5px solid rgba(255,255,255,0.3)', borderTopColor: '#fff' }} />
-                            </div>
-                        </div>
-                    )}
-                </div>
 
-                <form onSubmit={handleSend} style={{ display: 'flex', gap: '10px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '16px' }}>
-                    <input
-                        type="text"
-                        value={input}
-                        onChange={e => setInput(e.target.value)}
-                        placeholder="Ask about your risk tolerance, rebalancing, crypto, or fees..."
-                        style={{ flex: 1, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 14px', color: '#fff', fontSize: '0.9rem', outline: 'none' }}
-                    />
-                    <button type="submit" className="btn btn-green" style={{ padding: '0 20px', fontSize: '0.84rem' }}>
-                        Send
-                    </button>
-                </form>
+                        <form onSubmit={handleSend} style={{ display: 'flex', gap: '10px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '16px' }}>
+                            <input
+                                type="text"
+                                value={input}
+                                onChange={e => setInput(e.target.value)}
+                                placeholder="Ask about your risk tolerance, rebalancing, crypto, or fees..."
+                                style={{ flex: 1, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 14px', color: '#fff', fontSize: '0.9rem', outline: 'none' }}
+                            />
+                            <button type="submit" className="btn btn-green" style={{ padding: '0 20px', fontSize: '0.84rem' }}>
+                                Send
+                            </button>
+                        </form>
+                    </>
+                ) : (
+                    /* Advisor Secure Chat Tab */
+                    <>
+                        <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '14px', padding: '20px 0', paddingRight: '8px' }}>
+                            {advisorMessages.length === 0 ? (
+                                <div style={{ alignSelf: 'center', margin: 'auto', fontSize: '0.78rem', color: 'var(--text-muted)', textAlign: 'center' }}>
+                                    No advisor messages yet. Send a secure inquiry to initiate correspondence.
+                                </div>
+                            ) : (
+                                advisorMessages.map((m, i) => {
+                                    const isMe = m.sender === userData.email;
+                                    return (
+                                        <div key={i} style={{ display: 'flex', justifyContent: isMe ? 'flex-end' : 'flex-start' }}>
+                                            <div style={{
+                                                maxWidth: '75%', padding: '12px 16px', borderRadius: '12px',
+                                                fontSize: '0.86rem', lineHeight: '1.45',
+                                                background: isMe ? 'rgba(212, 175, 55, 0.08)' : 'rgba(255, 255, 255, 0.03)',
+                                                border: isMe ? '1px solid rgba(212, 175, 55, 0.15)' : '1px solid rgba(255, 255, 255, 0.05)',
+                                                color: '#fff',
+                                                borderBottomRightRadius: isMe ? '2px' : '12px',
+                                                borderBottomLeftRadius: isMe ? '12px' : '2px',
+                                                textAlign: 'left'
+                                            }}>
+                                                <div style={{ fontSize: '0.64rem', color: isMe ? 'var(--color-gold)' : 'var(--color-green)', fontWeight: 600, marginBottom: '2px' }}>
+                                                    {isMe ? 'You' : 'John Doe (Advisor)'}
+                                                </div>
+                                                {m.text}
+                                            </div>
+                                        </div>
+                                    );
+                                })
+                            )}
+                        </div>
+
+                        <form onSubmit={handleSendToAdvisor} style={{ display: 'flex', gap: '10px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '16px' }}>
+                            <input
+                                type="text"
+                                value={advisorInput}
+                                onChange={e => setAdvisorInput(e.target.value)}
+                                placeholder="Type secure message to John Doe..."
+                                style={{ flex: 1, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 14px', color: '#fff', fontSize: '0.9rem', outline: 'none' }}
+                            />
+                            <button type="submit" className="btn btn-gold" style={{ padding: '0 20px', fontSize: '0.84rem' }}>
+                                Send
+                            </button>
+                        </form>
+                    </>
+                )}
             </div>
         </div>
     );

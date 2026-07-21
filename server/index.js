@@ -141,7 +141,8 @@ const fallbackDatabase = {
       "created_at": "2026-07-18T12:40:52.494Z"
     }
   ],
-  "otps": []
+  "otps": [],
+  "messages": []
 };
 
 let inMemoryDB = null;
@@ -163,6 +164,9 @@ function loadDB() {
         }
         const raw = fs.readFileSync(DB_FILE, 'utf8');
         inMemoryDB = JSON.parse(raw);
+        if (!inMemoryDB.messages) {
+            inMemoryDB.messages = [];
+        }
         return inMemoryDB;
     } catch (e) {
         console.error("Database load error, falling back to memory:", e);
@@ -577,6 +581,48 @@ app.post('/api/investor/execute-proposal', (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error executing proposal.' });
+    }
+});
+
+// Chat System: Send a message
+app.post('/api/chat/send', (req, res) => {
+    try {
+        const { sender, receiver, text } = req.body;
+        if (!sender || !receiver || !text) {
+            return res.status(400).json({ error: 'Sender, receiver, and text are required.' });
+        }
+        const db = loadDB();
+        const msg = {
+            sender,
+            receiver,
+            text,
+            timestamp: new Date().toISOString()
+        };
+        db.messages.push(msg);
+        saveDB(db);
+        res.json({ message: 'Message sent successfully!', msg });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error sending message.' });
+    }
+});
+
+// Chat System: Get chat history between two users
+app.get('/api/chat/history', (req, res) => {
+    try {
+        const { user1, user2 } = req.query;
+        if (!user1 || !user2) {
+            return res.status(400).json({ error: 'Both user1 and user2 query parameters are required.' });
+        }
+        const db = loadDB();
+        const history = db.messages.filter(m => 
+            (m.sender === user1 && m.receiver === user2) || 
+            (m.sender === user2 && m.receiver === user1)
+        );
+        res.json(history);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error retrieving message history.' });
     }
 });
 
