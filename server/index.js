@@ -21,7 +21,22 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
-const DB_FILE = path.join(__dirname, 'db.json');
+let DB_FILE = path.join(__dirname, 'db.json');
+
+// Vercel serverless environment compatibility (ephemeral writable DB)
+if (process.env.VERCEL) {
+    const tempDbPath = path.join('/tmp', 'db.json');
+    try {
+        if (!fs.existsSync(tempDbPath)) {
+            const initialData = fs.readFileSync(DB_FILE, 'utf8');
+            fs.writeFileSync(tempDbPath, initialData, 'utf8');
+        }
+        DB_FILE = tempDbPath;
+        console.log(`Vercel environment detected. Using writable DB at: ${DB_FILE}`);
+    } catch (err) {
+        console.error('Error setting up Vercel writable DB fallback:', err);
+    }
+}
 
 const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_PASS = process.env.EMAIL_PASS;
@@ -519,3 +534,5 @@ app.post('/api/investor/execute-proposal', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Backend server running on http://localhost:${PORT}`);
 });
+
+export default app;
