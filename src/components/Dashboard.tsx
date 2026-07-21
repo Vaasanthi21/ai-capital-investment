@@ -85,11 +85,72 @@ const assetDataConfig: Record<string, {
     }
 };
 
+const quizQuestions = [
+    {
+        question: "What is your primary investment time horizon?",
+        options: [
+            { text: "Short-term (Under 3 years)", score: 1 },
+            { text: "Medium-term (3 to 8 years)", score: 2 },
+            { text: "Long-term (Over 8 years)", score: 3 }
+        ]
+    },
+    {
+        question: "How would you react if your portfolio value suddenly dropped 20%?",
+        options: [
+            { text: "Panic and liquidate all remaining holdings immediately", score: 1 },
+            { text: "Do nothing and patiently wait for market recovery", score: 2 },
+            { text: "Aggressively buy more assets at discounted prices", score: 3 }
+        ]
+    },
+    {
+        question: "What is your primary source of investment capital?",
+        options: [
+            { text: "Emergency reserves / Liquid short-term savings", score: 1 },
+            { text: "Steady employment income / Monthly salary surplus", score: 2 },
+            { text: "Corporate windfall, inheritance, or capital gains", score: 3 }
+        ]
+    },
+    {
+        question: "Which statement best describes your tolerance for volatility?",
+        options: [
+            { text: "I prefer absolute security; preserving principal balance is paramount", score: 1 },
+            { text: "I accept moderate short-term fluctuations to capture higher index growth", score: 2 },
+            { text: "I welcome high fluctuations for the chance of maximum long-term returns", score: 3 }
+        ]
+    }
+];
+
 const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
     const [sliderAmount, setSliderAmount] = useState(userData.investmentAmount || 10000);
     const [sliderYears, setSliderYears] = useState(10);
     const [executingProposal, setExecutingProposal] = useState(false);
     const [proposalSuccess, setProposalSuccess] = useState(false);
+
+    // Dynamic states for advanced options
+    const [showRiskQuiz, setShowRiskQuiz] = useState(false);
+    const [currentQuizQuestion, setCurrentQuizQuestion] = useState(0);
+    const [quizAnswers, setQuizAnswers] = useState<number[]>([]);
+
+    const [financialGoals, setFinancialGoals] = useState([
+        { id: '1', name: 'Retirement Fund', target: 500000, current: 25142, date: '2045-12-31' },
+        { id: '2', name: 'Buy a Home', target: 100000, current: 15000, date: '2030-06-30' }
+    ]);
+    const [showAddGoalModal, setShowAddGoalModal] = useState(false);
+    const [newGoalName, setNewGoalName] = useState('');
+    const [newGoalTarget, setNewGoalTarget] = useState('');
+    const [newGoalDate, setNewGoalDate] = useState('');
+
+    const [taxLossHarvestingActive, setTaxLossHarvestingActive] = useState(false);
+    const [taxLossSavings, setTaxLossSavings] = useState(1820);
+    const [taxLossLogs, setTaxLossLogs] = useState([
+        `[${new Date().toLocaleDateString()}] SWAP: Harvested $1,200 loss in Growth Equities (SPY), rotated into Large Cap Core ETF to maintain market correlation. Locked in $360 tax credit.`,
+        `[2026-06-15] SWAP: Harvested $850 loss in Digital Assets (ETH), rotated into Staked ETH Trust. Locked in $255 tax credit.`,
+        `[2026-05-22] SWAP: Harvested $1,500 loss in high-beta tech holdings. Swapped into NASDAQ 100 Equal Weight. Locked in $450 tax credit.`
+    ]);
+
+    const [backtestStartYear, setBacktestStartYear] = useState(2018);
+    const [backtestEndYear, setBacktestEndYear] = useState(2026);
+    const [backtestComparisonType, setBacktestComparisonType] = useState<'SP500' | '6040'>('SP500');
 
     // Crisis simulation states
     const [simulatedCrisis, setSimulatedCrisis] = useState('');
@@ -102,6 +163,35 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
         'Shield calibrated successfully. Monitoring active volatility matrices.',
         'No active breaches detected. System risk index stable.'
     ]);
+
+    const getBacktestData = () => {
+        const labels: string[] = [];
+        const portfolioValues: number[] = [];
+        const benchmarkValues: number[] = [];
+
+        let portVal = 10000;
+        let benchVal = 10000;
+
+        // yield configurations
+        const portYield = riskTolerance === 'Aggressive' ? 0.145 : riskTolerance === 'Balanced' ? 0.112 : 0.082;
+        const benchYield = backtestComparisonType === 'SP500' ? 0.098 : 0.075; // S&P 500 average vs 60/40
+
+        for (let y = backtestStartYear; y <= 2026; y++) {
+            labels.push(String(y));
+            portfolioValues.push(Math.round(portVal));
+            benchmarkValues.push(Math.round(benchVal));
+
+            // add deterministic market noise based on year to look realistic and not flicker
+            const yearFactor = Math.sin(y * 12.34);
+            const portNoise = yearFactor * 0.11;
+            const benchNoise = yearFactor * 0.14;
+
+            portVal = portVal * (1 + portYield + portNoise);
+            benchVal = benchVal * (1 + benchYield + benchNoise);
+        }
+
+        return { labels, portfolioValues, benchmarkValues };
+    };
 
     const handleExecuteProposal = async () => {
         if (!userData.activeProposal) return;
@@ -485,6 +575,89 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                                     </div>
                                 )}
 
+                                {selectedTab === 'analytics' && (
+                                    <div className="widget">
+                                        <div className="widget-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <span>Historical Asset Backtester</span>
+                                            <div style={{ display: 'flex', gap: '8px' }}>
+                                                <select 
+                                                    value={backtestStartYear} 
+                                                    onChange={e => setBacktestStartYear(parseInt(e.target.value))}
+                                                    style={{ background: 'rgba(6,18,10,0.95)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '4px 8px', color: '#fff', fontSize: '0.74rem', outline: 'none' }}
+                                                >
+                                                    <option value="2018">2018 - 2026 (8 Years)</option>
+                                                    <option value="2020">2020 - 2026 (6 Years)</option>
+                                                    <option value="2022">2022 - 2026 (4 Years)</option>
+                                                </select>
+                                                <select 
+                                                    value={backtestComparisonType} 
+                                                    onChange={e => setBacktestComparisonType(e.target.value as 'SP500' | '6040')}
+                                                    style={{ background: 'rgba(6,18,10,0.95)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '4px 8px', color: '#fff', fontSize: '0.74rem', outline: 'none' }}
+                                                >
+                                                    <option value="SP500">vs S&P 500 Index</option>
+                                                    <option value="6040">vs standard 60/40 Portfolio</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        {/* Backtest Line Chart */}
+                                        <div className="main-chart-container" style={{ minHeight: '260px', marginTop: '10px' }}>
+                                            {(() => {
+                                                const { labels, portfolioValues, benchmarkValues } = getBacktestData();
+                                                const backtestChartData = {
+                                                    labels,
+                                                    datasets: [
+                                                        {
+                                                            label: 'AI Wealth Portfolio',
+                                                            data: portfolioValues,
+                                                            borderColor: '#00e676',
+                                                            backgroundColor: 'rgba(0, 230, 118, 0.04)',
+                                                            borderWidth: 2,
+                                                            tension: 0.35,
+                                                            fill: true
+                                                        },
+                                                        {
+                                                            label: backtestComparisonType === 'SP500' ? 'S&P 500 Index (SPY)' : 'Standard 60/40 Portfolio',
+                                                            data: benchmarkValues,
+                                                            borderColor: 'rgba(255,255,255,0.35)',
+                                                            backgroundColor: 'transparent',
+                                                            borderWidth: 2,
+                                                            borderDash: [5, 5],
+                                                            tension: 0.25
+                                                        }
+                                                    ]
+                                                };
+                                                return <Line data={backtestChartData} options={lineOptions} />;
+                                            })()}
+                                        </div>
+
+                                        {/* Scorecard Table / Grid */}
+                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginTop: '16px' }}>
+                                            <div className="glass-card" style={{ padding: '12px', background: 'rgba(255,255,255,0.01)', border: '1px solid rgba(255,255,255,0.04)', borderRadius: '8px' }}>
+                                                <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600 }}>CUMULATIVE RETURNS</span>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '6px' }}>
+                                                    <span style={{ fontSize: '0.86rem', color: '#00e676', fontWeight: 700 }}>+{(riskTolerance === 'Aggressive' ? 248.5 : riskTolerance === 'Balanced' ? 142.4 : 88.6).toFixed(1)}%</span>
+                                                    <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>{backtestComparisonType === 'SP500' ? '+94.2%' : '+61.5%'}</span>
+                                                </div>
+                                            </div>
+                                            <div className="glass-card" style={{ padding: '12px', background: 'rgba(255,255,255,0.01)', border: '1px solid rgba(255,255,255,0.04)', borderRadius: '8px' }}>
+                                                <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600 }}>MAX DRAWDOWN</span>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '6px' }}>
+                                                    <span style={{ fontSize: '0.86rem', color: '#ff5252', fontWeight: 700 }}>-{(riskTolerance === 'Conservative' ? 8.2 : 14.5).toFixed(1)}%</span>
+                                                    <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>{backtestComparisonType === 'SP500' ? '-24.8%' : '-18.2%'}</span>
+                                                </div>
+                                            </div>
+                                            <div className="glass-card" style={{ padding: '12px', background: 'rgba(255,255,255,0.01)', border: '1px solid rgba(255,255,255,0.04)', borderRadius: '8px' }}>
+                                                <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 600 }}>SHARPE RATIO</span>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '6px' }}>
+                                                    <span style={{ fontSize: '0.86rem', color: 'var(--color-gold)', fontWeight: 700 }}>{(riskTolerance === 'Aggressive' ? 2.14 : riskTolerance === 'Balanced' ? 1.86 : 1.62).toFixed(2)}</span>
+                                                    <span style={{ fontSize: '0.74rem', color: 'var(--text-secondary)' }}>{backtestComparisonType === 'SP500' ? '1.14' : '0.98'}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
                                 {showHoldings && (
                                     <div className="widget">
                                         <div className="widget-title">
@@ -541,6 +714,39 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                                                     })}
                                                 </tbody>
                                             </table>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {selectedTab === 'home' && (
+                                    <div className="widget" style={{ marginTop: '4px' }}>
+                                        <div className="widget-title">
+                                            <span>Financial Goal Planner & Milestones</span>
+                                            <button type="button" className="btn btn-green-outline" onClick={() => setShowAddGoalModal(true)} style={{ fontSize: '0.75rem', padding: '6px 12px', cursor: 'pointer' }}>+ Create New Goal</button>
+                                        </div>
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                                            {financialGoals.map(g => {
+                                                const progress = Math.min((g.current / g.target) * 100, 100);
+                                                return (
+                                                    <div key={g.id} className="glass-card" style={{ padding: '16px', border: '1px solid rgba(255,255,255,0.04)', borderRadius: '10px', background: 'rgba(255,255,255,0.01)' }}>
+                                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                                                            <strong style={{ color: '#fff', fontSize: '0.88rem' }}>{g.name}</strong>
+                                                            <span style={{ color: 'var(--color-green)', fontSize: '0.8rem', fontWeight: 600 }}>{progress.toFixed(0)}%</span>
+                                                        </div>
+                                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.76rem', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+                                                            <span>Target: ${g.target.toLocaleString()}</span>
+                                                            <span>Current: ${g.current.toLocaleString()}</span>
+                                                        </div>
+                                                        {/* Progress bar */}
+                                                        <div style={{ height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden', marginBottom: '8px' }}>
+                                                            <div style={{ width: `${progress}%`, height: '100%', background: 'linear-gradient(90deg, var(--color-green), var(--color-gold))', borderRadius: '3px' }} />
+                                                        </div>
+                                                        <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                                                            Target Date: {new Date(g.date).toLocaleDateString()}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
                                         </div>
                                     </div>
                                 )}
@@ -688,6 +894,73 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                                     </div>
                                 )}
 
+                                {selectedTab === 'portfolio' && (
+                                    <div className="widget glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px', border: '1px solid rgba(0,230,118,0.15)', marginTop: '4px' }}>
+                                        <div className="widget-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                            <span style={{ color: 'var(--color-green)' }}>Automated Tax-Loss Harvesting</span>
+                                            <label className="toggle-switch" style={{ position: 'relative', display: 'inline-block', width: '46px', height: '24px' }}>
+                                                <input 
+                                                    type="checkbox" 
+                                                    checked={taxLossHarvestingActive} 
+                                                    onChange={e => {
+                                                        const active = e.target.checked;
+                                                        setTaxLossHarvestingActive(active);
+                                                        const timeStr = new Date().toLocaleTimeString();
+                                                        setTaxLossLogs(prev => [
+                                                            `[${timeStr}] Tax-Loss Harvesting state set to: ${active ? 'ENABLED' : 'DISABLED'}`,
+                                                            ...prev
+                                                        ]);
+                                                    }}
+                                                    style={{ opacity: 0, width: 0, height: 0 }}
+                                                />
+                                                <span style={{
+                                                    position: 'absolute', cursor: 'pointer', inset: 0,
+                                                    backgroundColor: taxLossHarvestingActive ? 'var(--color-green)' : 'rgba(255,255,255,0.1)',
+                                                    transition: '0.3s', borderRadius: '24px',
+                                                    boxShadow: taxLossHarvestingActive ? '0 0 10px rgba(0,230,118,0.4)' : 'none'
+                                                }}>
+                                                    <span style={{
+                                                        position: 'absolute', content: '""', height: '18px', width: '18px',
+                                                        left: taxLossHarvestingActive ? '24px' : '4px', bottom: '3px',
+                                                        backgroundColor: '#fff', transition: '0.3s', borderRadius: '50%'
+                                                    }} />
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>
+                                            Monitors YTD investment lots to automatically capture capital losses, offsetting up to $3,000 in ordinary income taxes annually.
+                                        </p>
+
+                                        <div style={{ display: 'flex', gap: '14px', background: 'rgba(255,255,255,0.02)', padding: '12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.04)' }}>
+                                            <div>
+                                                <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--text-muted)' }}>Estimated Tax Savings</span>
+                                                <span style={{ display: 'block', fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-green)', marginTop: '2px' }}>
+                                                    ${taxLossHarvestingActive ? (taxLossSavings + 150).toLocaleString() : taxLossSavings.toLocaleString()}
+                                                </span>
+                                            </div>
+                                            <div style={{ borderLeft: '1px solid rgba(255,255,255,0.08)', paddingLeft: '14px' }}>
+                                                <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--text-muted)' }}>YTD Losses Harvested</span>
+                                                <span style={{ display: 'block', fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-gold)', marginTop: '2px' }}>$5,300</span>
+                                            </div>
+                                        </div>
+
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '4px' }}>
+                                            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 600 }}>Harvest Ledger Activity:</span>
+                                            <div style={{
+                                                background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.05)',
+                                                borderRadius: '6px', padding: '10px', maxHeight: '110px', overflowY: 'auto',
+                                                fontFamily: 'monospace', fontSize: '0.7rem', color: '#a1b3b8', display: 'flex', flexDirection: 'column', gap: '4px'
+                                            }}>
+                                                {taxLossLogs.map((log, index) => (
+                                                    <div key={index} style={{ color: log.includes('ENABLED') ? 'var(--color-green)' : log.includes('DISABLED') ? '#ff5252' : '#a1b3b8' }}>
+                                                        {log}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
                                 {showSimulator && (
                                     <div className="widget">
                                         <div className="widget-title">Growth Simulator</div>
@@ -784,6 +1057,278 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                         © 2026 AI Capital Investment LLC. All rights reserved.
                     </p>
                 </footer>
+
+            {showRiskQuiz && (
+                <div style={{
+                    position: 'fixed', inset: 0, background: 'rgba(3,8,5,0.85)',
+                    backdropFilter: 'blur(12px)', display: 'flex', alignItems: 'center',
+                    justifyContent: 'center', zIndex: 1000, padding: '20px'
+                }}>
+                    <div className="glass-card" style={{
+                        width: '100%', maxWidth: '780px', background: 'rgba(6,18,10,0.92)',
+                        border: '1px solid rgba(212,175,55,0.25)', borderRadius: '16px',
+                        overflow: 'hidden', boxShadow: '0 24px 80px rgba(0,0,0,0.8)'
+                    }}>
+                        {/* Header */}
+                        <div style={{
+                            padding: '20px 24px', borderBottom: '1px solid rgba(255,255,255,0.06)',
+                            display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                        }}>
+                            <div>
+                                <h3 style={{ color: 'var(--color-gold)', margin: 0, fontSize: '1.1rem', fontWeight: 700 }}>Risk Assessment Questionnaire</h3>
+                                <p style={{ color: 'var(--text-secondary)', margin: '4px 0 0', fontSize: '0.76rem' }}>Question {Math.min(currentQuizQuestion + 1, quizQuestions.length)} of {quizQuestions.length}</p>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setShowRiskQuiz(false)}
+                                style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', fontSize: '1.25rem', cursor: 'pointer' }}
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        {/* Split Content */}
+                        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', minHeight: '340px' }}>
+                            {/* Left Side: Question Selection */}
+                            <div style={{ padding: '24px', borderRight: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                {currentQuizQuestion < quizQuestions.length ? (
+                                    <>
+                                        <h4 style={{ color: '#fff', fontSize: '1.05rem', fontWeight: 600, margin: '0 0 20px 0', lineHeight: 1.4 }}>
+                                            {quizQuestions[currentQuizQuestion].question}
+                                        </h4>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                            {quizQuestions[currentQuizQuestion].options.map((opt, i) => (
+                                                <button
+                                                    key={i}
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const newAnswers = [...quizAnswers, opt.score];
+                                                        setQuizAnswers(newAnswers);
+                                                        setCurrentQuizQuestion(prev => prev + 1);
+                                                    }}
+                                                    style={{
+                                                        width: '100%', padding: '14px', borderRadius: '8px',
+                                                        border: '1px solid rgba(255,255,255,0.08)',
+                                                        background: 'rgba(255,255,255,0.02)',
+                                                        color: 'var(--text-secondary)', fontSize: '0.82rem',
+                                                        textAlign: 'left', cursor: 'pointer', transition: 'all 0.2s'
+                                                    }}
+                                                    onMouseEnter={e => {
+                                                        e.currentTarget.style.borderColor = 'var(--color-gold)';
+                                                        e.currentTarget.style.background = 'rgba(212,175,55,0.04)';
+                                                        e.currentTarget.style.color = '#fff';
+                                                    }}
+                                                    onMouseLeave={e => {
+                                                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                                                        e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
+                                                        e.currentTarget.style.color = 'var(--text-secondary)';
+                                                    }}
+                                                >
+                                                    {opt.text}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </>
+                                ) : (
+                                    /* Result Screen */
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'center' }}>
+                                        <div style={{
+                                            width: '60px', height: '60px', borderRadius: '50%',
+                                            background: 'rgba(0,230,118,0.1)', border: '2px solid var(--color-green)',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            alignSelf: 'center', color: 'var(--color-green)', fontSize: '1.5rem', fontWeight: 'bold'
+                                        }}>
+                                            ✓
+                                        </div>
+                                        <div>
+                                            <h4 style={{ color: '#fff', margin: '0 0 6px 0', fontSize: '1.1rem' }}>Assessment Complete</h4>
+                                            <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '0.8rem', lineHeight: 1.4 }}>
+                                                Based on your response profile, we recommend a **{
+                                                    (() => {
+                                                        const sum = quizAnswers.reduce((a,b) => a+b, 0);
+                                                        if (sum <= 6) return 'Conservative';
+                                                        if (sum <= 9) return 'Balanced';
+                                                        return 'Aggressive';
+                                                    })()
+                                                }** risk profile strategy.
+                                            </p>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={async () => {
+                                                const sum = quizAnswers.reduce((a,b) => a+b, 0);
+                                                let finalProfile = 'Balanced';
+                                                if (sum <= 6) finalProfile = 'Conservative';
+                                                else if (sum >= 10) finalProfile = 'Aggressive';
+                                                
+                                                setRiskTolerance(finalProfile);
+                                                setShowRiskQuiz(false);
+
+                                                // Update in user settings too
+                                                if (onUpdateUser) {
+                                                    const updatedUser = { ...userData, riskTolerance: finalProfile };
+                                                    onUpdateUser(updatedUser);
+                                                }
+
+                                                // Log rebalancing event
+                                                const timeStr = new Date().toLocaleTimeString();
+                                                setSimulationLogs(prev => [
+                                                    `[${timeStr}] SYSTEM: Risk profile updated to ${finalProfile} via interactive questionnaire.`,
+                                                    `[${timeStr}] REALLOCATION: Aligning asset targets to ${assetDataConfig[finalProfile].allocation.join('/')}.`,
+                                                    ...prev
+                                                ]);
+                                            }}
+                                            className="btn btn-green"
+                                            style={{ padding: '12px', fontSize: '0.82rem', alignSelf: 'center', width: '220px', cursor: 'pointer' }}
+                                        >
+                                            Save & Apply Allocation
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Right Side: Live Allocation Preview */}
+                            <div style={{ padding: '24px', background: 'rgba(0,0,0,0.15)', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
+                                <span style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Suggested Allocation</span>
+                                <div style={{ width: '160px', height: '160px', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    {/* Doughnut Chart Mock */}
+                                    {(() => {
+                                        const sum = quizAnswers.reduce((a,b) => a+b, 0);
+                                        let currentAlloc = [25, 25, 25, 20, 5]; // default Balanced
+                                        let label = 'Balanced';
+                                        let col = 'var(--color-green)';
+                                        if (sum > 0) {
+                                            if (sum <= 6) {
+                                                currentAlloc = [35, 50, 5, 10];
+                                                label = 'Conservative';
+                                                col = 'var(--color-gold)';
+                                            } else if (sum >= 10) {
+                                                currentAlloc = [15, 15, 30, 20, 20];
+                                                label = 'Aggressive';
+                                                col = '#ff5252';
+                                            }
+                                        }
+                                        return (
+                                            <>
+                                                <div style={{
+                                                    position: 'absolute', inset: 0, borderRadius: '50%',
+                                                    border: '10px solid rgba(255,255,255,0.05)',
+                                                    borderTopColor: col,
+                                                    transform: 'rotate(45deg)', transition: 'border-color 0.3s'
+                                                }} />
+                                                <div style={{ textAlign: 'center', zIndex: 10 }}>
+                                                    <span style={{ display: 'block', fontSize: '0.95rem', fontWeight: 700, color: col }}>{label}</span>
+                                                    <span style={{ display: 'block', fontSize: '0.66rem', color: 'var(--text-secondary)', marginTop: '2px' }}>Score: {sum || '-'}</span>
+                                                </div>
+                                            </>
+                                        );
+                                    })()}
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', width: '100%' }}>
+                                    {(() => {
+                                        const sum = quizAnswers.reduce((a,b) => a+b, 0);
+                                        let finalP = 'Balanced';
+                                        if (sum > 0) {
+                                            if (sum <= 6) finalP = 'Conservative';
+                                            else if (sum >= 10) finalP = 'Aggressive';
+                                        }
+                                        const cfg = assetDataConfig[finalP];
+                                        return cfg.allocation.map((percent, idx) => (
+                                            <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem' }}>
+                                                <span style={{ color: 'var(--text-secondary)' }}>{cfg.labels[idx]}</span>
+                                                <span style={{ color: '#fff', fontWeight: 600 }}>{percent}%</span>
+                                            </div>
+                                        ));
+                                    })()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {showAddGoalModal && (
+                <div style={{
+                    position: 'fixed', inset: 0, background: 'rgba(3,8,5,0.85)',
+                    backdropFilter: 'blur(12px)', display: 'flex', alignItems: 'center',
+                    justifyContent: 'center', zIndex: 1000, padding: '20px'
+                }}>
+                    <form 
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            if (!newGoalName || !newGoalTarget || !newGoalDate) return;
+                            const targetVal = parseFloat(newGoalTarget);
+                            if (isNaN(targetVal)) return;
+
+                            const newG = {
+                                id: String(Date.now()),
+                                name: newGoalName,
+                                target: targetVal,
+                                current: 0,
+                                date: newGoalDate
+                            };
+                            setFinancialGoals(prev => [...prev, newG]);
+                            setShowAddGoalModal(false);
+                            setNewGoalName('');
+                            setNewGoalTarget('');
+                            setNewGoalDate('');
+                        }}
+                        className="glass-card" 
+                        style={{
+                            width: '100%', maxWidth: '440px', background: 'rgba(6,18,10,0.95)',
+                            border: '1px solid rgba(0,230,118,0.25)', borderRadius: '14px',
+                            padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px',
+                            boxShadow: '0 24px 80px rgba(0,0,0,0.8)'
+                        }}
+                    >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <h3 style={{ color: 'var(--color-green)', margin: 0, fontSize: '1.05rem', fontWeight: 700 }}>Create Financial Goal</h3>
+                            <button
+                                type="button"
+                                onClick={() => setShowAddGoalModal(false)}
+                                style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', fontSize: '1.2rem', cursor: 'pointer' }}
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                            <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Goal Name</label>
+                            <input 
+                                type="text" placeholder="e.g., Tesla Downpayment" required
+                                value={newGoalName} onChange={e => setNewGoalName(e.target.value)}
+                                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 12px', color: '#fff', fontSize: '0.9rem', outline: 'none' }}
+                            />
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                            <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Target Amount ($)</label>
+                            <input 
+                                type="number" placeholder="e.g., 25000" required
+                                value={newGoalTarget} onChange={e => setNewGoalTarget(e.target.value)}
+                                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 12px', color: '#fff', fontSize: '0.9rem', outline: 'none' }}
+                            />
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                            <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Target Date</label>
+                            <input 
+                                type="date" required
+                                value={newGoalDate} onChange={e => setNewGoalDate(e.target.value)}
+                                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 12px', color: '#fff', fontSize: '0.9rem', outline: 'none' }}
+                            />
+                        </div>
+
+                        <button 
+                            type="submit" 
+                            className="btn btn-green"
+                            style={{ padding: '12px', fontSize: '0.85rem', cursor: 'pointer', marginTop: '8px' }}
+                        >
+                            Establish Goal Target
+                        </button>
+                    </form>
+                </div>
+            )}
                 </main>
             </div>
         </div>
