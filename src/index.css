@@ -944,6 +944,26 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); backgro
   .sc-header .nav-links { display: none; }
   .sc-features-grid { grid-template-columns: 1fr 1fr; }
   .sc-footer-grid { grid-template-columns: 1fr 1fr; }
+  
+  /* Stacking and hiding branding panel on mobile login/signup */
+  .auth-layout {
+    grid-template-columns: 1fr;
+  }
+  .auth-brand-panel {
+    display: none;
+  }
+  .auth-form-panel {
+    padding: 80px 24px;
+  }
+  .auth-back-btn {
+    top: 14px;
+    left: 14px;
+  }
+}
+
+/* Mobile Bottom Nav Styles */
+.mobile-bottom-nav {
+  display: none;
 }
 
 @media (max-width: 600px) {
@@ -952,4 +972,74 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); backgro
   .dash-grid { grid-template-columns: 1fr; }
   .sc-hero { grid-template-columns: 1fr; }
   .sc-features-grid, .sc-services-grid { grid-template-columns: 1fr; }
+  
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: rgba(4, 12, 6, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 999;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .mobile-tab-item {
+    background: transparent;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: var(--font);
+    font-size: 0.65rem;
+    flex: 1;
+    transition: all 0.25s;
+    padding: 8px 0;
+  }
+  
+  .mobile-tab-item svg {
+    color: var(--text-muted);
+    transition: transform 0.2s, color 0.2s;
+  }
+  
+  .mobile-tab-item.active {
+    color: var(--color-green);
+  }
+  
+  .mobile-tab-item.active svg {
+    color: var(--color-green);
+    transform: scale(1.15);
+  }
+  
+  /* Add padding to dashboard main content to prevent overlay with bottom nav */
+  .dash-content {
+    padding: 16px !important;
+    padding-bottom: 90px !important;
+  }
+
+  .dash-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+  }
+
+  .market-ticker {
+    width: 100% !important;
+    overflow-x: auto !important;
+    padding: 8px 12px !important;
+    display: flex !important;
+    gap: 12px !important;
+  }
+
+  .portfolio-summary-grid {
+    grid-template-columns: 1fr !important;
+  }
 }

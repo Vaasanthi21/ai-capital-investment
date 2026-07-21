@@ -1330,6 +1330,27 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                 </div>
             )}
                 </main>
+
+                {/* Mobile Bottom Tab Navigation */}
+                <nav className="mobile-bottom-nav">
+                    {[
+                        { id: 'home', icon: <LayoutDashboard size={20} />, label: 'Overview' },
+                        { id: 'portfolio', icon: <Wallet size={20} />, label: 'Assets' },
+                        { id: 'advisory', icon: <Sparkles size={20} />, label: 'Advisory' },
+                        { id: 'analytics', icon: <BarChart3 size={20} />, label: 'Analytics' },
+                        { id: 'settings', icon: <Settings size={20} />, label: 'Settings' }
+                    ].map(item => (
+                        <button 
+                            key={item.id} 
+                            type="button"
+                            className={`mobile-tab-item ${selectedTab === item.id || (item.id === 'home' && selectedTab === 'blogs') ? 'active' : ''}`}
+                            onClick={() => handleTabSwitch(item.id)}
+                        >
+                            {item.icon}
+                            <span>{item.label}</span>
+                        </button>
+                    ))}
+                </nav>
             </div>
         </div>
     );
