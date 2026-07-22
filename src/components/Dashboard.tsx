@@ -1352,14 +1352,16 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                     {[
                         { id: 'home', icon: <LayoutDashboard size={20} />, label: 'Overview' },
                         { id: 'portfolio', icon: <Wallet size={20} />, label: 'Assets' },
+                        { id: 'deposit', icon: <PlusCircle size={20} />, label: 'Deposit' },
                         { id: 'advisory', icon: <Sparkles size={20} />, label: 'Advisory' },
                         { id: 'analytics', icon: <BarChart3 size={20} />, label: 'Analytics' },
+                        { id: 'blogs', icon: <BookOpen size={20} />, label: 'Blogs' },
                         { id: 'settings', icon: <Settings size={20} />, label: 'Settings' }
                     ].map(item => (
                         <button 
                             key={item.id} 
                             type="button"
-                            className={`mobile-tab-item ${selectedTab === item.id || (item.id === 'home' && selectedTab === 'blogs') ? 'active' : ''}`}
+                            className={`mobile-tab-item ${selectedTab === item.id ? 'active' : ''}`}
                             onClick={() => handleTabSwitch(item.id)}
                         >
                             {item.icon}

@@ -1316,12 +1316,15 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); backgro
     left: 0;
     right: 0;
     height: 64px;
-    background: rgba(4, 12, 6, 0.95);
+    background: rgba(4, 12, 6, 0.96);
     backdrop-filter: blur(20px);
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     z-index: 999;
-    justify-content: space-around;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    justify-content: space-between;
     align-items: center;
+    padding: 0 4px;
     padding-bottom: env(safe-area-inset-bottom);
   }
   
@@ -1336,9 +1339,10 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); backgro
     cursor: pointer;
     font-family: var(--font);
     font-size: 0.65rem;
-    flex: 1;
+    flex: 1 0 auto;
+    min-width: 52px;
     transition: all 0.25s;
-    padding: 8px 0;
+    padding: 8px 2px;
   }
   
   .mobile-tab-item svg {
