@@ -1064,6 +1064,11 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); backgro
   }
 }
 
+/* ── Mobile Advisor Tab Bar (Hidden on Desktop) ─────────────────────────── */
+.mobile-advisor-tab-bar {
+  display: none !important;
+}
+
 /* ── Responsive Dashboard Grids ───────────────────────────────────────────── */
 .market-ticker {
   display: flex;
