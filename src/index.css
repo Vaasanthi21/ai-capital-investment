@@ -1427,6 +1427,17 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); backgro
     padding: 6px 1px;
   }
   
+/* Mobile GPU & Core Web Vitals Optimization for Overlays */
+@media (max-width: 860px) {
+  .glass-card,
+  .mobile-bottom-nav,
+  div[style*="backdropFilter"],
+  div[style*="backdrop-filter"] {
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+  }
+}  
+
   .mobile-tab-item svg {
     color: var(--text-muted);
     transition: transform 0.2s, color 0.2s;

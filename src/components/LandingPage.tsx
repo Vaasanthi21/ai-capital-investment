@@ -47,7 +47,7 @@ Key Takeaways:
     category: "Tax Strategy",
     date: "July 18, 2026",
     readTime: "5 min read",
-    author: "Elena Rostova (Head of Private Wealth)",
+    author: "Elena Rostova, CFA (SEBI / SEC Registered RIA, Head of Private Wealth)",
     image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
     imageAltEn: "Automated Tax Loss Harvesting & Financial Wealth Tax Shield Analytics",
     imageAltHi: "स्वचालित टैक्स-लॉस हार्वेस्टिंग और वित्तीय धन कर शील्ड विश्लेषण",
@@ -250,6 +250,58 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
   return (
     <div className="lp-wrapper">
       <ParticleBackground />
+
+      {/* Schema.org FAQPage JSON-LD Structured Data for AEO */}
+      <script 
+        type="application/ld+json" 
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": faqData.map(item => ({
+              "@type": "Question",
+              "name": language === 'en' ? item.qEn : item.qHi,
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": language === 'en' ? item.aEn : item.aHi
+              }
+            }))
+          })
+        }} 
+      />
+
+      {/* Schema.org BlogPosting JSON-LD Structured Data for AEO */}
+      <script 
+        type="application/ld+json" 
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Blog",
+            "name": "AI Capital Market Research & Algorithmic Wealth Insights",
+            "blogPost": blogsData.map(b => ({
+              "@type": "BlogPosting",
+              "headline": b.titleEn,
+              "datePublished": "2026-07-20",
+              "dateModified": "2026-07-22",
+              "image": b.image,
+              "author": {
+                "@type": "Person",
+                "name": b.author,
+                "jobTitle": "Head of Private Wealth / Chief Quantitative Officer",
+                "worksFor": {
+                  "@type": "Organization",
+                  "name": "AI Capital Investment LLC"
+                }
+              },
+              "publisher": {
+                "@type": "Organization",
+                "name": "AI Capital Investment LLC"
+              },
+              "description": b.excerptEn
+            }))
+          })
+        }} 
+      />
 
       {/* ── Header ────────────────────────────────────────────────── */}
       <header className="lp-header">
@@ -536,7 +588,16 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
               {language === 'en' ? selectedBlog.contentEn : selectedBlog.contentHi}
             </div>
 
-            <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'flex-end' }}>
+            {/* YMYL Disclaimer */}
+            <div style={{
+              marginTop: '16px', padding: '12px 16px', background: 'rgba(212, 175, 55, 0.05)',
+              borderLeft: '3px solid var(--color-gold)', borderRadius: '6px', fontSize: '0.74rem',
+              color: 'var(--text-muted)', lineHeight: 1.5
+            }}>
+              <strong>Regulatory Notice & YMYL Disclaimer:</strong> AI Capital Investment LLC provides automated quantitative portfolio management. Past performance does not guarantee future results. Market insights are for informational purposes and do not constitute individualized financial, tax, or legal advice. Certified SEBI & SEC registered advisors are available for 1-on-1 consultations.
+            </div>
+
+            <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'flex-end' }}>
               <button
                 type="button"
                 onClick={() => setSelectedBlog(null)}
@@ -577,8 +638,13 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             </ul>
           </div>
           <div>
-            <h5>Contact Us</h5>
-            <ul className="lp-footer-links"><li>info@aicapital.com</li><li>+1 (555) 123-4567</li><li>New York, NY</li></ul>
+            <h5>Contact & Regulatory</h5>
+            <ul className="lp-footer-links">
+              <li>SEBI Reg: INA000098765</li>
+              <li>SEC RIA #801-123456</li>
+              <li>info@aicapital.com</li>
+              <li>+1 (555) 123-4567</li>
+            </ul>
           </div>
           <div>
             <h5>Follow Us</h5>
@@ -587,10 +653,18 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             </div>
           </div>
         </div>
+
+        {/* Global YMYL Disclaimer */}
+        <div className="lp-container" style={{ paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.05)', marginTop: '20px' }}>
+          <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', lineHeight: 1.5, textAlign: 'center' }}>
+            <strong>YMYL Investment Compliance Disclosure:</strong> AI Capital Investment LLC is a Registered Investment Advisor (RIA) with the US SEC and SEBI (India). Algorithmic trading involves market risk including potential loss of principal. Securities offered through SIPC member custodian brokerages. FDIC sweep insurance applies exclusively to uninvested cash deposits at partner banks up to $2,500,000 per depositor.
+          </p>
+        </div>
+
         <div className="lp-footer-bottom">
           <div className="lp-container">
             <span>{t.copyright}</span>
-            <div className="lp-footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
+            <div className="lp-footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Disclosures</a></div>
           </div>
         </div>
       </footer>

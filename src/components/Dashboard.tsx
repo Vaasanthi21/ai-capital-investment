@@ -1589,8 +1589,17 @@ const BlogsSection = () => {
                                 <p key={index} style={{ marginBottom: '14px' }}>{paragraph}</p>
                             ))}
                         </div>
+
+                        {/* YMYL Financial Disclaimer Banner */}
+                        <div style={{
+                            marginTop: '16px', padding: '12px 14px', background: 'rgba(212, 175, 55, 0.06)',
+                            borderLeft: '3px solid var(--color-gold)', borderRadius: '6px', fontSize: '0.73rem',
+                            color: 'var(--text-muted)', lineHeight: 1.5
+                        }}>
+                            <strong>Regulatory Notice & YMYL Disclaimer:</strong> Algorithmic strategy insights provided by AI Capital Investment LLC (SEBI Reg: INA000098765 / SEC RIA #801-123456). Past performance is no guarantee of future returns. Content is intended for educational purposes and does not constitute personalized financial or tax advice.
+                        </div>
                         
-                        <button className="btn btn-green-outline" onClick={() => setActiveArticle(null)} style={{ marginTop: '22px', width: '100%' }}>
+                        <button className="btn btn-green-outline" onClick={() => setActiveArticle(null)} style={{ marginTop: '18px', width: '100%' }}>
                             Close Article
                         </button>
                     </div>
