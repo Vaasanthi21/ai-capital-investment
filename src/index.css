@@ -949,6 +949,10 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); backgro
   color: #ffe066;
 }
 
+.mobile-only-nav-item {
+  display: none !important;
+}
+
 /* Mobile Menu Toggle & Navigation Drawer */
 .mobile-menu-toggle {
   display: none;
@@ -959,6 +963,9 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); backgro
 }
 
 @media (max-width: 860px) {
+  .mobile-only-nav-item {
+    display: flex !important;
+  }
   .mobile-menu-toggle {
     display: flex;
     align-items: center;

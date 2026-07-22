@@ -215,7 +215,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
                   <a href={`#${id}`}>{t.nav[idx]}</a>
                 </li>
               ))}
-              <li style={{ marginTop: '10px', display: 'flex', gap: '10px', width: '100%', justifyContent: 'center' }}>
+              <li className="mobile-only-nav-item" style={{ marginTop: '10px', gap: '10px', width: '100%', justifyContent: 'center' }}>
                 <button className="btn btn-green-outline" style={{ padding: '8px 20px', fontSize: '0.85rem' }} onClick={() => { setMobileMenuOpen(false); onNavigate('login'); }}>{t.signIn}</button>
                 <button className="btn btn-gold" style={{ padding: '8px 20px', fontSize: '0.85rem' }} onClick={() => { setMobileMenuOpen(false); onNavigate('signup'); }}>{t.getStarted}</button>
               </li>
