@@ -253,6 +253,34 @@ function loadDB() {
                 }
             ];
         }
+        if (!inMemoryDB.meetings || inMemoryDB.meetings.length === 0) {
+            inMemoryDB.meetings = [
+                {
+                    id: "MTG-402918",
+                    clientEmail: "john@gmail.com",
+                    clientName: "John Investor",
+                    advisorEmail: "johndoe@gmail.com",
+                    date: "2026-07-25",
+                    time: "14:30",
+                    topic: "Q3 Wealth Rebalancing & Tax-Loss Harvesting Review",
+                    meetLink: "https://meet.aicapital.com/room-4029",
+                    status: "Scheduled",
+                    createdAt: "2026-07-22T10:00:00.000Z"
+                },
+                {
+                    id: "MTG-310892",
+                    clientEmail: "john@gmail.com",
+                    clientName: "John Investor",
+                    advisorEmail: "johndoe@gmail.com",
+                    date: "2026-07-15",
+                    time: "11:00",
+                    topic: "Initial Risk Tolerance & Growth Strategy Orientation",
+                    meetLink: "https://meet.aicapital.com/room-3108",
+                    status: "Completed",
+                    createdAt: "2026-07-14T09:00:00.000Z"
+                }
+            ];
+        }
         return inMemoryDB;
     } catch (e) {
         console.error("Database load error, falling back to memory:", e);
@@ -508,6 +536,48 @@ app.get('/api/investor/transactions', (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error retrieving transaction history.' });
+    }
+});
+
+// Advisor Meetings Endpoints
+app.get('/api/advisor/meetings', (req, res) => {
+    try {
+        const db = loadDB();
+        res.json(db.meetings || []);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error retrieving meetings.' });
+    }
+});
+
+app.post('/api/advisor/meetings/create', (req, res) => {
+    try {
+        const { clientEmail, clientName, advisorEmail, date, time, topic, meetLink } = req.body;
+        if (!clientEmail || !date || !time || !topic) {
+            return res.status(400).json({ error: 'Missing required meeting details.' });
+        }
+        const db = loadDB();
+        if (!db.meetings) db.meetings = [];
+
+        const newMeeting = {
+            id: `MTG-${Math.floor(100000 + Math.random() * 900000)}`,
+            clientEmail,
+            clientName: clientName || 'Verified Investor',
+            advisorEmail: advisorEmail || 'johndoe@gmail.com',
+            date,
+            time,
+            topic,
+            meetLink: meetLink || `https://meet.aicapital.com/room-${Math.floor(1000 + Math.random() * 9000)}`,
+            status: 'Scheduled',
+            createdAt: new Date().toISOString()
+        };
+
+        db.meetings.unshift(newMeeting);
+        saveDB(db);
+        res.json({ message: 'Meeting scheduled successfully!', meeting: newMeeting, meetings: db.meetings });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error creating meeting.' });
     }
 });
 

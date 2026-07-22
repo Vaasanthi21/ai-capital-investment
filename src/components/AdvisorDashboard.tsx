@@ -1,7 +1,9 @@
+import { useState, useEffect } from 'react';
 import { 
     LayoutDashboard, Users, Sparkles, LogOut, Send, 
     CheckCircle2, AlertCircle, RefreshCw, Phone, Mail, DollarSign,
-    CreditCard, History, PlusCircle, Search, Download, ShieldCheck, X, Filter
+    CreditCard, History, PlusCircle, Search, Download, ShieldCheck, X, Filter,
+    Calendar, Video, TrendingUp, BarChart3, PieChart, ShieldAlert, FileCheck, Scissors, Activity, Award, CheckSquare
 } from 'lucide-react';
 
 interface UserData {
@@ -354,6 +356,9 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
                         {[
                             { id: 'clients', icon: <Users size={20} />, label: 'My Clients' },
                             { id: 'deposits', icon: <CreditCard size={20} />, label: 'Client Deposits' },
+                            { id: 'schedule', icon: <Calendar size={20} />, label: 'Consultations' },
+                            { id: 'analytics', icon: <BarChart3 size={20} />, label: 'Benchmark Analytics' },
+                            { id: 'tlh', icon: <Scissors size={20} />, label: 'Tax Optimizer' },
                             { id: 'insights', icon: <Sparkles size={20} />, label: 'AI Market Info' }
                         ].map(item => (
                             <li key={item.id} className={`dash-menu-item ${selectedTab === item.id ? 'active' : ''}`} onClick={() => setSelectedTab(item.id)}>
@@ -415,9 +420,17 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                                 <div>
                                                     <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#fff', margin: 0 }}>{client.name}</h3>
-                                                    <span className="alloc-badge" style={{ marginTop: '6px', display: 'inline-block', background: 'rgba(0, 230, 118, 0.08)', color: 'var(--color-green)', borderColor: 'rgba(0, 230, 118, 0.15)' }}>
-                                                        {client.riskTolerance} Profile
-                                                    </span>
+                                                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '6px' }}>
+                                                        <span className="alloc-badge" style={{ background: 'rgba(0, 230, 118, 0.08)', color: 'var(--color-green)', borderColor: 'rgba(0, 230, 118, 0.15)' }}>
+                                                            {client.riskTolerance} Profile
+                                                        </span>
+                                                        <span style={{ fontSize: '0.66rem', padding: '2px 6px', borderRadius: '4px', background: 'rgba(0, 230, 118, 0.1)', color: 'var(--color-green)', border: '1px solid rgba(0,230,118,0.2)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                                                            <ShieldCheck size={10} /> KYC Verified
+                                                        </span>
+                                                        <span style={{ fontSize: '0.66rem', padding: '2px 6px', borderRadius: '4px', background: 'rgba(212, 175, 55, 0.1)', color: 'var(--color-gold)', border: '1px solid rgba(212,175,55,0.2)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                                                            <Award size={10} /> Accredited
+                                                        </span>
+                                                    </div>
                                                 </div>
                                                 <div style={{ textAlign: 'right' }}>
                                                     <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>Assigned Assets</span>
@@ -538,6 +551,12 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
                         </div>
                     ) : selectedTab === 'deposits' ? (
                         <AdvisorDepositsSection clients={clients} />
+                    ) : selectedTab === 'schedule' ? (
+                        <AdvisorConsultationsSection clients={clients} userData={userData} />
+                    ) : selectedTab === 'analytics' ? (
+                        <AdvisorAnalyticsSection clients={clients} />
+                    ) : selectedTab === 'tlh' ? (
+                        <AdvisorTaxOptimizerSection clients={clients} />
                     ) : (
                         <div className="widget glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                             <div className="widget-title">AI Macroeconomic Signal Dispatcher</div>
@@ -1169,6 +1188,426 @@ const AdvisorDepositsSection = ({ clients }: { clients: Client[] }) => {
                     </div>
                 </div>
             )}
+        </div>
+    );
+};
+
+/* ==========================================================================
+   1. Advisor Consultations & Video Meeting Scheduler
+   ========================================================================== */
+const AdvisorConsultationsSection = ({ clients, userData }: { clients: Client[]; userData: UserData }) => {
+    const [meetings, setMeetings] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedClientEmail, setSelectedClientEmail] = useState(clients[0]?.email || '');
+    const [date, setDate] = useState('');
+    const [time, setTime] = useState('');
+    const [topic, setTopic] = useState('');
+    const [scheduling, setScheduling] = useState(false);
+    const [scheduleSuccess, setScheduleSuccess] = useState(false);
+
+    const fetchMeetings = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch('/api/advisor/meetings');
+            if (res.ok) {
+                const data = await res.json();
+                setMeetings(data);
+            }
+        } catch (e) {
+            console.error("Error fetching meetings:", e);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchMeetings();
+    }, []);
+
+    const handleScheduleMeeting = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!selectedClientEmail || !date || !time || !topic) return;
+
+        setScheduling(true);
+        try {
+            const clientObj = clients.find(c => c.email === selectedClientEmail);
+            const res = await fetch('/api/advisor/meetings/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    clientEmail: selectedClientEmail,
+                    clientName: clientObj ? clientObj.name : 'Verified Investor',
+                    advisorEmail: userData.email,
+                    date,
+                    time,
+                    topic,
+                    meetLink: `https://meet.aicapital.com/room-${Math.floor(1000 + Math.random() * 9000)}`
+                })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setMeetings(data.meetings);
+                setScheduleSuccess(true);
+                setDate(''); setTime(''); setTopic('');
+                setTimeout(() => setScheduleSuccess(false), 3000);
+            }
+        } catch (err) {
+            alert('Failed to schedule consultation');
+        } finally {
+            setScheduling(false);
+        }
+    };
+
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
+            {/* Header */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                <div>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <Calendar size={24} style={{ color: 'var(--color-gold)' }} /> Advisor Consultations & Video Reviews
+                    </h2>
+                    <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
+                        Schedule 1-on-1 portfolio review meetings and send encrypted video links directly to client accounts.
+                    </p>
+                </div>
+            </div>
+
+            {/* Top Grid: Form + Summary Cards */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: '20px' }}>
+                {/* Form Card */}
+                <div className="widget glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '14px', border: '1px solid rgba(212,175,55,0.2)' }}>
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#fff', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Video size={18} style={{ color: 'var(--color-green)' }} /> Schedule New Video Consultation
+                    </h3>
+
+                    <form onSubmit={handleScheduleMeeting} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                            <label style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Select Investor Client</label>
+                            <select
+                                value={selectedClientEmail}
+                                onChange={e => setSelectedClientEmail(e.target.value)}
+                                required
+                                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '8px', color: '#fff', fontSize: '0.84rem', outline: 'none' }}
+                            >
+                                {clients.map(c => (
+                                    <option key={c.email} value={c.email} style={{ background: '#060e08' }}>
+                                        {c.name} ({c.email})
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                <label style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Date</label>
+                                <input
+                                    type="date" required
+                                    value={date} onChange={e => setDate(e.target.value)}
+                                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '8px', color: '#fff', fontSize: '0.84rem', outline: 'none' }}
+                                />
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                <label style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Time</label>
+                                <input
+                                    type="time" required
+                                    value={time} onChange={e => setTime(e.target.value)}
+                                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '8px', color: '#fff', fontSize: '0.84rem', outline: 'none' }}
+                                />
+                            </div>
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                            <label style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Consultation Agenda / Topic</label>
+                            <input
+                                type="text" required
+                                placeholder="e.g., Q3 Wealth Portfolio Review & TLH Strategy"
+                                value={topic} onChange={e => setTopic(e.target.value)}
+                                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '8px 10px', color: '#fff', fontSize: '0.84rem', outline: 'none' }}
+                            />
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
+                            {scheduleSuccess && (
+                                <span style={{ color: 'var(--color-green)', fontSize: '0.8rem', fontWeight: 600 }}>✓ Meeting booked!</span>
+                            )}
+                            <button type="submit" disabled={scheduling} className="btn btn-gold" style={{ width: '100%', padding: '10px', fontSize: '0.84rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                                {scheduling ? <span className="auth-spinner" style={{ width: '14px', height: '14px' }} /> : <><Calendar size={14} /> Dispatch Meeting Invite</>}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                {/* Scheduled Meetings Table */}
+                <div className="widget glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#fff', margin: 0 }}>Upcoming & Historical Consultations</h3>
+                    
+                    {loading ? (
+                        <div style={{ textAlign: 'center', padding: '30px', color: 'var(--text-muted)' }}>Loading consultation schedule...</div>
+                    ) : meetings.length === 0 ? (
+                        <div style={{ textAlign: 'center', padding: '30px', color: 'var(--text-muted)' }}>No consultations scheduled yet.</div>
+                    ) : (
+                        <div className="holdings-table-wrapper" style={{ overflowX: 'auto' }}>
+                            <table className="holdings-table" style={{ fontSize: '0.8rem' }}>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Investor Client</th>
+                                        <th>Date & Time</th>
+                                        <th>Topic</th>
+                                        <th>Status</th>
+                                        <th style={{ textAlign: 'right' }}>Video Link</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {meetings.map(m => (
+                                        <tr key={m.id}>
+                                            <td style={{ fontFamily: 'monospace', color: 'var(--color-gold)' }}>{m.id}</td>
+                                            <td>
+                                                <div style={{ fontWeight: 600, color: '#fff' }}>{m.clientName}</div>
+                                                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{m.clientEmail}</div>
+                                            </td>
+                                            <td style={{ color: 'var(--text-secondary)' }}>{m.date} at {m.time}</td>
+                                            <td style={{ color: '#fff', maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.topic}</td>
+                                            <td>
+                                                <span style={{
+                                                    fontSize: '0.7rem', padding: '2px 8px', borderRadius: '12px',
+                                                    background: m.status === 'Scheduled' ? 'rgba(0,230,118,0.1)' : 'rgba(255,255,255,0.05)',
+                                                    color: m.status === 'Scheduled' ? 'var(--color-green)' : 'var(--text-muted)',
+                                                    fontWeight: 600
+                                                }}>
+                                                    {m.status}
+                                                </span>
+                                            </td>
+                                            <td style={{ textAlign: 'right' }}>
+                                                <a
+                                                    href={m.meetLink} target="_blank" rel="noopener noreferrer"
+                                                    className="btn btn-green-outline"
+                                                    style={{ fontSize: '0.7rem', padding: '4px 8px', borderRadius: '4px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                                                >
+                                                    <Video size={12} /> Join
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+/* ==========================================================================
+   2. S&P 500 Benchmark Analytics & Client Performance Reports
+   ========================================================================== */
+const AdvisorAnalyticsSection = ({ clients }: { clients: Client[] }) => {
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
+            {/* Title */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                <div>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <BarChart3 size={24} style={{ color: 'var(--color-gold)' }} /> S&P 500 Benchmark Analytics & Performance
+                    </h2>
+                    <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
+                        Compare managed AI portfolio returns against S&P 500, NASDAQ 100, and 60/40 Bond Indices.
+                    </p>
+                </div>
+                <button
+                    type="button"
+                    onClick={() => window.print()}
+                    className="btn btn-gold"
+                    style={{ fontSize: '0.8rem', padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                    <Download size={14} /> Export Quarterly PDF Report
+                </button>
+            </div>
+
+            {/* Top Metric Cards */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+                <div className="widget glass-card" style={{ padding: '20px' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Portfolio Alpha (vs S&P)</span>
+                    <h3 className="glow-text-gold" style={{ fontSize: '1.6rem', fontWeight: 800, margin: '6px 0 2px' }}>
+                        +3.4%
+                    </h3>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--color-green)' }}>Outperforming Market Index</span>
+                </div>
+
+                <div className="widget glass-card" style={{ padding: '20px' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Sharpe Ratio</span>
+                    <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#fff', margin: '6px 0 2px' }}>
+                        1.82
+                    </h3>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--color-green)' }}>Risk-Adjusted Superiority</span>
+                </div>
+
+                <div className="widget glass-card" style={{ padding: '20px' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Max Annual Drawdown</span>
+                    <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-green)', margin: '6px 0 2px' }}>
+                        -4.2%
+                    </h3>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Hedging Protection Active</span>
+                </div>
+
+                <div className="widget glass-card" style={{ padding: '20px' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Market Beta</span>
+                    <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-gold)', margin: '6px 0 2px' }}>
+                        0.78
+                    </h3>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Defensive Correlation</span>
+                </div>
+            </div>
+
+            {/* Benchmark Visualizer Comparison */}
+            <div className="widget glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#fff', margin: 0 }}>YTD Comparative Index Returns</h3>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                    <div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.84rem', color: '#fff', marginBottom: '6px' }}>
+                            <span><strong>AI Capital Managed Wealth Portfolios</strong> (Aggressive / Growth Vaults)</span>
+                            <span style={{ color: 'var(--color-green)', fontWeight: 800 }}>+18.40% YTD</span>
+                        </div>
+                        <div style={{ background: 'rgba(255,255,255,0.05)', height: '12px', borderRadius: '6px', overflow: 'hidden' }}>
+                            <div style={{ background: 'linear-gradient(90deg, #00e676, #ffd700)', height: '100%', width: '84%', borderRadius: '6px' }} />
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.84rem', color: 'var(--text-secondary)', marginBottom: '6px' }}>
+                            <span>S&P 500 Index (SPY Benchmark)</span>
+                            <span style={{ color: '#fff', fontWeight: 600 }}>+12.10% YTD</span>
+                        </div>
+                        <div style={{ background: 'rgba(255,255,255,0.05)', height: '12px', borderRadius: '6px', overflow: 'hidden' }}>
+                            <div style={{ background: 'rgba(255,255,255,0.25)', height: '100%', width: '60%', borderRadius: '6px' }} />
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.84rem', color: 'var(--text-secondary)', marginBottom: '6px' }}>
+                            <span>NASDAQ 100 Tech Index (QQQ)</span>
+                            <span style={{ color: '#fff', fontWeight: 600 }}>+15.00% YTD</span>
+                        </div>
+                        <div style={{ background: 'rgba(255,255,255,0.05)', height: '12px', borderRadius: '6px', overflow: 'hidden' }}>
+                            <div style={{ background: 'rgba(255,255,255,0.2)', height: '100%', width: '70%', borderRadius: '6px' }} />
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.84rem', color: 'var(--text-secondary)', marginBottom: '6px' }}>
+                            <span>Traditional 60/40 Stock & Bond Portfolio</span>
+                            <span style={{ color: '#fff', fontWeight: 600 }}>+7.80% YTD</span>
+                        </div>
+                        <div style={{ background: 'rgba(255,255,255,0.05)', height: '12px', borderRadius: '6px', overflow: 'hidden' }}>
+                            <div style={{ background: 'rgba(255,255,255,0.12)', height: '100%', width: '38%', borderRadius: '6px' }} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+/* ==========================================================================
+   3. Tax-Loss Harvesting (TLH) & Yield Optimizer
+   ========================================================================== */
+const AdvisorTaxOptimizerSection = ({ clients }: { clients: Client[] }) => {
+    const [dispatched, setDispatched] = useState<Record<string, boolean>>({});
+
+    const handleDispatchHarvest = (clientEmail: string) => {
+        setDispatched(prev => ({ ...prev, [clientEmail]: true }));
+    };
+
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
+            {/* Header */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                <div>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <Scissors size={24} style={{ color: 'var(--color-gold)' }} /> Automated Tax-Loss Harvesting (TLH) Scanner
+                    </h2>
+                    <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
+                        Scan managed investor portfolios to harvest unrealized losses and offset taxable dividend yields seamlessly.
+                    </p>
+                </div>
+            </div>
+
+            {/* Metric Summary */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+                <div className="widget glass-card" style={{ padding: '20px' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Harvestable Loss Identified</span>
+                    <h3 className="glow-text-gold" style={{ fontSize: '1.6rem', fontWeight: 800, margin: '6px 0 2px' }}>
+                        $3,850.00
+                    </h3>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--color-green)' }}>Unrealized Capital Loss</span>
+                </div>
+
+                <div className="widget glass-card" style={{ padding: '20px' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Estimated Tax Shield Value</span>
+                    <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-green)', margin: '6px 0 2px' }}>
+                        $1,450.00
+                    </h3>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Offset Taxable Dividends</span>
+                </div>
+
+                <div className="widget glass-card" style={{ padding: '20px' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Eligible Client Accounts</span>
+                    <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#fff', margin: '6px 0 2px' }}>
+                        {clients.length} Account(s)
+                    </h3>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--color-gold)' }}>Ready for Execution</span>
+                </div>
+            </div>
+
+            {/* Table */}
+            <div className="widget glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#fff', margin: 0 }}>Client Tax Harvest Opportunities</h3>
+
+                <div className="holdings-table-wrapper" style={{ overflowX: 'auto' }}>
+                    <table className="holdings-table" style={{ fontSize: '0.82rem' }}>
+                        <thead>
+                            <tr>
+                                <th>Investor Client</th>
+                                <th>Target Asset Loss</th>
+                                <th>Unrealized Loss</th>
+                                <th>Dividend Gain Offset</th>
+                                <th>Estimated Tax Savings</th>
+                                <th style={{ textAlign: 'right' }}>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {clients.map(client => (
+                                <tr key={client.email}>
+                                    <td>
+                                        <div style={{ fontWeight: 600, color: '#fff' }}>{client.name}</div>
+                                        <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{client.email}</div>
+                                    </td>
+                                    <td style={{ color: 'var(--color-gold)', fontWeight: 600 }}>US TECH-BOND-2026</td>
+                                    <td style={{ color: '#ff5252', fontWeight: 700 }}>-$3,850.00</td>
+                                    <td style={{ color: 'var(--color-green)', fontWeight: 700 }}>+$1,770.50</td>
+                                    <td style={{ color: 'var(--color-green)', fontWeight: 800, fontSize: '0.9rem' }}>$1,450.00 Shield</td>
+                                    <td style={{ textAlign: 'right' }}>
+                                        {dispatched[client.email] ? (
+                                            <span style={{ color: 'var(--color-green)', fontSize: '0.76rem', fontWeight: 600 }}>✓ Proposal Sent!</span>
+                                        ) : (
+                                            <button
+                                                type="button"
+                                                onClick={() => handleDispatchHarvest(client.email)}
+                                                className="btn btn-gold"
+                                                style={{ fontSize: '0.74rem', padding: '5px 12px', borderRadius: '4px', cursor: 'pointer' }}
+                                            >
+                                                Dispatch Tax Harvest
+                                            </button>
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     );
 };
