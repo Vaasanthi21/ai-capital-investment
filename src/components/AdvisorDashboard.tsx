@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
 import { 
     LayoutDashboard, Users, Sparkles, LogOut, Send, 
-    CheckCircle2, AlertCircle, RefreshCw, Phone, Mail, DollarSign
+    CheckCircle2, AlertCircle, RefreshCw, Phone, Mail, DollarSign,
+    CreditCard, History, PlusCircle, Search, Download, ShieldCheck, X, Filter
 } from 'lucide-react';
 
 interface UserData {
@@ -61,9 +61,11 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
     const [tipSuccess, setTipSuccess] = useState(false);
     
     // Structured Proposal States
-    const [modalTab, setModalTab] = useState<'text' | 'allocation' | 'chat'>('text');
+    const [modalTab, setModalTab] = useState<'text' | 'allocation' | 'chat' | 'deposits'>('text');
     const [chatMessages, setChatMessages] = useState<any[]>([]);
     const [chatInput, setChatInput] = useState('');
+    const [clientDepositsList, setClientDepositsList] = useState<any[]>([]);
+    const [loadingClientDeposits, setLoadingClientDeposits] = useState(false);
     const [equities, setEquities] = useState('40');
     const [bonds, setBonds] = useState('30');
     const [cash, setCash] = useState('15');
@@ -328,6 +330,17 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
         }
     }, [activeClient, modalTab]);
 
+    useEffect(() => {
+        if (activeClient && modalTab === 'deposits') {
+            setLoadingClientDeposits(true);
+            fetch(`/api/investor/transactions?email=${activeClient.email}`)
+                .then(res => res.ok ? res.json() : [])
+                .then(data => setClientDepositsList(data))
+                .catch(err => console.error("Error loading client deposits:", err))
+                .finally(() => setLoadingClientDeposits(false));
+        }
+    }, [activeClient, modalTab]);
+
     return (
         <div id="dashboard-view" className="dashboard-wrapper active">
             <div className="dashboard-container">
@@ -340,6 +353,7 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
                     <ul className="dash-menu">
                         {[
                             { id: 'clients', icon: <Users size={20} />, label: 'My Clients' },
+                            { id: 'deposits', icon: <CreditCard size={20} />, label: 'Client Deposits' },
                             { id: 'insights', icon: <Sparkles size={20} />, label: 'AI Market Info' }
                         ].map(item => (
                             <li key={item.id} className={`dash-menu-item ${selectedTab === item.id ? 'active' : ''}`} onClick={() => setSelectedTab(item.id)}>
@@ -522,6 +536,8 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
                                 </div>
                             )}
                         </div>
+                    ) : selectedTab === 'deposits' ? (
+                        <AdvisorDepositsSection clients={clients} />
                     ) : (
                         <div className="widget glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                             <div className="widget-title">AI Macroeconomic Signal Dispatcher</div>
@@ -651,20 +667,20 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
 
                         {/* Modal Tab Switcher */}
                         <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '12px' }}>
-                            {['text', 'allocation', 'chat'].map(tab => (
+                            {['text', 'allocation', 'chat', 'deposits'].map(tab => (
                                 <button
                                     key={tab}
                                     type="button"
                                     onClick={() => setModalTab(tab as any)}
                                     style={{
-                                        flex: 1, padding: '8px', fontSize: '0.8rem', borderRadius: '4px',
+                                        flex: 1, padding: '8px 4px', fontSize: '0.74rem', borderRadius: '4px',
                                         border: '1px solid ' + (modalTab === tab ? 'var(--color-gold)' : 'rgba(255,255,255,0.08)'),
                                         background: modalTab === tab ? 'rgba(212, 175, 55, 0.08)' : 'transparent',
                                         color: modalTab === tab ? 'var(--color-gold)' : 'var(--text-secondary)',
                                         cursor: 'pointer', textTransform: 'capitalize'
                                     }}
                                 >
-                                    {tab === 'text' ? 'Advice Tip' : tab === 'allocation' ? 'Proposal' : 'Secure Chat'}
+                                    {tab === 'text' ? 'Advice Tip' : tab === 'allocation' ? 'Proposal' : tab === 'chat' ? 'Secure Chat' : '💰 Deposits'}
                                 </button>
                             ))}
                         </div>
@@ -769,6 +785,48 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
                                     </button>
                                 </div>
                             </form>
+                        ) : modalTab === 'deposits' ? (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', height: '340px', overflowY: 'auto' }}>
+                                <div style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)', padding: '12px 14px', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Total Active Capital</span>
+                                    <span className="glow-text-gold" style={{ fontSize: '1.2rem', fontWeight: 800 }}>
+                                        ${(activeClient ? activeClient.investmentAmount : 0).toLocaleString()}
+                                    </span>
+                                </div>
+
+                                {loadingClientDeposits ? (
+                                    <div style={{ textAlign: 'center', padding: '30px', color: 'var(--text-muted)', fontSize: '0.82rem' }}>
+                                        Loading client deposit records...
+                                    </div>
+                                ) : clientDepositsList.length === 0 ? (
+                                    <div style={{ textAlign: 'center', padding: '30px', color: 'var(--text-muted)', fontSize: '0.82rem', background: 'rgba(0,0,0,0.2)', borderRadius: '6px' }}>
+                                        No deposit history logged for this client yet.
+                                    </div>
+                                ) : (
+                                    <div className="holdings-table-wrapper">
+                                        <table className="holdings-table" style={{ fontSize: '0.78rem' }}>
+                                            <thead>
+                                                <tr>
+                                                    <th>Txn ID</th>
+                                                    <th>Date</th>
+                                                    <th>Strategy Tier</th>
+                                                    <th>Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {clientDepositsList.map(txn => (
+                                                    <tr key={txn.id}>
+                                                        <td style={{ fontFamily: 'monospace', color: 'var(--color-gold)', fontWeight: 600 }}>{txn.id}</td>
+                                                        <td style={{ color: 'var(--text-secondary)' }}>{new Date(txn.date).toLocaleDateString()}</td>
+                                                        <td style={{ fontWeight: 600, color: '#fff' }}>{txn.tier}</td>
+                                                        <td style={{ color: 'var(--color-green)', fontWeight: 700 }}>+${(txn.amount || 0).toLocaleString()}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                            </div>
                         ) : (
                             /* Chat Tab */
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', height: '340px' }}>
@@ -815,6 +873,299 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
                                 </form>
                             </div>
                         )}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+const AdvisorDepositsSection = ({ clients }: { clients: Client[] }) => {
+    const [allTransactions, setAllTransactions] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedClientEmail, setSelectedClientEmail] = useState<string>('all');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedReceipt, setSelectedReceipt] = useState<any | null>(null);
+
+    const fetchAllTransactions = async () => {
+        setLoading(true);
+        try {
+            const promises = clients.map(c => 
+                fetch(`/api/investor/transactions?email=${c.email}`).then(r => r.ok ? r.json() : [])
+            );
+            const results = await Promise.all(promises);
+            const combined = results.flat();
+            setAllTransactions(combined);
+        } catch (e) {
+            console.error("Error fetching advisor transactions:", e);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (clients.length > 0) {
+            fetchAllTransactions();
+        }
+    }, [clients]);
+
+    const filteredTransactions = allTransactions.filter(t => {
+        const matchesClient = selectedClientEmail === 'all' ? true : t.email === selectedClientEmail;
+        const matchesSearch =
+            t.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            t.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            t.tier.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            t.paymentMethod.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesClient && matchesSearch;
+    });
+
+    const totalAumDeposited = allTransactions
+        .filter(t => (t.type || 'deposit') === 'deposit')
+        .reduce((sum, t) => sum + (t.amount || 0), 0);
+
+    const avgDeposit = allTransactions.length > 0 
+        ? Math.round(totalAumDeposited / Math.max(1, allTransactions.filter(t => (t.type || 'deposit') === 'deposit').length))
+        : 0;
+
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
+            {/* Header Title Banner */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                <div>
+                    <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <CreditCard size={24} style={{ color: 'var(--color-gold)' }} /> Client Capital Deposits & Funding Ledger
+                    </h2>
+                    <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
+                        Inspect all capital deposited by managed investors across strategy vaults and payment channels.
+                    </p>
+                </div>
+                <button 
+                    type="button" 
+                    className="btn btn-green-outline" 
+                    onClick={fetchAllTransactions}
+                    style={{ fontSize: '0.8rem', padding: '6px 14px', display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                    <RefreshCw size={14} /> Refresh Audit Ledger
+                </button>
+            </div>
+
+            {/* Metric Cards Row */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+                <div className="widget glass-card" style={{ padding: '20px' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Client AUM Deposited</span>
+                    <h3 className="glow-text-gold" style={{ fontSize: '1.6rem', fontWeight: 800, margin: '6px 0 2px' }}>
+                        ${totalAumDeposited.toLocaleString()}
+                    </h3>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--color-green)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <CheckCircle2 size={12} /> Verified Clearing Deposits
+                    </span>
+                </div>
+
+                <div className="widget glass-card" style={{ padding: '20px' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Managed Investor Portfolios</span>
+                    <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#fff', margin: '6px 0 2px' }}>
+                        {clients.length} Accounts
+                    </h3>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Assigned Wealth Clients</span>
+                </div>
+
+                <div className="widget glass-card" style={{ padding: '20px' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Recorded Deposit Entries</span>
+                    <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#fff', margin: '6px 0 2px' }}>
+                        {allTransactions.length}
+                    </h3>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--color-gold)' }}>Logged Transactions</span>
+                </div>
+
+                <div className="widget glass-card" style={{ padding: '20px' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Average Deposit / Client</span>
+                    <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-green)', margin: '6px 0 2px' }}>
+                        ${avgDeposit.toLocaleString()}
+                    </h3>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Mean Inflow Volume</span>
+                </div>
+            </div>
+
+            {/* Main Ledger Card */}
+            <div className="widget glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+                {/* Filters Row */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px' }}>
+                    {/* Investor Selector */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: 600 }}>Filter by Client:</span>
+                        <select
+                            value={selectedClientEmail}
+                            onChange={e => setSelectedClientEmail(e.target.value)}
+                            style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '6px 12px', color: '#fff', fontSize: '0.82rem', outline: 'none', cursor: 'pointer' }}
+                        >
+                            <option value="all" style={{ background: '#060e08' }}>All Managed Clients ({clients.length})</option>
+                            {clients.map(c => (
+                                <option key={c.email} value={c.email} style={{ background: '#060e08' }}>
+                                    {c.name} ({c.email})
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* Search Input */}
+                    <div style={{ position: 'relative', width: '240px' }}>
+                        <Search size={14} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                        <input
+                            type="text"
+                            placeholder="Search by Txn ID or email..."
+                            value={searchQuery}
+                            onChange={e => setSearchQuery(e.target.value)}
+                            style={{ width: '100%', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '6px 10px 6px 30px', color: '#fff', fontSize: '0.8rem', outline: 'none' }}
+                        />
+                    </div>
+                </div>
+
+                {/* Table */}
+                {loading ? (
+                    <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                        Loading client deposit ledger...
+                    </div>
+                ) : filteredTransactions.length === 0 ? (
+                    <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)', fontSize: '0.85rem', background: 'rgba(0,0,0,0.2)', borderRadius: '8px' }}>
+                        No deposit transactions found matching your selection.
+                    </div>
+                ) : (
+                    <div className="holdings-table-wrapper" style={{ overflowX: 'auto' }}>
+                        <table className="holdings-table" style={{ fontSize: '0.82rem' }}>
+                            <thead>
+                                <tr>
+                                    <th>Txn ID</th>
+                                    <th>Investor Client</th>
+                                    <th>Strategy Tier</th>
+                                    <th>Amount Deposited</th>
+                                    <th>Date & Time</th>
+                                    <th>Payment Method / Source</th>
+                                    <th>Status</th>
+                                    <th style={{ textAlign: 'right' }}>Receipt</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredTransactions.map(txn => {
+                                    const clientObj = clients.find(c => c.email === txn.email);
+                                    const clientName = clientObj ? clientObj.name : 'Verified Investor';
+                                    const isCredit = txn.type === 'credit';
+                                    return (
+                                        <tr key={txn.id}>
+                                            <td style={{ fontFamily: 'monospace', color: 'var(--color-gold)', fontWeight: 700 }}>{txn.id}</td>
+                                            <td>
+                                                <div style={{ fontWeight: 600, color: '#fff' }}>{clientName}</div>
+                                                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{txn.email}</div>
+                                            </td>
+                                            <td style={{ fontWeight: 600, color: '#fff' }}>{txn.tier}</td>
+                                            <td style={{ color: isCredit ? 'var(--color-gold)' : 'var(--color-green)', fontWeight: 800, fontSize: '0.88rem' }}>
+                                                +${(txn.amount || 0).toLocaleString()}
+                                            </td>
+                                            <td style={{ color: 'var(--text-secondary)' }}>
+                                                {new Date(txn.date).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
+                                            </td>
+                                            <td style={{ color: 'var(--text-secondary)' }}>{txn.paymentMethod}</td>
+                                            <td>
+                                                <span style={{
+                                                    fontSize: '0.7rem', padding: '2px 8px', borderRadius: '12px',
+                                                    background: 'rgba(0, 230, 118, 0.08)', color: 'var(--color-green)',
+                                                    border: '1px solid rgba(0, 230, 118, 0.2)', fontWeight: 600
+                                                }}>
+                                                    ✓ {txn.status}
+                                                </span>
+                                            </td>
+                                            <td style={{ textAlign: 'right' }}>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setSelectedReceipt(txn)}
+                                                    className="btn btn-green-outline"
+                                                    style={{ fontSize: '0.72rem', padding: '4px 10px', borderRadius: '4px', cursor: 'pointer' }}
+                                                >
+                                                    View
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
+
+            {/* Official Confirmation Receipt Modal Overlay for Advisor */}
+            {selectedReceipt && (
+                <div style={{
+                    position: 'fixed', inset: 0, zIndex: 1000,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    backgroundColor: 'rgba(2, 8, 4, 0.8)', backdropFilter: 'blur(10px)',
+                    padding: '20px'
+                }}>
+                    <div className="glass-card" style={{
+                        maxWidth: '480px', width: '100%', padding: '28px',
+                        position: 'relative', border: '1px solid rgba(0, 230, 118, 0.25)',
+                        background: 'rgba(6, 18, 10, 0.95)', boxShadow: '0 0 50px rgba(0, 230, 118, 0.15)'
+                    }}>
+                        <button onClick={() => setSelectedReceipt(null)} style={{
+                            position: 'absolute', top: '16px', right: '16px',
+                            background: 'transparent', border: 'none', color: '#62777d',
+                            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        }}>
+                            <X size={20} />
+                        </button>
+
+                        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(0,230,118,0.1)', border: '1px solid var(--color-green)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px', color: 'var(--color-green)' }}>
+                                <CheckCircle2 size={26} />
+                            </div>
+                            <h3 style={{ color: '#fff', fontSize: '1.25rem', fontWeight: 800, margin: 0 }}>Advisor Audit Receipt</h3>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--color-gold)', fontWeight: 600 }}>SEC Compliance Deposit Log</span>
+                        </div>
+
+                        <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '10px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.84rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ color: 'var(--text-muted)' }}>Transaction Reference</span>
+                                <span style={{ fontFamily: 'monospace', color: 'var(--color-gold)', fontWeight: 700 }}>{selectedReceipt.id}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ color: 'var(--text-muted)' }}>Investor Email</span>
+                                <span style={{ color: '#fff', fontWeight: 600 }}>{selectedReceipt.email}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ color: 'var(--text-muted)' }}>Date & Time</span>
+                                <span style={{ color: '#fff' }}>{new Date(selectedReceipt.date).toLocaleString()}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ color: 'var(--text-muted)' }}>Strategy Vault</span>
+                                <span style={{ color: '#fff', fontWeight: 600 }}>{selectedReceipt.tier}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ color: 'var(--text-muted)' }}>Payment Channel</span>
+                                <span style={{ color: '#fff' }}>{selectedReceipt.paymentMethod}</span>
+                            </div>
+                            <div style={{ borderTop: '1px dashed rgba(255,255,255,0.1)', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 700 }}>Amount Deposited</span>
+                                <span style={{ fontSize: '1.3rem', color: 'var(--color-green)', fontWeight: 800 }}>+${(selectedReceipt.amount || 0).toLocaleString()}</span>
+                            </div>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+                            <button
+                                type="button"
+                                onClick={() => window.print()}
+                                className="btn btn-gold"
+                                style={{ flex: 1, fontSize: '0.8rem', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                            >
+                                <Download size={14} /> Print Audit Log
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setSelectedReceipt(null)}
+                                className="btn btn-green-outline"
+                                style={{ flex: 1, fontSize: '0.8rem', padding: '10px' }}
+                            >
+                                Close
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
