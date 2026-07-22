@@ -414,7 +414,7 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
                                     <p style={{ fontSize: '0.85rem' }}>No verified investor accounts exist in the database yet.</p>
                                 </div>
                             ) : (
-                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>
+                                <div className="advisor-client-grid">
                                     {clients.map(client => (
                                         <div key={client.email} className="widget glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px', border: '1px solid rgba(212,175,55,0.15)' }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -969,7 +969,7 @@ const AdvisorDepositsSection = ({ clients }: { clients: Client[] }) => {
             </div>
 
             {/* Metric Cards Row */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+            <div className="dash-metrics-4col">
                 <div className="widget glass-card" style={{ padding: '20px' }}>
                     <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Client AUM Deposited</span>
                     <h3 className="glow-text-gold" style={{ fontSize: '1.6rem', fontWeight: 800, margin: '6px 0 2px' }}>

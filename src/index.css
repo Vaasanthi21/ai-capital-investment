@@ -1003,6 +1003,55 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); backgro
   }
 }
 
+/* ── Responsive Dashboard Grids ───────────────────────────────────────────── */
+.dash-deposit-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+}
+
+.dash-metrics-4col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.advisor-client-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.advisor-macro-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.advisor-consult-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 20px;
+}
+
+@media (max-width: 860px) {
+  .dash-deposit-grid,
+  .dash-metrics-4col,
+  .advisor-client-grid,
+  .advisor-macro-grid,
+  .advisor-consult-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .dashboard-wrapper {
+    padding: 12px 10px !important;
+  }
+
+  .glass-card {
+    padding: 16px !important;
+  }
+}
+
 /* Mobile Bottom Nav Styles */
 .mobile-bottom-nav {
   display: none;

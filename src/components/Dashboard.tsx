@@ -1880,7 +1880,7 @@ const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpda
             </div>
 
             {/* Main Grid: Form Left, Balance & Security Right */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '24px' }}>
+            <div className="dash-deposit-grid">
                 {/* Deposit Form Card */}
                 <div className="widget glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '20px', border: '1px solid rgba(212,175,55,0.25)' }}>
                     <form onSubmit={handleDeposit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
@@ -2122,7 +2122,7 @@ const HistorySection = ({ userData }: { userData: UserData }) => {
             </div>
 
             {/* Metric Summary Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+            <div className="dash-metrics-4col">
                 <div className="widget glass-card" style={{ padding: '20px' }}>
                     <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Current Active Capital</span>
                     <h3 className="glow-text-gold" style={{ fontSize: '1.6rem', fontWeight: 800, margin: '6px 0 2px' }}>
