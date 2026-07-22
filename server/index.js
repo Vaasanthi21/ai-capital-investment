@@ -147,11 +147,42 @@ const fallbackDatabase = {
     {
       "id": "TXN-902418",
       "email": "john@gmail.com",
-      "amount": 10000,
+      "type": "deposit",
+      "amount": 25000,
       "tier": "Growth Strategy Vault",
       "date": "2026-07-17T12:35:00.000Z",
       "paymentMethod": "Visa ending in 4242",
       "status": "Completed"
+    },
+    {
+      "id": "TXN-881940",
+      "email": "john@gmail.com",
+      "type": "credit",
+      "amount": 1420.50,
+      "tier": "AI Portfolio Yield Payout",
+      "date": "2026-07-20T09:15:00.000Z",
+      "paymentMethod": "Automated Rebalance Dividend",
+      "status": "Credited"
+    },
+    {
+      "id": "TXN-762109",
+      "email": "john@gmail.com",
+      "type": "deposit",
+      "amount": 10000,
+      "tier": "Starter Vault Top-Up",
+      "date": "2026-07-21T16:20:00.000Z",
+      "paymentMethod": "Mastercard ending in 8812",
+      "status": "Completed"
+    },
+    {
+      "id": "TXN-654012",
+      "email": "john@gmail.com",
+      "type": "credit",
+      "amount": 350.00,
+      "tier": "Staking & Crypto Bond Dividend",
+      "date": "2026-07-22T08:00:00.000Z",
+      "paymentMethod": "AI Yield Auto-Credit",
+      "status": "Credited"
     }
   ]
 };
@@ -178,16 +209,47 @@ function loadDB() {
         if (!inMemoryDB.messages) {
             inMemoryDB.messages = [];
         }
-        if (!inMemoryDB.transactions) {
+        if (!inMemoryDB.transactions || inMemoryDB.transactions.length === 0) {
             inMemoryDB.transactions = [
                 {
                     id: "TXN-902418",
                     email: "john@gmail.com",
-                    amount: 10000,
+                    type: "deposit",
+                    amount: 25000,
                     tier: "Growth Strategy Vault",
                     date: "2026-07-17T12:35:00.000Z",
                     paymentMethod: "Visa ending in 4242",
                     status: "Completed"
+                },
+                {
+                    id: "TXN-881940",
+                    email: "john@gmail.com",
+                    type: "credit",
+                    amount: 1420.50,
+                    tier: "AI Portfolio Yield Payout",
+                    date: "2026-07-20T09:15:00.000Z",
+                    paymentMethod: "Automated Rebalance Dividend",
+                    status: "Credited"
+                },
+                {
+                    id: "TXN-762109",
+                    email: "john@gmail.com",
+                    type: "deposit",
+                    amount: 10000,
+                    tier: "Starter Vault Top-Up",
+                    date: "2026-07-21T16:20:00.000Z",
+                    paymentMethod: "Mastercard ending in 8812",
+                    status: "Completed"
+                },
+                {
+                    id: "TXN-654012",
+                    email: "john@gmail.com",
+                    type: "credit",
+                    amount: 350.00,
+                    tier: "Staking & Crypto Bond Dividend",
+                    date: "2026-07-22T08:00:00.000Z",
+                    paymentMethod: "AI Yield Auto-Credit",
+                    status: "Credited"
                 }
             ];
         }
@@ -373,6 +435,7 @@ app.post('/api/investor/deposit', (req, res) => {
         const newTxn = {
             id: `TXN-${Math.floor(100000 + Math.random() * 900000)}`,
             email: user.email,
+            type: 'deposit',
             amount: depositVal,
             tier: tier || 'Custom Capital Deposit',
             date: new Date().toISOString(),
