@@ -142,7 +142,18 @@ const fallbackDatabase = {
     }
   ],
   "otps": [],
-  "messages": []
+  "messages": [],
+  "transactions": [
+    {
+      "id": "TXN-902418",
+      "email": "john@gmail.com",
+      "amount": 10000,
+      "tier": "Growth Strategy Vault",
+      "date": "2026-07-17T12:35:00.000Z",
+      "paymentMethod": "Visa ending in 4242",
+      "status": "Completed"
+    }
+  ]
 };
 
 let inMemoryDB = null;
@@ -166,6 +177,19 @@ function loadDB() {
         inMemoryDB = JSON.parse(raw);
         if (!inMemoryDB.messages) {
             inMemoryDB.messages = [];
+        }
+        if (!inMemoryDB.transactions) {
+            inMemoryDB.transactions = [
+                {
+                    id: "TXN-902418",
+                    email: "john@gmail.com",
+                    amount: 10000,
+                    tier: "Growth Strategy Vault",
+                    date: "2026-07-17T12:35:00.000Z",
+                    paymentMethod: "Visa ending in 4242",
+                    status: "Completed"
+                }
+            ];
         }
         return inMemoryDB;
     } catch (e) {
@@ -327,7 +351,63 @@ app.post('/api/auth/verify-otp', (req, res) => {
     }
 });
 
-// Fund Account
+// Fund Account / Deposit
+app.post('/api/investor/deposit', (req, res) => {
+    try {
+        const { email, amount, tier, cardLast4 } = req.body;
+        if (!email || !amount) {
+            return res.status(400).json({ error: 'Email and deposit amount are required.' });
+        }
+        
+        const db = loadDB();
+        const user = db.users.find(u => u.email === email);
+        if (!user) {
+            return res.status(404).json({ error: 'User account not found.' });
+        }
+        
+        const depositVal = parseFloat(amount) || 0;
+        user.investmentAmount = (user.investmentAmount || 0) + depositVal;
+        
+        if (!db.transactions) db.transactions = [];
+
+        const newTxn = {
+            id: `TXN-${Math.floor(100000 + Math.random() * 900000)}`,
+            email: user.email,
+            amount: depositVal,
+            tier: tier || 'Custom Capital Deposit',
+            date: new Date().toISOString(),
+            paymentMethod: `Card ending in ${cardLast4 || '4242'}`,
+            status: 'Completed'
+        };
+
+        db.transactions.unshift(newTxn);
+        saveDB(db);
+        
+        const userTxns = db.transactions.filter(t => t.email === email);
+
+        res.json({
+            message: 'Account deposited successfully!',
+            user: {
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                investmentAmount: user.investmentAmount,
+                riskTolerance: user.riskTolerance,
+                goal: user.goal,
+                role: user.role || 'investor',
+                advisorMessage: user.advisorMessage || '',
+                activeProposal: user.activeProposal || null
+            },
+            transaction: newTxn,
+            transactions: userTxns
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error during account deposit.' });
+    }
+});
+
+// Legacy Fund Account endpoint compatibility
 app.post('/api/auth/fund-account', (req, res) => {
     try {
         const { email, amount } = req.body;
@@ -348,6 +428,23 @@ app.post('/api/auth/fund-account', (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error during account funding.' });
+    }
+});
+
+// Get User Transactions
+app.get('/api/investor/transactions', (req, res) => {
+    try {
+        const { email } = req.query;
+        if (!email) {
+            return res.status(400).json({ error: 'Email is required.' });
+        }
+
+        const db = loadDB();
+        const userTxns = (db.transactions || []).filter(t => t.email === email);
+        res.json(userTxns);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error retrieving transaction history.' });
     }
 });
 

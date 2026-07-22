@@ -39,11 +39,7 @@ function App() {
       {view === 'login'     && <LoginPage onLoginSuccess={(user) => { setUserProfile(user); setView('dashboard'); }} onNavigate={setView} setTempEmail={setTempEmail} />}
       {view === 'signup'    && <SignupPage onSignupSuccess={(email, role) => { setTempEmail(email); setRegRole(role); setView('otp-verify'); }} onNavigate={setView} />}
       {view === 'otp-verify' && <OtpVerification email={tempEmail} onVerificationSuccess={() => {
-        if (regRole === 'advisor') {
-          setView('login');
-        } else {
-          setView('payment');
-        }
+        setView('login');
       }} onNavigate={setView} />}
       {view === 'payment' && <PaymentPage email={tempEmail} onPaymentSuccess={() => setView('login')} />}
       {view === 'forgot-password' && <ForgotPassword onResetSuccess={() => setView('login')} onNavigate={setView} />}

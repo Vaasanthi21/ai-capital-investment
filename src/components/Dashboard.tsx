@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import {
     LayoutDashboard, Wallet, Sparkles, BarChart3, Settings, LogOut,
-    ArrowUpRight, Lightbulb, CheckCircle2, BookOpen, ChevronRight, X
+    ArrowUpRight, Lightbulb, CheckCircle2, BookOpen, ChevronRight, X,
+    CreditCard, History, PlusCircle, ShieldCheck, DollarSign, Search, Download
 } from 'lucide-react';
 import { Line, Doughnut } from 'react-chartjs-2';
 import {
@@ -467,6 +468,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                         {[
                             { id: 'home', icon: <LayoutDashboard size={20} />, label: 'Overview' },
                             { id: 'portfolio', icon: <Wallet size={20} />, label: 'My Assets' },
+                            { id: 'deposit', icon: <CreditCard size={20} />, label: 'Deposit & History' },
                             { id: 'advisory', icon: <Sparkles size={20} />, label: 'AI Advisory' },
                             { id: 'analytics', icon: <BarChart3 size={20} />, label: 'Analytics' },
                             { id: 'blogs', icon: <BookOpen size={20} />, label: 'Blogs' },
@@ -525,6 +527,8 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                         <BlogsSection />
                     ) : selectedTab === 'settings' ? (
                         <SettingsSection userData={userData} />
+                    ) : selectedTab === 'deposit' ? (
+                        <DepositSection userData={userData} onUpdateUser={onUpdateUser} />
                     ) : selectedTab === 'advisory' ? (
                         <AIChatbotSection 
                             userData={userData} 
@@ -1751,6 +1755,475 @@ const SettingsSection = ({ userData }: { userData: UserData }) => {
                 </button>
             </div>
         </form>
+    );
+};
+
+interface Transaction {
+    id: string;
+    email: string;
+    amount: number;
+    tier: string;
+    date: string;
+    paymentMethod: string;
+    status: string;
+}
+
+const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpdateUser?: (updated: any) => void }) => {
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [loadingTxns, setLoadingTxns] = useState(true);
+    const [selectedTier, setSelectedTier] = useState<string>('growth');
+    const [customAmount, setCustomAmount] = useState<string>('25000');
+    const [cardName, setCardName] = useState<string>('');
+    const [cardNumber, setCardNumber] = useState<string>('');
+    const [cardExp, setCardExp] = useState<string>('');
+    const [cardCvc, setCardCvc] = useState<string>('');
+    const [isDepositing, setIsDepositing] = useState(false);
+    const [depositSuccess, setDepositSuccess] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedReceipt, setSelectedReceipt] = useState<Transaction | null>(null);
+
+    const tiers = [
+        { id: 'starter', name: 'Starter Vault', amount: 5000, desc: 'Core algorithmic index balancing & defensive hedging.' },
+        { id: 'growth', name: 'Growth Strategy Vault', amount: 25000, desc: 'AI multi-asset optimization + high-beta yield capture.' },
+        { id: 'elite', name: 'Elite Wealth Vault', amount: 100000, desc: 'Dedicated advisor management + priority tax loss harvesting.' },
+    ];
+
+    const fetchTransactions = async () => {
+        setLoadingTxns(true);
+        try {
+            const res = await fetch(`/api/investor/transactions?email=${userData.email}`);
+            if (res.ok) {
+                const data = await res.json();
+                setTransactions(data);
+            }
+        } catch (e) {
+            console.error("Error fetching transactions:", e);
+        } finally {
+            setLoadingTxns(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchTransactions();
+    }, [userData.email]);
+
+    const handleDeposit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsDepositing(true);
+        setDepositSuccess(false);
+
+        let finalAmount = 25000;
+        let tierName = 'Growth Strategy Vault';
+        if (selectedTier === 'starter') {
+            finalAmount = 5000;
+            tierName = 'Starter Vault';
+        } else if (selectedTier === 'growth') {
+            finalAmount = 25000;
+            tierName = 'Growth Strategy Vault';
+        } else if (selectedTier === 'elite') {
+            finalAmount = 100000;
+            tierName = 'Elite Wealth Vault';
+        } else {
+            finalAmount = parseFloat(customAmount) || 10000;
+            tierName = 'Custom Capital Deposit';
+        }
+
+        const last4 = cardNumber.replace(/\s+/g, '').slice(-4) || '4242';
+
+        try {
+            const res = await fetch('/api/investor/deposit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: userData.email,
+                    amount: finalAmount,
+                    tier: tierName,
+                    cardLast4: last4
+                })
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                setDepositSuccess(true);
+                if (data.transactions) setTransactions(data.transactions);
+                if (data.user && onUpdateUser) {
+                    onUpdateUser(data.user);
+                }
+                setCardName('');
+                setCardNumber('');
+                setCardExp('');
+                setCardCvc('');
+                setTimeout(() => setDepositSuccess(false), 3000);
+            } else {
+                alert("Deposit failed. Please try again.");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Error connecting to server.");
+        } finally {
+            setIsDepositing(false);
+        }
+    };
+
+    const filteredTransactions = transactions.filter(t => 
+        t.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        t.tier.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        t.status.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        t.paymentMethod.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const totalDeposited = transactions.reduce((sum, t) => sum + (t.amount || 0), 0);
+
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', width: '100%' }}>
+            {/* Header Summary Cards */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+                <div className="widget glass-card" style={{ padding: '20px' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Active Balance</span>
+                    <h3 className="glow-text-gold" style={{ fontSize: '1.6rem', fontWeight: 800, margin: '6px 0 2px' }}>
+                        ${userData.investmentAmount.toLocaleString()}
+                    </h3>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--color-green)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <ArrowUpRight size={14} /> Ready for Algo Allocation
+                    </span>
+                </div>
+                <div className="widget glass-card" style={{ padding: '20px' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Lifetime Deposits</span>
+                    <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#fff', margin: '6px 0 2px' }}>
+                        ${(totalDeposited || userData.investmentAmount).toLocaleString()}
+                    </h3>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>
+                        {transactions.length} Verified Transactions
+                    </span>
+                </div>
+                <div className="widget glass-card" style={{ padding: '20px' }}>
+                    <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Last Deposit</span>
+                    <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#fff', margin: '6px 0 2px' }}>
+                        {transactions.length > 0 ? new Date(transactions[0].date).toLocaleDateString() : 'N/A'}
+                    </h3>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--color-green)' }}>
+                        {transactions.length > 0 ? transactions[0].status : 'No activity yet'}
+                    </span>
+                </div>
+                <div className="widget glass-card" style={{ padding: '20px', border: '1px solid rgba(0,230,118,0.2)', background: 'rgba(0,230,118,0.02)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-green)', marginBottom: '4px' }}>
+                        <ShieldCheck size={18} />
+                        <span style={{ fontSize: '0.8rem', fontWeight: 700 }}>Secured Deposit Vault</span>
+                    </div>
+                    <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.4 }}>
+                        Deposits are protected up to $250,000 via partner clearing banks with 256-bit SSL encryption.
+                    </p>
+                </div>
+            </div>
+
+            {/* Main Section Grid: Deposit Form (Left) & Transaction History Table (Right) */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '24px' }}>
+                {/* Deposit Form */}
+                <div className="widget glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '20px', border: '1px solid rgba(212,175,55,0.2)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <PlusCircle size={22} style={{ color: 'var(--color-gold)' }} />
+                        <div>
+                            <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#fff', margin: 0 }}>Deposit & Invest Capital</h3>
+                            <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: 0 }}>Add funds directly to your AI wealth portfolio.</p>
+                        </div>
+                    </div>
+
+                    <form onSubmit={handleDeposit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                        {/* Tier Selection Grid */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 600 }}>Select Investment Strategy Tier</label>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                {tiers.map(t => (
+                                    <div
+                                        key={t.id}
+                                        onClick={() => setSelectedTier(t.id)}
+                                        style={{
+                                            padding: '12px 14px', borderRadius: '8px', cursor: 'pointer',
+                                            border: selectedTier === t.id ? '1.5px solid var(--color-gold)' : '1px solid rgba(255,255,255,0.06)',
+                                            background: selectedTier === t.id ? 'rgba(212,175,55,0.08)' : 'rgba(255,255,255,0.02)',
+                                            transition: 'all 0.2s', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                                        }}
+                                    >
+                                        <div>
+                                            <div style={{ fontSize: '0.88rem', fontWeight: 700, color: selectedTier === t.id ? 'var(--color-gold)' : '#fff' }}>
+                                                {t.name}
+                                            </div>
+                                            <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                                                {t.desc}
+                                            </div>
+                                        </div>
+                                        <div style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--color-green)' }}>
+                                            ${t.amount.toLocaleString()}
+                                        </div>
+                                    </div>
+                                ))}
+
+                                <div
+                                    onClick={() => setSelectedTier('custom')}
+                                    style={{
+                                        padding: '12px 14px', borderRadius: '8px', cursor: 'pointer',
+                                        border: selectedTier === 'custom' ? '1.5px solid var(--color-gold)' : '1px solid rgba(255,255,255,0.06)',
+                                        background: selectedTier === 'custom' ? 'rgba(212,175,55,0.08)' : 'rgba(255,255,255,0.02)',
+                                        transition: 'all 0.2s'
+                                    }}
+                                >
+                                    <div style={{ fontSize: '0.88rem', fontWeight: 700, color: selectedTier === 'custom' ? 'var(--color-gold)' : '#fff' }}>
+                                        Custom Deposit Amount
+                                    </div>
+                                    <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                                        Enter any custom capital amount to deposit into your portfolio.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {selectedTier === 'custom' && (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Custom Amount ($)</label>
+                                <input
+                                    type="number"
+                                    min="100"
+                                    step="100"
+                                    value={customAmount}
+                                    onChange={e => setCustomAmount(e.target.value)}
+                                    required
+                                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px', color: '#fff', fontSize: '0.9rem', outline: 'none' }}
+                                />
+                            </div>
+                        )}
+
+                        {/* Credit Card Input Details */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '14px' }}>
+                            <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 600 }}>Payment Authorization</span>
+                            
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                <label style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>Cardholder Name</label>
+                                <input
+                                    type="text"
+                                    placeholder="John Doe"
+                                    value={cardName}
+                                    onChange={e => setCardName(e.target.value)}
+                                    required
+                                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '8px 12px', color: '#fff', fontSize: '0.84rem', outline: 'none' }}
+                                />
+                            </div>
+
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                <label style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>Card Number</label>
+                                <input
+                                    type="text"
+                                    placeholder="4532 •••• •••• 4242"
+                                    value={cardNumber}
+                                    onChange={e => setCardNumber(e.target.value)}
+                                    required
+                                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '8px 12px', color: '#fff', fontSize: '0.84rem', outline: 'none', letterSpacing: '0.1em' }}
+                                />
+                            </div>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                    <label style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>Expiry (MM/YY)</label>
+                                    <input
+                                        type="text"
+                                        placeholder="12/28"
+                                        value={cardExp}
+                                        onChange={e => setCardExp(e.target.value)}
+                                        required
+                                        style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '8px 12px', color: '#fff', fontSize: '0.84rem', outline: 'none' }}
+                                    />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                    <label style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>CVC</label>
+                                    <input
+                                        type="password"
+                                        placeholder="•••"
+                                        maxLength={4}
+                                        value={cardCvc}
+                                        onChange={e => setCardCvc(e.target.value)}
+                                        required
+                                        style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '8px 12px', color: '#fff', fontSize: '0.84rem', outline: 'none' }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style={{ marginTop: '6px' }}>
+                            {depositSuccess && (
+                                <div style={{ color: 'var(--color-green)', fontSize: '0.84rem', fontWeight: 600, marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                    <CheckCircle2 size={16} /> Funds deposited & allocated successfully!
+                                </div>
+                            )}
+                            <button
+                                type="submit"
+                                className="btn btn-gold"
+                                disabled={isDepositing}
+                                style={{ width: '100%', padding: '12px', fontSize: '0.9rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                            >
+                                {isDepositing ? <span className="auth-spinner" style={{ width: '16px', height: '16px' }} /> : 'Confirm & Deposit Capital'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                {/* Investment History Ledger Table */}
+                <div className="widget glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <History size={20} style={{ color: 'var(--color-green)' }} />
+                            <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#fff', margin: 0 }}>Investment History & Receipts</h3>
+                        </div>
+
+                        {/* Search Bar */}
+                        <div style={{ position: 'relative', width: '200px' }}>
+                            <Search size={14} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                            <input
+                                type="text"
+                                placeholder="Search history..."
+                                value={searchQuery}
+                                onChange={e => setSearchQuery(e.target.value)}
+                                style={{ width: '100%', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '6px 10px 6px 30px', color: '#fff', fontSize: '0.78rem', outline: 'none' }}
+                            />
+                        </div>
+                    </div>
+
+                    {loadingTxns ? (
+                        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+                            Loading transaction ledger...
+                        </div>
+                    ) : filteredTransactions.length === 0 ? (
+                        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)', fontSize: '0.85rem', background: 'rgba(0,0,0,0.2)', borderRadius: '8px' }}>
+                            No investment history found. Complete a deposit to initiate your transaction log.
+                        </div>
+                    ) : (
+                        <div className="holdings-table-wrapper" style={{ maxHeight: '440px', overflowY: 'auto' }}>
+                            <table className="holdings-table" style={{ fontSize: '0.8rem' }}>
+                                <thead>
+                                    <tr>
+                                        <th>Txn ID</th>
+                                        <th>Date & Time</th>
+                                        <th>Strategy Tier</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th style={{ textAlign: 'right' }}>Receipt</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filteredTransactions.map(txn => (
+                                        <tr key={txn.id}>
+                                            <td style={{ fontFamily: 'monospace', color: 'var(--color-gold)', fontWeight: 600 }}>{txn.id}</td>
+                                            <td style={{ color: 'var(--text-secondary)' }}>
+                                                {new Date(txn.date).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
+                                            </td>
+                                            <td style={{ fontWeight: 600, color: '#fff' }}>{txn.tier}</td>
+                                            <td style={{ color: 'var(--color-green)', fontWeight: 700 }}>
+                                                +${(txn.amount || 0).toLocaleString()}
+                                            </td>
+                                            <td>
+                                                <span style={{
+                                                    fontSize: '0.7rem', padding: '2px 8px', borderRadius: '12px',
+                                                    background: 'rgba(0, 230, 118, 0.08)', color: 'var(--color-green)',
+                                                    border: '1px solid rgba(0, 230, 118, 0.2)', fontWeight: 600
+                                                }}>
+                                                    ✓ {txn.status}
+                                                </span>
+                                            </td>
+                                            <td style={{ textAlign: 'right' }}>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setSelectedReceipt(txn)}
+                                                    className="btn btn-green-outline"
+                                                    style={{ fontSize: '0.7rem', padding: '3px 8px', borderRadius: '4px', cursor: 'pointer' }}
+                                                >
+                                                    View
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* Official Receipt Modal Overlay */}
+            {selectedReceipt && (
+                <div style={{
+                    position: 'fixed', inset: 0, zIndex: 1000,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    backgroundColor: 'rgba(2, 8, 4, 0.8)', backdropFilter: 'blur(10px)',
+                    padding: '20px'
+                }}>
+                    <div className="glass-card" style={{
+                        maxWidth: '480px', width: '100%', padding: '28px',
+                        position: 'relative', border: '1px solid rgba(0, 230, 118, 0.25)',
+                        background: 'rgba(6, 18, 10, 0.95)', boxShadow: '0 0 50px rgba(0, 230, 118, 0.15)'
+                    }}>
+                        <button onClick={() => setSelectedReceipt(null)} style={{
+                            position: 'absolute', top: '16px', right: '16px',
+                            background: 'transparent', border: 'none', color: '#62777d',
+                            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        }}>
+                            <X size={20} />
+                        </button>
+
+                        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(0,230,118,0.1)', border: '1px solid var(--color-green)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 10px', color: 'var(--color-green)' }}>
+                                <CheckCircle2 size={26} />
+                            </div>
+                            <h3 style={{ color: '#fff', fontSize: '1.25rem', fontWeight: 800, margin: 0 }}>Investment Deposit Receipt</h3>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--color-gold)', fontWeight: 600 }}>Official Transaction Confirmation</span>
+                        </div>
+
+                        <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '10px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.84rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ color: 'var(--text-muted)' }}>Transaction Reference</span>
+                                <span style={{ fontFamily: 'monospace', color: 'var(--color-gold)', fontWeight: 700 }}>{selectedReceipt.id}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ color: 'var(--text-muted)' }}>Account Email</span>
+                                <span style={{ color: '#fff', fontWeight: 600 }}>{selectedReceipt.email}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ color: 'var(--text-muted)' }}>Date & Time</span>
+                                <span style={{ color: '#fff' }}>{new Date(selectedReceipt.date).toLocaleString()}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ color: 'var(--text-muted)' }}>Allocated Strategy</span>
+                                <span style={{ color: '#fff', fontWeight: 600 }}>{selectedReceipt.tier}</span>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <span style={{ color: 'var(--text-muted)' }}>Payment Method</span>
+                                <span style={{ color: '#fff' }}>{selectedReceipt.paymentMethod}</span>
+                            </div>
+                            <div style={{ borderTop: '1px dashed rgba(255,255,255,0.1)', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 700 }}>Total Capital Deposited</span>
+                                <span style={{ fontSize: '1.3rem', color: 'var(--color-green)', fontWeight: 800 }}>${(selectedReceipt.amount || 0).toLocaleString()}</span>
+                            </div>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+                            <button
+                                type="button"
+                                onClick={() => window.print()}
+                                className="btn btn-gold"
+                                style={{ flex: 1, fontSize: '0.8rem', padding: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                            >
+                                <Download size={14} /> Print / Save PDF
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setSelectedReceipt(null)}
+                                className="btn btn-green-outline"
+                                style={{ flex: 1, fontSize: '0.8rem', padding: '10px' }}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 };
 
