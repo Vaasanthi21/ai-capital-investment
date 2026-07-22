@@ -545,7 +545,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                             <div className="dash-left-col">
                                 {showStats && (
                                     <div className="widget">
-                                        <div className="portfolio-summary-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
+                                        <div className="portfolio-summary-grid">
                                             <div className="summary-card">
                                                 <p className="summary-label">Total Portfolio Value</p>
                                                 <p className="summary-val glow-text-gold"><AnimatedValue value={finalAiVal} /></p>
@@ -732,7 +732,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                                             <span>Financial Goal Planner & Milestones</span>
                                             <button type="button" className="btn btn-green-outline" onClick={() => setShowAddGoalModal(true)} style={{ fontSize: '0.75rem', padding: '6px 12px', cursor: 'pointer' }}>+ Create New Goal</button>
                                         </div>
-                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                                        <div className="dash-goals-grid">
                                             {financialGoals.map(g => {
                                                 const progress = Math.min((g.current / g.target) * 100, 100);
                                                 return (
@@ -1591,7 +1591,7 @@ const SettingsSection = ({ userData }: { userData: UserData }) => {
     };
 
     return (
-        <form onSubmit={handleSave} className="settings-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', width: '100%' }}>
+        <form onSubmit={handleSave} className="settings-container dash-settings-grid">
             <div className="widget" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 <div className="widget-title">Profile Settings</div>
                 
@@ -2638,7 +2638,7 @@ const AIChatbotSection = ({
     };
 
     return (
-        <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-end', width: '100%', position: 'relative' }}>
+        <div className="dash-advisory-container">
             <div style={{ width: '180px', flexShrink: 0, marginBottom: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
                 {subTab === 'ai' ? (
                     <CuteRobot isTyping={isTyping} />
