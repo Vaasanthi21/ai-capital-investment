@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { 
   Cpu, ShieldCheck, TrendingUp, UserCheck, Wallet, Users, Percent, 
-  PieChart, Briefcase, Award, Globe, BookOpen, Clock, ArrowRight, X, Menu
+  PieChart, Briefcase, Award, Globe, BookOpen, Clock, ArrowRight, X, Menu,
+  HelpCircle, ChevronDown, ChevronUp
 } from 'lucide-react';
 import HeroCanvas from './HeroCanvas';
 import ParticleBackground from './ParticleBackground';
@@ -21,6 +22,9 @@ const blogsData = [
     date: "July 20, 2026",
     readTime: "4 min read",
     author: "Dr. Aris Thorne (Chief Quantitative Officer)",
+    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
+    imageAltEn: "AI Quantitative Stock Chart & Financial Trading Analytics Dashboard",
+    imageAltHi: "एआई मात्रात्मक स्टॉक चार्ट और वित्तीय व्यापार विश्लेषण डैशबोर्ड",
     excerptEn: "Discover how multi-agent neural networks optimize portfolio yields in real-time while keeping drawdowns below 4.5% during volatility.",
     excerptHi: "जानें कि कैसे मल्टी-एजेंट न्यूरल नेटवर्क वास्तविक समय में पोर्टफोलियो लाभ को अनुकूलित करते हैं और अस्थिरता के दौरान गिरावट को 4.5% से कम रखते हैं।",
     contentEn: `Traditional 60/40 portfolios are failing to keep pace with dynamic inflation cycles. By introducing multi-agent neural networks trained on 30 years of macroeconomic data, AI Capital Investment automatically rotates asset allocations between high-yield corporate bonds, inflation-hedging physical gold, and tech equities. 
@@ -44,6 +48,9 @@ Key Takeaways:
     date: "July 18, 2026",
     readTime: "5 min read",
     author: "Elena Rostova (Head of Private Wealth)",
+    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
+    imageAltEn: "Automated Tax Loss Harvesting & Financial Wealth Tax Shield Analytics",
+    imageAltHi: "स्वचालित टैक्स-लॉस हार्वेस्टिंग और वित्तीय धन कर शील्ड विश्लेषण",
     excerptEn: "Learn how automated tax-loss harvesting offsets taxable dividend yields to save up to $1,450 per portfolio annually.",
     excerptHi: "जानें कि कैसे स्वचालित टैक्स-लॉस हार्वेस्टिंग प्रतिवर्ष $1,450 तक बचाने के लिए कर योग्य लाभांश लाभ को संतुलित करती है।",
     contentEn: `Tax-loss harvesting (TLH) is one of the most powerful wealth preservation tools available. By identifying unrealized capital losses in tech-bond holdings and executing wash-sale compliant swaps into equivalent tracking index funds, investors can offset taxable dividend yields seamlessly.
@@ -67,6 +74,9 @@ Key Takeaways:
     date: "July 15, 2026",
     readTime: "6 min read",
     author: "Marcus Vance (Director of Digital Assets)",
+    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80",
+    imageAltEn: "Digital Assets Vault & Algorithmic Cryptocurrency Staking Yield Analytics",
+    imageAltHi: "डिजिटल संपत्ति वॉल्ट और एल्गोरिथम क्रिप्टोकरेंसी स्टेकिंग लाभ विश्लेषण",
     excerptEn: "Explore how institutional digital asset staking and liquidity vaults harvest 12%+ yields with automated stop-loss protection.",
     excerptHi: "जानें कि कैसे संस्थागत डिजिटल संपत्ति स्टेकिंग और तरलता वॉल्ट स्वचालित स्टॉप-लॉस सुरक्षा के साथ 12%+ यील्ड प्राप्त करते हैं।",
     contentEn: `Digital assets have matured into an essential high-alpha component of modern wealth management. By deploying algorithmic staking strategies across BTC and ETH validator vaults, investors earn passive compounding APYs protected by automated downside trailing stop-loss orders.
@@ -90,6 +100,9 @@ Key Takeaways:
     date: "July 10, 2026",
     readTime: "4 min read",
     author: "Sarah Jenkins (Quantitative Risk Lead)",
+    image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80",
+    imageAltEn: "AI Volatility Shield & Risk Hedging Market Liquidity Defense Graph",
+    imageAltHi: "एआई वोलेटिलिटी शील्ड और जोखिम हेजिंग बाजार तरलता रक्षा ग्राफ",
     excerptEn: "A deep dive into automated Volatility Shield triggers that rotate equities into cash & treasury reserves during black swan events.",
     excerptHi: "स्वचालित वोलेटिलिटी शील्ड ट्रिगर्स का गहराई से अध्ययन जो ब्लैक स्वान घटनाओं के दौरान शेयरों को नकद और खजाना भंडार में बदलते हैं।",
     contentEn: `When black swan events trigger market panic, traditional stop-loss orders suffer from slippage and delay. AI Capital's Volatility Shield monitors global order book liquidity and credit spreads, instantly rotating high-beta equities into treasury reserves before severe drawdowns materialize.
@@ -107,11 +120,45 @@ Key Takeaways:
   }
 ];
 
+const faqData = [
+  {
+    qEn: "How does the AI Volatility Shield protect my capital during market crashes?",
+    qHi: "बाजार में गिरावट के दौरान AI वोलेटिलिटी शील्ड मेरी पूंजी की रक्षा कैसे करता है?",
+    aEn: "Our proprietary Volatility Shield continuously monitors global macroeconomic indicators, order book depth, and credit spreads. When black swan risks or extreme market volatility are detected, the system automatically rotates a portion of your equity assets into short-term treasury reserves, high-yield corporate bonds, and physical gold hedges before retail panic occurs.",
+    aHi: "हमारा पेटेंट वोलेटिलिटी शील्ड लगातार वैश्विक मैक्रोइकोनॉमिक संकेतकों और क्रेडिट स्प्रेड की निगरानी करता है। अत्यधिक बाजार अस्थिरता का पता चलने पर, प्रणाली खुदरा घबराहट से पहले आपके इक्विटी परिसंपत्तियों को अल्पकालिक खजाना भंडार और भौतिक स्वर्ण हेज में स्वचालित रूप से स्थानांतरित कर देती है।"
+  },
+  {
+    qEn: "Are client funds FDIC-insured and SEC-regulated?",
+    qHi: "क्या ग्राहक फंड एफडीआईसी-बीमित और एसईसी-नियमित हैं?",
+    aEn: "Yes. All cash balances deposited on the platform are swept into FDIC-insured partner banks, protecting cash reserves up to $2,500,000 per depositor. Investment portfolios are held with SEC-registered custodian brokerages and protected by SIPC insurance up to $500,000.",
+    aHi: "हां। प्लेटफॉर्म पर जमा सभी नकद राशि एफडीआईसी-बीमित भागीदार बैंकों में रखी जाती है, जो प्रति जमाकर्ता $2,500,000 तक नकद भंडार की रक्षा करती है। निवेश पोर्टफोलियो एसईसी-पंजीकृत कस्टोडियन ब्रोकरेज के साथ रखे जाते हैं और $500,000 तक एसआईपीसी बीमा द्वारा संरक्षित होते हैं।"
+  },
+  {
+    qEn: "How does automated Tax-Loss Harvesting (TLH) increase net yields?",
+    qHi: "स्वचालित टैक्स-लॉस हार्वेस्टिंग (TLH) शुद्ध लाभ को कैसे बढ़ाता है?",
+    aEn: "Tax-loss harvesting identifies unrealized capital losses across your holding positions and executes wash-sale compliant swaps into correlated tracking index funds. The harvested losses directly offset taxable dividend distributions and interest income, adding an estimated 1.2% to 1.8% in annual net compound returns.",
+    aHi: "टैक्स-लॉस हार्वेस्टिंग आपकी होल्डिंग्स में अवास्तविक पूंजीगत नुकसान की पहचान करता है और इंडेक्स फंड में स्वैप निष्पादित करता है। यह नुकसान सीधे कर योग्य लाभांश और ब्याज आय को संतुलित करता है, जिससे वार्षिक शुद्ध रिटर्न में 1.2% से 1.8% की वृद्धि होती है।"
+  },
+  {
+    qEn: "What are the minimum deposit thresholds to start investing?",
+    qHi: "निवेश शुरू करने के लिए न्यूनतम जमा राशि क्या है?",
+    aEn: "You can start investing with as little as $1,000 on the Starter Plan. For specialized AI quantitative vaults, dedicated senior advisor access, and tailored private wealth strategies, our Growth and Elite Vault plans require $10,000 and $50,000 respectively.",
+    aHi: "आप स्टार्टर प्लान पर $1,000 की कम राशि से निवेश शुरू कर सकते हैं। विशेष एआई क्वांटिटेटिव वॉल्ट, समर्पित वरिष्ठ सलाहकार पहुंच और निजी धन रणनीतियों के लिए, हमारे ग्रोथ और एलीट वॉल्ट प्लान में क्रमशः $10,000 और $50,000 की आवश्यकता होती है।"
+  },
+  {
+    qEn: "Can I consult directly with a human Senior Advisor?",
+    qHi: "क्या मैं सीधे मानव वरिष्ठ सलाहकार से परामर्श कर सकता हूं?",
+    aEn: "Absolutely. While our AI multi-agent algorithms manage day-to-day asset allocation and rebalancing 24/7, all account holders have 1-on-1 access to human Senior Advisors via private advisory chat and scheduled video calls within the platform.",
+    aHi: "बिल्कुल। हालांकि हमारे एआई एल्गोरिदम दैनिक संपत्ति आवंटन को 24/7 प्रबंधित करते हैं, सभी खाताधारकों को प्लेटफॉर्म के भीतर निजी सलाहकार चैट और निर्धारित वीडियो कॉल के माध्यम से मानव वरिष्ठ सलाहकारों तक 1-ऑन-1 पहुंच प्राप्त है।"
+  }
+];
+
 const LandingPage = ({ onNavigate }: LandingPageProps) => {
   const [language, setLanguage] = useState<'en' | 'hi'>('en');
   const [selectedBlog, setSelectedBlog] = useState<any | null>(null);
   const [blogCategory, setBlogCategory] = useState<string>('All');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   useEffect(() => {
     const els = document.querySelectorAll('.fade-in-section');
@@ -131,7 +178,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
 
   const t = {
     en: {
-      nav: ['Home', 'About', 'Services', 'Investment', 'Blogs', 'Pricing'],
+      nav: ['Home', 'About', 'Services', 'Investment', 'Blogs', 'FAQ'],
       heroTitle: "Intelligent Wealth Management for the Modern Investor",
       heroSub: "Harness AI-driven algorithms, real-time market insights, and personalized strategies to grow your portfolio with confidence.",
       getStarted: "Get Started",
@@ -159,11 +206,13 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
       svc3Desc: "Secure your retirement lifestyle with intelligent, AI-powered long-term strategies.",
       blogsTitle: "Market Research & AI Wealth Blogs",
       blogsSub: "Stay informed with institutional market insights, tax optimization strategies, and algorithmic wealth research.",
+      faqTitle: "Frequently Asked Questions",
+      faqSub: "Find clear answers regarding institutional AI safety, regulatory compliance, tax-loss harvesting, and dedicated advisor consultations.",
       footerSub: "Next-generation financial solutions leveraging intelligent systems to grow your wealth.",
       copyright: "© 2026 AI Capital Investment. All rights reserved."
     },
     hi: {
-      nav: ['मुख्य पृष्ठ', 'हमारे बारे में', 'सेवाएं', 'निवेश', 'ब्लॉग व लेख', 'मूल्य निर्धारण'],
+      nav: ['मुख्य पृष्ठ', 'हमारे बारे में', 'सेवाएं', 'निवेश', 'ब्लॉग व लेख', 'सामान्य प्रश्न'],
       heroTitle: "आधुनिक निवेशकों के लिए एआई-संचालित बुद्धिमान धन प्रबंधन",
       heroSub: "विश्वास के साथ अपने पोर्टफोलियो को बढ़ाने के लिए AI-संचालित एल्गोरिदम, वास्तविक समय बाजार अंतर्दृष्टि और व्यक्तिगत रणनीतियों का उपयोग करें।",
       getStarted: "शुरू करें",
@@ -191,6 +240,8 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
       svc3Desc: "बुद्धिमान, एआई-संचालित दीर्घकालिक रणनीतियों के साथ अपनी सेवानिवृत्ति जीवन शैली को सुरक्षित करें।",
       blogsTitle: "बाजार अनुसंधान एवं एआई वेल्थ लेख",
       blogsSub: "संस्थागत बाजार अंतर्दृष्टि, कर अनुकूलन रणनीतियों और एल्गोरिदम अनुसंधान से सूचित रहें।",
+      faqTitle: "अक्सर पूछे जाने वाले प्रश्न (FAQ)",
+      faqSub: "संस्थागत एआई सुरक्षा, नियामक अनुपालन, कर-हानि कटाई और समर्पित सलाहकार परामर्श के संबंध में स्पष्ट उत्तर पाएं।",
       footerSub: "आपकी संपत्ति को बढ़ाने के लिए बुद्धिमान प्रणालियों का लाभ उठाने वाले अगली पीढ़ी के वित्तीय समाधान।",
       copyright: "© 2026 एआई कैपिटल इन्वेस्टमेंट। सर्वाधिकार सुरक्षित।"
     }
@@ -355,9 +406,13 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
           {/* Blogs Grid */}
           <div className="blogs-grid">
             {filteredBlogs.map(b => (
-              <div key={b.id} className="glass-card blog-card gold-border" style={{ display: 'flex', flexDirection: 'column' }}>
-                <div className="blog-thumbnail" style={{ background: 'linear-gradient(135deg, rgba(6, 18, 10, 0.95), rgba(2, 8, 4, 0.98))', height: '140px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <BookOpen size={36} style={{ color: 'var(--color-gold)' }} />
+              <div key={b.id} className="glass-card blog-card gold-border" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                <div className="blog-img-thumb-container">
+                  <img 
+                    src={b.image} 
+                    alt={language === 'en' ? b.imageAltEn : b.imageAltHi} 
+                    className="blog-img-thumb"
+                  />
                 </div>
                 <div className="blog-card-content" style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
@@ -393,6 +448,40 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
         </div>
       </section>
 
+      {/* ── Frequently Asked Questions (FAQ) Section ─────────────── */}
+      <section className="lp-section fade-in-section" id="faq">
+        <div className="lp-container">
+          <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+            <h2 className="lp-section-title">{t.faqTitle}</h2>
+            <p className="lp-section-sub" style={{ maxWidth: '650px', margin: '0 auto' }}>{t.faqSub}</p>
+          </div>
+
+          <div className="faq-accordion-container">
+            {faqData.map((item, idx) => {
+              const isOpen = openFaqIndex === idx;
+              return (
+                <div key={idx} className={`faq-item ${isOpen ? 'open' : ''}`}>
+                  <button 
+                    type="button"
+                    className="faq-question-btn"
+                    onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                    aria-expanded={isOpen}
+                  >
+                    <span>{language === 'en' ? item.qEn : item.qHi}</span>
+                    {isOpen ? <ChevronUp size={18} style={{ color: 'var(--color-gold)' }} /> : <ChevronDown size={18} style={{ color: 'var(--text-muted)' }} />}
+                  </button>
+                  {isOpen && (
+                    <div className="faq-answer-panel">
+                      <p>{language === 'en' ? item.aEn : item.aHi}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* ── Interactive Blog Modal Overlay ───────────────────────── */}
       {selectedBlog && (
         <div style={{
@@ -402,26 +491,36 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
           padding: '20px'
         }}>
           <div className="glass-card" style={{
-            maxWidth: '680px', width: '100%', maxHeight: '85vh', overflowY: 'auto',
-            padding: '32px', position: 'relative', border: '1px solid rgba(212, 175, 55, 0.3)',
-            background: 'rgba(6, 18, 10, 0.96)', boxShadow: '0 0 50px rgba(212, 175, 55, 0.15)'
+            maxWidth: '720px', width: '100%', maxHeight: '88vh', overflowY: 'auto',
+            padding: '28px', position: 'relative', border: '1px solid rgba(212, 175, 55, 0.3)',
+            background: 'rgba(6, 18, 10, 0.96)', boxShadow: '0 0 50px rgba(212, 175, 55, 0.15)',
+            borderRadius: '16px'
           }}>
             <button
               onClick={() => setSelectedBlog(null)}
               style={{
-                position: 'absolute', top: '20px', right: '20px',
-                background: 'transparent', border: 'none', color: '#62777d',
+                position: 'absolute', top: '20px', right: '20px', zIndex: 10,
+                background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff',
+                borderRadius: '50%', width: '36px', height: '36px',
                 cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
               }}
             >
-              <X size={22} />
+              <X size={20} />
             </button>
+
+            <div style={{ borderRadius: '12px', overflow: 'hidden', height: '220px', marginBottom: '20px' }}>
+              <img 
+                src={selectedBlog.image} 
+                alt={language === 'en' ? selectedBlog.imageAltEn : selectedBlog.imageAltHi}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            </div>
 
             <div style={{ marginBottom: '16px' }}>
               <span className="blog-badge" style={{ marginBottom: '8px' }}>{selectedBlog.category}</span>
-              <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff', lineHeight: 1.3, marginBottom: '10px' }}>
+              <h3 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff', lineHeight: 1.3, marginBottom: '10px' }}>
                 {language === 'en' ? selectedBlog.titleEn : selectedBlog.titleHi}
-              </h2>
+              </h3>
               <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'flex', gap: '16px', alignItems: 'center' }}>
                 <span>✍️ {selectedBlog.author}</span>
                 <span>📅 {selectedBlog.date}</span>
@@ -432,7 +531,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             <div style={{
               background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.06)',
               borderRadius: '10px', padding: '20px', fontSize: '0.9rem', color: 'var(--text-secondary)',
-              lineHeight: 1.7, whitespace: 'pre-line'
+              lineHeight: 1.7, whiteSpace: 'pre-line'
             }}>
               {language === 'en' ? selectedBlog.contentEn : selectedBlog.contentHi}
             </div>

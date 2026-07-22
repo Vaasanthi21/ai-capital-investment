@@ -1384,6 +1384,8 @@ interface BlogArticle {
     content: string[];
     icon: React.ReactNode;
     gold?: boolean;
+    image: string;
+    imageAlt: string;
 }
 
 const blogArticles: BlogArticle[] = [
@@ -1397,6 +1399,8 @@ const blogArticles: BlogArticle[] = [
         abstract: 'How neural networks and automated rebalancing are replacing traditional financial advisors, minimizing portfolio volatility by 30%.',
         icon: <Sparkles size={32} />,
         gold: false,
+        image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
+        imageAlt: "AI Quantitative Stock Chart & Financial Trading Analytics Dashboard",
         content: [
             'The wealth management industry is undergoing a monumental paradigm shift. For decades, investors relied on human advisors to make asset allocation decisions, perform manual rebalancing, and predict market trends. However, high fees and cognitive biases often eroded long-term returns.',
             'Enter Artificial Intelligence. By utilizing complex neural networks and machine learning models, modern platforms can analyze millions of data points in real time. This includes macro-economic indicators, stock price histories, interest rate spreads, and even global news sentiment.',
@@ -1414,6 +1418,8 @@ const blogArticles: BlogArticle[] = [
         abstract: 'Evaluating the optimal allocation index for crypto assets under a balanced risk profile to maximize returns while shielding capital.',
         icon: <Wallet size={32} />,
         gold: true,
+        image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80",
+        imageAlt: "Digital Assets Vault & Algorithmic Cryptocurrency Staking Yield Analytics",
         content: [
             'Cryptocurrencies like Bitcoin (BTC) and Ethereum (ETH) have matured from speculative tokens into established institutional asset classes. However, due to their high volatility index, many traditional investors remain hesitant to include them in their retirement profiles.',
             'Our research indicates that completely excluding digital assets from a modern portfolio may be a missed opportunity for capital growth. Under a Balanced risk profile, a small, controlled allocation of 5% to 10% offers substantial upside potential with manageable downside risk.',
@@ -1431,6 +1437,8 @@ const blogArticles: BlogArticle[] = [
         abstract: 'Understanding the relationship between central bank policies, corporate bonds, and physical gold hedges in capital preservation.',
         icon: <BarChart3 size={32} />,
         gold: false,
+        image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80",
+        imageAlt: "Macroeconomic Volatility Shield & Risk Hedging Market Defense Graph",
         content: [
             'In times of macroeconomic uncertainty, understanding interest rate cycles is vital for preserving capital. When central banks hike interest rates to combat inflation, bond prices naturally decline, and bond yields rise.',
             'For conservative and balanced portfolios, this creates an opportunity to lock in high yields on secure short-term government bonds. AI Capital manages this exposure through dynamic duration matching—automatically shifting funds into shorter-maturity bonds when rates are rising, and extending duration when yields peak.',
@@ -1442,12 +1450,14 @@ const blogArticles: BlogArticle[] = [
         id: '4',
         title: 'Tax-Loss Harvesting: Maximizing Your Net Investment Returns',
         category: 'Tax Strategy',
-        author: 'Sarah Chen, CPA',
+        author: 'Elena Rostova (Head of Private Wealth)',
         date: 'July 03, 2026',
         readTime: '8 min read',
         abstract: 'A deep dive into automated tax-loss harvesting mechanisms that help lock in net capital gains and optimize year-end tax returns.',
         icon: <Settings size={32} />,
         gold: true,
+        image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
+        imageAlt: "Automated Tax Loss Harvesting & Financial Wealth Tax Shield Analytics",
         content: [
             'It is not just about how much your portfolio makes; it is about how much you keep after taxes. Tax-loss harvesting is one of the most powerful wealth-building strategies, yet it is rarely practiced by retail investors due to its complexity.',
             'The process involves selling an investment that has experienced a temporary decline, realizing the loss, and immediately replacing it with a similar asset to maintain your portfolio\'s risk profile. The realized loss can then be used to offset capital gains taxes from other profitable investments or write off up to $3,000 of ordinary income.',
@@ -1497,10 +1507,14 @@ const BlogsSection = () => {
                     <div
                         key={article.id}
                         className={`widget blog-card glass-card ${article.gold ? 'gold-border' : 'green-border'}`}
-                        style={{ padding: 0 }}
+                        style={{ padding: 0, overflow: 'hidden' }}
                     >
-                        <div className="blog-thumbnail">
-                            {article.icon}
+                        <div className="blog-img-thumb-container">
+                            <img 
+                                src={article.image} 
+                                alt={article.imageAlt} 
+                                className="blog-img-thumb"
+                            />
                         </div>
                         <div className="blog-card-content">
                             <span className="blog-badge">{article.category}</span>
@@ -1530,24 +1544,33 @@ const BlogsSection = () => {
                     padding: '20px'
                 }}>
                     <div className="glass-card" style={{
-                        maxWidth: '640px', width: '100%', padding: '32px',
+                        maxWidth: '680px', width: '100%', maxHeight: '88vh', overflowY: 'auto', padding: '28px',
                         position: 'relative', border: activeArticle.gold ? '1px solid rgba(212, 175, 55, 0.22)' : '1px solid rgba(0, 230, 118, 0.22)',
                         background: 'rgba(6, 18, 10, 0.95)', boxShadow: activeArticle.gold ? '0 0 40px rgba(212, 175, 55, 0.1)' : '0 0 40px rgba(0, 230, 118, 0.1)',
-                        transform: 'none'
+                        transform: 'none', borderRadius: '16px'
                     }}>
                         <button onClick={() => setActiveArticle(null)} style={{
-                            position: 'absolute', top: '16px', right: '16px',
-                            background: 'transparent', border: 'none', color: '#62777d',
+                            position: 'absolute', top: '16px', right: '16px', zIndex: 10,
+                            background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff',
+                            borderRadius: '50%', width: '36px', height: '36px',
                             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                             transition: 'color 0.2s'
-                        }} onMouseEnter={e => e.currentTarget.style.color = '#00e676'} onMouseLeave={e => e.currentTarget.style.color = '#62777d'}>
+                        }} onMouseEnter={e => e.currentTarget.style.color = '#00e676'} onMouseLeave={e => e.currentTarget.style.color = '#fff'}>
                             <X size={20} />
                         </button>
                         
+                        <div style={{ borderRadius: '12px', overflow: 'hidden', height: '200px', marginBottom: '18px' }}>
+                            <img 
+                                src={activeArticle.image} 
+                                alt={activeArticle.imageAlt} 
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                        </div>
+
                         <span className="blog-badge" style={{ marginBottom: '12px' }}>{activeArticle.category}</span>
-                        <h2 style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: '8px', color: '#ffffff', lineHeight: 1.3 }} className={activeArticle.gold ? 'glow-text-gold' : 'glow-text-green'}>
+                        <h3 style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: '8px', color: '#ffffff', lineHeight: 1.3 }} className={activeArticle.gold ? 'glow-text-gold' : 'glow-text-green'}>
                             {activeArticle.title}
-                        </h2>
+                        </h3>
                         
                         <div style={{ display: 'flex', gap: '10px', fontSize: '0.74rem', color: 'var(--text-muted)', marginBottom: '22px' }}>
                             <span>By {activeArticle.author}</span>
