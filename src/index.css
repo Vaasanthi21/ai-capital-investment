@@ -1126,6 +1126,64 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); backgro
 }
 
 @media (max-width: 860px) {
+  #dashboard-view,
+  .dashboard-wrapper,
+  .dashboard-container,
+  .dash-main,
+  .dash-content,
+  .dash-grid,
+  .dash-left-col,
+  .dash-right-col,
+  .widget {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+
+  .dash-content {
+    padding: 14px 8px !important;
+  }
+
+  .dash-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .dash-header-right {
+    width: 100% !important;
+  }
+
+  .market-ticker {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+  }
+
+  .holdings-table-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    display: block !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .holdings-table {
+    min-width: 520px !important;
+  }
+
+  .main-chart-container,
+  .doughnut-chart-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  canvas {
+    max-width: 100% !important;
+  }
+
   .portfolio-summary-grid {
     grid-template-columns: 1fr !important;
   }
