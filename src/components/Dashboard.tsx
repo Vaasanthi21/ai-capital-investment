@@ -506,6 +506,14 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                             <p>Here is your real-time portfolio analysis and AI insights.</p>
                         </div>
                         <div className="dash-header-right">
+                            <button 
+                                type="button" 
+                                className="btn btn-green-outline" 
+                                style={{ fontSize: '0.78rem', padding: '6px 14px', display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
+                                onClick={onLogout}
+                            >
+                                <LogOut size={14} /> Log Out
+                            </button>
                             <div className="market-ticker">
                                 {Object.entries(tickers).map(([key, asset]) => (
                                     <div key={key} className={`ticker-item ${asset.flash}`}>
@@ -528,7 +536,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                     {selectedTab === 'blogs' ? (
                         <BlogsSection />
                     ) : selectedTab === 'settings' ? (
-                        <SettingsSection userData={userData} />
+                        <SettingsSection userData={userData} onLogout={onLogout} />
                     ) : selectedTab === 'deposit' ? (
                         <DepositSection userData={userData} onUpdateUser={onUpdateUser} />
                     ) : selectedTab === 'history' ? (
@@ -1568,7 +1576,7 @@ const BlogsSection = () => {
     );
 };
 
-const SettingsSection = ({ userData }: { userData: UserData }) => {
+const SettingsSection = ({ userData, onLogout }: { userData: UserData; onLogout?: () => void }) => {
     const [name, setName] = useState(userData.name);
     const [email, setEmail] = useState(userData.email);
     const [phone, setPhone] = useState('(555) 019-2834');
@@ -1746,7 +1754,7 @@ const SettingsSection = ({ userData }: { userData: UserData }) => {
                 </div>
             </div>
 
-            <div style={{ gridColumn: 'span 2', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '20px', marginTop: '10px' }}>
+            <div style={{ gridColumn: 'span 2', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '20px', marginTop: '10px' }}>
                 <div>
                     {saveSuccess && (
                         <span style={{ color: 'var(--color-green)', fontSize: '0.88rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -1754,9 +1762,21 @@ const SettingsSection = ({ userData }: { userData: UserData }) => {
                         </span>
                     )}
                 </div>
-                <button type="submit" className="btn btn-green" disabled={isSaving} style={{ minWidth: '160px' }}>
-                    {isSaving ? <span className="auth-spinner" style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff' }} /> : 'Save Configurations'}
-                </button>
+                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                    {onLogout && (
+                        <button 
+                            type="button" 
+                            className="btn btn-green-outline" 
+                            onClick={onLogout}
+                            style={{ padding: '10px 18px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px', color: '#ff5252', borderColor: 'rgba(255,82,82,0.3)' }}
+                        >
+                            <LogOut size={16} /> Log Out Account
+                        </button>
+                    )}
+                    <button type="submit" className="btn btn-green" disabled={isSaving} style={{ minWidth: '160px' }}>
+                        {isSaving ? <span className="auth-spinner" style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: '#fff' }} /> : 'Save Configurations'}
+                    </button>
+                </div>
             </div>
         </form>
     );
