@@ -215,6 +215,10 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
                   <a href={`#${id}`}>{t.nav[idx]}</a>
                 </li>
               ))}
+              <li style={{ marginTop: '10px', display: 'flex', gap: '10px', width: '100%', justifyContent: 'center' }}>
+                <button className="btn btn-green-outline" style={{ padding: '8px 20px', fontSize: '0.85rem' }} onClick={() => { setMobileMenuOpen(false); onNavigate('login'); }}>{t.signIn}</button>
+                <button className="btn btn-gold" style={{ padding: '8px 20px', fontSize: '0.85rem' }} onClick={() => { setMobileMenuOpen(false); onNavigate('signup'); }}>{t.getStarted}</button>
+              </li>
             </ul>
           </nav>
 
@@ -223,17 +227,17 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             <button
               onClick={() => setLanguage(l => l === 'en' ? 'hi' : 'en')}
               className="btn btn-green-outline"
-              style={{ fontSize: '0.78rem', padding: '5px 12px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '6px' }}
+              style={{ fontSize: '0.75rem', padding: '4px 10px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '4px' }}
             >
-              <Globe size={14} /> {language === 'en' ? 'हिंदी (Hindi)' : 'English'}
+              <Globe size={13} /> {language === 'en' ? 'हिंदी' : 'English'}
             </button>
             
-            <button className="btn btn-green-outline" onClick={() => onNavigate('login')}>{t.signIn}</button>
-            <button className="btn btn-gold" onClick={() => onNavigate('signup')}>{t.getStarted}</button>
+            <button className="btn btn-green-outline desktop-signin" onClick={() => onNavigate('login')}>{t.signIn}</button>
+            <button className="btn btn-gold" style={{ fontSize: '0.78rem', padding: '5px 12px' }} onClick={() => onNavigate('signup')}>{t.getStarted}</button>
             
             {/* Mobile Hamburger Button */}
             <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>

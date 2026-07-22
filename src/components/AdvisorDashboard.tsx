@@ -382,6 +382,27 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
                 </aside>
 
                 <main className="dash-content">
+                    {/* Mobile Navigation Bar */}
+                    <div className="mobile-advisor-tab-bar">
+                        {[
+                            { id: 'clients', icon: <Users size={15} />, label: 'My Clients' },
+                            { id: 'deposits', icon: <CreditCard size={15} />, label: 'Client Deposits' },
+                            { id: 'schedule', icon: <Calendar size={15} />, label: 'Consultations' },
+                            { id: 'analytics', icon: <BarChart3 size={15} />, label: 'Analytics' },
+                            { id: 'tlh', icon: <Scissors size={15} />, label: 'Tax Optimizer' },
+                            { id: 'insights', icon: <Sparkles size={15} />, label: 'AI Info' }
+                        ].map(item => (
+                            <button
+                                key={item.id}
+                                type="button"
+                                className={`mobile-tab-btn ${selectedTab === item.id ? 'active' : ''}`}
+                                onClick={() => setSelectedTab(item.id)}
+                            >
+                                {item.icon} {item.label}
+                            </button>
+                        ))}
+                    </div>
+
                     <header className="dash-header">
                         <div className="dash-header-left">
                             <h1 className="glow-text-gold">Welcome Back, {userData.name.split(" ")[0]}!</h1>

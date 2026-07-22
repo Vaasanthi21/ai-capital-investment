@@ -971,6 +971,49 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); backgro
     align-items: center;
   }
 
+  .auth-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 100vh !important;
+    width: 100% !important;
+  }
+
+  .auth-brand-panel {
+    display: none !important;
+  }
+
+  .auth-form-panel {
+    width: 100% !important;
+    padding: 75px 18px 40px !important;
+  }
+
+  .auth-form-card {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .auth-fields-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .auth-back-btn {
+    top: 14px !important;
+    left: 14px !important;
+    font-size: 0.76rem !important;
+    padding: 6px 12px !important;
+  }
+
+  .lp-header-actions {
+    gap: 6px !important;
+  }
+
+  .lp-header-actions .btn {
+    padding: 5px 10px !important;
+    font-size: 0.75rem !important;
+  }
+
   .lp-hero-inner {
     grid-template-columns: 1fr;
     text-align: center;
@@ -1035,6 +1078,58 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); backgro
 }
 
 @media (max-width: 860px) {
+  .desktop-signin {
+    display: none !important;
+  }
+
+  .dashboard-container {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .dash-sidebar {
+    display: none !important;
+  }
+
+  .dash-main {
+    width: 100% !important;
+    padding: 14px 10px !important;
+  }
+
+  .mobile-advisor-tab-bar {
+    display: flex !important;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 10px 14px;
+    background: rgba(6, 18, 10, 0.95);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .mobile-tab-btn.active {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+  }
+
   .dash-deposit-grid,
   .dash-metrics-4col,
   .advisor-client-grid,
