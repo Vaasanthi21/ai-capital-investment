@@ -1315,17 +1315,23 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); backgro
     bottom: 0;
     left: 0;
     right: 0;
-    height: 64px;
+    height: 60px;
     background: rgba(4, 12, 6, 0.96);
     backdrop-filter: blur(20px);
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     z-index: 999;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-    padding: 0 4px;
+    padding: 2px 4px;
     padding-bottom: env(safe-area-inset-bottom);
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+  
+  .mobile-bottom-nav::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
   }
   
   .mobile-tab-item {
@@ -1334,15 +1340,15 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); backgro
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
     color: var(--text-secondary);
     cursor: pointer;
     font-family: var(--font);
-    font-size: 0.65rem;
-    flex: 1 0 auto;
-    min-width: 52px;
+    font-size: 0.58rem;
+    flex: 1;
+    min-width: 0;
     transition: all 0.25s;
-    padding: 8px 2px;
+    padding: 6px 1px;
   }
   
   .mobile-tab-item svg {

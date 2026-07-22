@@ -1349,13 +1349,13 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                 {/* Mobile Bottom Tab Navigation */}
                 <nav className="mobile-bottom-nav">
                     {[
-                        { id: 'home', icon: <LayoutDashboard size={19} />, label: 'Overview' },
-                        { id: 'portfolio', icon: <Wallet size={19} />, label: 'Assets' },
-                        { id: 'deposit', icon: <PlusCircle size={19} />, label: 'Deposit & History' },
-                        { id: 'advisory', icon: <Sparkles size={19} />, label: 'Advisory' },
-                        { id: 'analytics', icon: <BarChart3 size={19} />, label: 'Analytics' },
-                        { id: 'blogs', icon: <BookOpen size={19} />, label: 'Blogs' },
-                        { id: 'settings', icon: <Settings size={19} />, label: 'Settings' }
+                        { id: 'home', icon: <LayoutDashboard size={17} />, label: 'Overview' },
+                        { id: 'portfolio', icon: <Wallet size={17} />, label: 'Assets' },
+                        { id: 'deposit', icon: <PlusCircle size={17} />, label: 'Deposit' },
+                        { id: 'advisory', icon: <Sparkles size={17} />, label: 'Advisory' },
+                        { id: 'analytics', icon: <BarChart3 size={17} />, label: 'Analytics' },
+                        { id: 'blogs', icon: <BookOpen size={17} />, label: 'Blogs' },
+                        { id: 'settings', icon: <Settings size={17} />, label: 'Settings' }
                     ].map(item => (
                         <button 
                             key={item.id} 
