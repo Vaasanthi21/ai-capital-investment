@@ -1447,7 +1447,7 @@ const AdvisorAnalyticsSection = ({ clients }: { clients: Client[] }) => {
             </div>
 
             {/* Top Metric Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+            <div className="dash-metrics-4col">
                 <div className="widget glass-card" style={{ padding: '20px' }}>
                     <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Portfolio Alpha (vs S&P)</span>
                     <h3 className="glow-text-gold" style={{ fontSize: '1.6rem', fontWeight: 800, margin: '6px 0 2px' }}>
@@ -1556,7 +1556,7 @@ const AdvisorTaxOptimizerSection = ({ clients }: { clients: Client[] }) => {
             </div>
 
             {/* Metric Summary */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+            <div className="dash-metrics-4col">
                 <div className="widget glass-card" style={{ padding: '20px' }}>
                     <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Harvestable Loss Identified</span>
                     <h3 className="glow-text-gold" style={{ fontSize: '1.6rem', fontWeight: 800, margin: '6px 0 2px' }}>
