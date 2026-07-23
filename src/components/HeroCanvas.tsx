@@ -35,6 +35,12 @@ const HeroCanvas = () => {
         }
 
         const draw = () => {
+            const currentW = canvas.offsetWidth || canvas.clientWidth || 300;
+            const currentH = canvas.offsetHeight || canvas.clientHeight || 200;
+            if (canvas.width !== currentW || canvas.height !== currentH) {
+                W = canvas.width = currentW;
+                H = canvas.height = currentH;
+            }
             if (W <= 0 || H <= 0) {
                 animId = requestAnimationFrame(draw);
                 return;

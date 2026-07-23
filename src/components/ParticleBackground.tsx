@@ -44,6 +44,12 @@ const ParticleBackground = () => {
         let animId: number;
 
         const draw = () => {
+            const currentW = window.innerWidth || 300;
+            const currentH = window.innerHeight || 200;
+            if (canvas.width !== currentW || canvas.height !== currentH) {
+                canvas.width = currentW;
+                canvas.height = currentH;
+            }
             const W = canvas.width, H = canvas.height;
             if (W <= 0 || H <= 0) {
                 animId = requestAnimationFrame(draw);
