@@ -675,8 +675,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             </div>
 
             <div style={{
-              maxHeight: '440px', overflowY: 'auto', paddingRight: '12px',
-              fontSize: '1.02rem', color: '#d1e0e4', lineHeight: '1.78',
+              fontSize: '0.94rem', color: '#d1e0e4', lineHeight: '1.65',
               textAlign: 'left'
             }}>
               {(language === 'en' ? selectedBlog.contentEn : selectedBlog.contentHi).split('\n\n').map((paragraph, index) => {

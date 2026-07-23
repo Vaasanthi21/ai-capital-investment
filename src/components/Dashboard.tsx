@@ -1434,13 +1434,16 @@ const blogArticles: BlogArticle[] = [
             'If you are just starting your financial journey, AI-Driven Asset Allocation: Outperforming Inflation & Market Volatility in 2026 may sound advanced or even intimidating. But the idea is actually simple: use smarter technology to build, monitor, and adjust your portfolio so your money has a better chance of keeping up with inflation while reducing the emotional mistakes that often happen during market swings.',
             'For graduates and first-time investors, that matters a lot. You are balancing career decisions, rising living costs, and uncertainty about what the market will do next. The good news is that AI investing tools are becoming more practical, more accessible, and easier to understand.',
             '### Why 2026 Feels Challenging for Beginner Investors',
-            'Inflation has changed how people think about savings. Leaving money idle can feel safe in the short term, but over time, inflation can quietly reduce purchasing power. At the same time, market volatility can make investing feel risky, especially when headlines shift daily. That is exactly why AI-Driven Asset Allocation is gaining attention. Instead of relying only on static portfolios or emotional decision-making, AI-powered systems can respond faster to changing conditions.',
+            'Inflation has changed how people think about savings. Leaving money idle can feel safe in the short term, but over time, inflation can quietly reduce purchasing power. At the same time, market volatility can make investing feel risky, especially when headlines shift daily.',
+            'That is exactly why AI-Driven Asset Allocation is gaining attention. Instead of relying only on static portfolios or emotional decision-making, AI-powered systems can respond faster to changing conditions.',
             '### What AI-Driven Asset Allocation Actually Means',
             'At its core, AI-Driven Asset Allocation in 2026 means using machine learning and automated decision systems to decide how much of your portfolio should be in different asset classes, such as equities, bonds, cash alternatives, or inflation-sensitive investments. Think of it like having a smart co-pilot—it does not just set a portfolio once and forget it. It keeps watching the road.',
-            '### Multi-Agent Neural Networks & 24/7 Rebalancing',
-            'Instead of one model doing everything, multiple AI agents specialize in different tasks: monitoring macroeconomic signals, tracking market volatility, identifying portfolio drift, spotting tax-saving opportunities, and stress-testing risk scenarios. Automated 24/7 rebalancing maintains target allocations automatically, trimming overperforming assets and redirecting capital into underweighted hedges.',
-            '### Volatility Shield Risk Controls & Step-by-Step Guide',
-            'A Volatility Shield monitors market stress, correlation changes, and sudden drawdown risk to keep your portfolio aligned with your long-term comfort level. Step 1: Start with your life goals. Step 2: Define your risk level honestly. Step 3: Use automation for consistency. Step 4: Review periodically without obsessing over daily market charts.',
+            '### Multi-Agent Neural Networks in Simple Terms',
+            'Instead of one model doing everything, multiple AI agents specialize in different tasks: monitoring macroeconomic signals, tracking market volatility, identifying portfolio drift, spotting tax-saving opportunities, and stress-testing risk scenarios.',
+            '### 24/7 Rebalancing & Volatility Shield Risk Controls',
+            'Markets do not wait for you to finish work or sleep. That is why automated 24/7 rebalancing is valuable. If one part of your portfolio grows too large or risk conditions change sharply, the system can execute adjustments based on predefined rules. A Volatility Shield can monitor market stress, correlation changes, and sudden drawdown risk to keep your risk aligned with your long-term goals.',
+            '### Step-by-Step Guide for Beginner Investors',
+            'Step 1: Start with your life goals, not market headlines. Step 2: Define your risk level honestly using AI risk scoring. Step 3: Use automation for consistency without daily stress. Step 4: Review periodically without obsessing over short-term charts.',
             '### Key Institutional Takeaways:',
             '• AI asset allocation replaces static models with 24/7 continuous market monitoring and risk-adjusted rebalancing.\n• Multi-agent neural networks specialize in tracking volatility, tax-loss harvesting, and macroeconomic signals.\n• Automated Volatility Shields help protect capital during market drawdowns while keeping up with inflation.\n• Ideal for graduates and beginner investors seeking disciplined, low-friction, long-term wealth building.'
         ]
@@ -1745,7 +1748,6 @@ const BlogsSection = () => {
                         </div>
 
                         <div style={{
-                            maxHeight: '340px', overflowY: 'auto', paddingRight: '6px',
                             fontSize: '0.85rem', color: '#d1e0e4', lineHeight: '1.55',
                             textAlign: 'left'
                         }}>
