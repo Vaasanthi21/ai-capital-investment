@@ -392,30 +392,44 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
 
           <nav className={`lp-nav-wrapper ${mobileMenuOpen ? 'open' : ''}`}>
             <ul className="lp-nav">
-              {['home', 'about', 'services', 'investment', 'blogs', 'pricing'].map((id, idx) => (
-                <li key={id} onClick={() => setMobileMenuOpen(false)}>
-                  <a href={`#${id}`}>{t.nav[idx]}</a>
-                </li>
-              ))}
+              <li onClick={() => setMobileMenuOpen(false)}>
+                <a href="#home">{t.nav[0]}</a>
+              </li>
+              <li onClick={() => setMobileMenuOpen(false)}>
+                <a href="#about">{t.nav[1]}</a>
+              </li>
+              <li onClick={() => setMobileMenuOpen(false)}>
+                <a href="#services">{t.nav[2]}</a>
+              </li>
+              <li onClick={() => setMobileMenuOpen(false)}>
+                <a href="#investment">{t.nav[3]}</a>
+              </li>
+              <li onClick={() => setMobileMenuOpen(false)}>
+                <a href="/blogs" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onNavigate('blogs'); }}>{t.nav[4]}</a>
+              </li>
+              <li onClick={() => setMobileMenuOpen(false)}>
+                <a href="#faq">{t.nav[5]}</a>
+              </li>
               <li className="mobile-only-nav-item" style={{ marginTop: '10px', gap: '10px', width: '100%', justifyContent: 'center' }}>
-                <button className="btn btn-green-outline" style={{ padding: '8px 20px', fontSize: '0.85rem' }} onClick={() => { setMobileMenuOpen(false); onNavigate('login'); }}>{t.signIn}</button>
-                <button className="btn btn-gold" style={{ padding: '8px 20px', fontSize: '0.85rem' }} onClick={() => { setMobileMenuOpen(false); onNavigate('signup'); }}>{t.getStarted}</button>
+                <button className="btn btn-gold" style={{ padding: '10px 24px', fontSize: '0.85rem', width: '100%' }} onClick={() => { setMobileMenuOpen(false); onNavigate('login'); }}>
+                  Launch Web App / Sign In
+                </button>
               </li>
             </ul>
           </nav>
 
-          <div className="lp-header-actions">
+          <div className="lp-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             {/* Language Switcher Pill */}
             <button
               onClick={() => setLanguage(l => l === 'en' ? 'hi' : 'en')}
               className="btn btn-green-outline"
-              style={{ fontSize: '0.75rem', padding: '4px 10px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '4px' }}
+              style={{ fontSize: '0.72rem', padding: '4px 8px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '3px' }}
             >
-              <Globe size={13} /> {language === 'en' ? 'हिंदी' : 'English'}
+              <Globe size={12} /> {language === 'en' ? 'हिंदी' : 'EN'}
             </button>
             
             <button className="btn btn-green-outline desktop-signin" onClick={() => onNavigate('login')}>{t.signIn}</button>
-            <button className="btn btn-gold" style={{ fontSize: '0.78rem', padding: '5px 12px' }} onClick={() => onNavigate('signup')}>{t.getStarted}</button>
+            <button className="btn btn-gold desktop-signin" style={{ fontSize: '0.78rem', padding: '5px 12px' }} onClick={() => onNavigate('signup')}>{t.getStarted}</button>
             
             {/* Mobile Hamburger Button */}
             <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -580,6 +594,18 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Standalone Blog Page Navigation Banner */}
+          <div style={{ marginTop: '36px', textAlign: 'center' }}>
+            <button 
+              type="button" 
+              className="btn btn-gold"
+              onClick={() => onNavigate('blogs')}
+              style={{ fontSize: '0.92rem', padding: '12px 28px', borderRadius: '24px', display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer', boxShadow: '0 4px 20px rgba(212, 175, 55, 0.25)' }}
+            >
+              📖 Explore All Research Reports & Blogs <ArrowRight size={16} />
+            </button>
           </div>
         </div>
       </section>

@@ -7,8 +7,9 @@ import AdvisorDashboard from './components/AdvisorDashboard';
 import OtpVerification from './components/OtpVerification';
 import ForgotPassword from './components/ForgotPassword';
 import PaymentPage from './components/PaymentPage';
+import StandaloneBlogPage from './components/StandaloneBlogPage';
 
-type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'payment' | 'forgot-password' | 'dashboard';
+type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'payment' | 'forgot-password' | 'dashboard' | 'blogs';
 
 interface UserProfile {
   name: string;
@@ -26,7 +27,8 @@ function App() {
     const path = window.location.pathname.toLowerCase();
     if (path.includes('/login')) return 'login';
     if (path.includes('/signup')) return 'signup';
-    if (path.includes('/dashboard') || path.includes('/advisor')) return 'dashboard';
+    if (path.includes('/dashboard') || path.includes('/advisor') || path.includes('/app')) return 'dashboard';
+    if (path.includes('/blogs') || path.includes('/blog')) return 'blogs';
     return 'landing';
   };
 
@@ -50,7 +52,8 @@ function App() {
       'otp-verify': '/verify',
       'payment': '/payment',
       'forgot-password': '/forgot-password',
-      'dashboard': '/dashboard'
+      'dashboard': '/app',
+      'blogs': '/blogs'
     };
     const targetPath = pathMap[newView] || '/';
     if (window.location.pathname !== targetPath) {
@@ -70,6 +73,7 @@ function App() {
   return (
     <>
       {view === 'landing'   && <LandingPage onNavigate={setView} />}
+      {view === 'blogs'     && <StandaloneBlogPage onNavigate={setView} />}
       {view === 'login'     && <LoginPage onLoginSuccess={(user) => { setUserProfile(user); setView('dashboard'); }} onNavigate={setView} setTempEmail={setTempEmail} />}
       {view === 'signup'    && <SignupPage onSignupSuccess={(email, role) => { setTempEmail(email); setRegRole(role); setView('otp-verify'); }} onNavigate={setView} />}
       {view === 'otp-verify' && <OtpVerification email={tempEmail} onVerificationSuccess={() => {

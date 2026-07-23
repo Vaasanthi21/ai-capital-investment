@@ -1,0 +1,615 @@
+import { useState, useEffect } from 'react';
+import { 
+  Sparkles, Settings, Wallet, BarChart3, Search, ChevronRight, X, ArrowLeft, ArrowUpRight, Globe, Menu
+} from 'lucide-react';
+import ParticleBackground from './ParticleBackground';
+
+type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'payment' | 'forgot-password' | 'dashboard' | 'blogs';
+
+interface StandaloneBlogPageProps {
+  onNavigate: (v: View) => void;
+}
+
+interface BlogArticle {
+  id: string;
+  title: string;
+  category: string;
+  author: string;
+  date: string;
+  readTime: string;
+  abstract: string;
+  icon: any;
+  gold: boolean;
+  url: string;
+  image: string;
+  imageAlt: string;
+  content: string[];
+}
+
+export const standaloneBlogArticles: BlogArticle[] = [
+  {
+    id: 'ai-wealth-management-revolution',
+    title: 'AI-Driven Asset Allocation: Outperforming Inflation & Market Volatility in 2026',
+    category: 'AI & Tech',
+    author: 'Dr. Aris Thorne (Chief Quantitative Strategist)',
+    date: 'July 20, 2026',
+    readTime: '6 min read (460 words)',
+    abstract: 'How graduates and first-time investors can leverage AI asset allocation, automated rebalancing, and risk shields to build financial resilience against market inflation.',
+    icon: <Sparkles size={32} />,
+    gold: false,
+    url: 'https://www.investopedia.com/financial-advisor/how-ai-is-changing-wealth-management/',
+    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
+    imageAlt: "AI Quantitative Stock Chart & Financial Trading Analytics Dashboard",
+    content: [
+      'If you are just starting your financial journey, AI-Driven Asset Allocation: Outperforming Inflation & Market Volatility in 2026 may sound advanced or even intimidating. But the idea is actually simple: use smarter technology to build, monitor, and adjust your portfolio so your money has a better chance of keeping up with inflation while reducing the emotional mistakes that often happen during market swings.',
+      'For graduates and first-time investors, that matters a lot. You are balancing career decisions, rising living costs, and uncertainty about what the market will do next. The good news is that AI investing tools are becoming more practical, more accessible, and easier to understand.',
+      '### Why 2026 Feels Challenging for Beginner Investors',
+      'Inflation has changed how people think about savings. Leaving money idle can feel safe in the short term, but over time, inflation can quietly reduce purchasing power. At the same time, market volatility can make investing feel risky, especially when headlines shift daily.',
+      'That is exactly why AI-Driven Asset Allocation is gaining attention. Instead of relying only on static portfolios or emotional decision-making, AI-powered systems can respond faster to changing conditions.',
+      '### What AI-Driven Asset Allocation Actually Means',
+      'At its core, AI-Driven Asset Allocation in 2026 means using machine learning and automated decision systems to decide how much of your portfolio should be in different asset classes, such as equities, bonds, cash alternatives, or inflation-sensitive investments. Think of it like having a smart co-pilot—it does not just set a portfolio once and forget it. It keeps watching the road.',
+      '### Multi-Agent Neural Networks in Simple Terms',
+      'Instead of one model doing everything, multiple AI agents specialize in different tasks: monitoring macroeconomic signals, tracking market volatility, identifying portfolio drift, spotting tax-saving opportunities, and stress-testing risk scenarios.',
+      '### 24/7 Rebalancing & Volatility Shield Risk Controls',
+      'Markets do not wait for you to finish work or sleep. That is why automated 24/7 rebalancing is valuable. If one part of your portfolio grows too large or risk conditions change sharply, the system can execute adjustments based on predefined rules. A Volatility Shield can monitor market stress, correlation changes, and sudden drawdown risk to keep your risk aligned with your long-term goals.',
+      '### Step-by-Step Guide for Beginner Investors',
+      'Step 1: Start with your life goals, not market headlines. Step 2: Define your risk level honestly using AI risk scoring. Step 3: Use automation for consistency without daily stress. Step 4: Review periodically without obsessing over short-term charts.',
+      '### Key Institutional Takeaways:',
+      '• AI asset allocation replaces static models with 24/7 continuous market monitoring and risk-adjusted rebalancing.\n• Multi-agent neural networks specialize in tracking volatility, tax-loss harvesting, and macroeconomic signals.\n• Automated Volatility Shields help protect capital during market drawdowns while keeping up with inflation.\n• Ideal for graduates and beginner investors seeking disciplined, low-friction, long-term wealth building.'
+    ]
+  },
+  {
+    id: 'tax-loss-harvesting-guide',
+    title: 'Tax-Loss Harvesting Guide: Maximizing Net Investment Returns',
+    category: 'Tax Strategy',
+    author: 'Elena Rostova, CFA (Senior Tax Strategy Director)',
+    date: 'July 18, 2026',
+    readTime: '9 min read (650 words)',
+    abstract: 'A comprehensive deep dive into automated tax-loss harvesting algorithms, wash-sale compliance rules, asset substitution strategies, and multi-year tax alpha optimization for accredited portfolios.',
+    icon: <Settings size={32} />,
+    gold: true,
+    url: 'https://www.investopedia.com/terms/t/tax-lossharvesting.asp',
+    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
+    imageAlt: "Automated Tax Loss Harvesting & Financial Wealth Tax Shield Analytics",
+    content: [
+      'Tax-loss harvesting (TLH) is widely recognized by institutional asset managers and private family offices as one of the most reliable quantitative methods for generating net portfolio tax alpha. By continuously monitoring portfolio positions 24 hours a day, automated trading algorithms identify securities trading at a temporary unrealized loss and systematically harvest those losses to offset realized capital gains obligations.',
+      '### 1. Navigating Complex IRS Wash-Sale Regulations',
+      'Executing tax-loss harvesting manually presents substantial regulatory compliance risks under IRS Section 1091 wash-sale rules. A wash sale occurs when an investor sells a security at a loss and purchases a substantially identical security within a 60-day window (30 days before or 30 days after the sale).',
+      'Automated AI execution engines resolve this hurdle by executing instant, wash-sale-compliant swaps into correlated proxy tracking funds (such as substituting an S&P 500 ETF with a Total US Stock Market Index ETF). This maintains target equity market exposure while securing legally compliant tax write-offs.',
+      '### 2. Offsetting Realized Gains, Dividends & Ordinary Income',
+      'Harvested capital losses can be used to directly offset short-term capital gains (taxed at higher ordinary income rates), long-term capital gains, and taxable dividend distributions.',
+      'Furthermore, up to $3,000 in excess harvested net losses can be deducted against ordinary salary income each tax year, with remaining unused losses carried forward indefinitely into future tax years. Over a 10-year compounding horizon, continuous tax harvesting adds an estimated 1.2% to 1.8% in net annual compound return.',
+      '### 3. Continuous Year-Round Harvesting vs. Year-End Execution',
+      'Traditional wealth management firms typically conduct tax-loss harvesting once a year in December. However, market pullbacks and intraday volatility occur continuously across all twelve months.',
+      'Algorithmic tax engines scan portfolio holdings daily, locking in tax credits during temporary market pullbacks in April, August, or October. Empirical backtesting demonstrates that daily automated scanning captures up to 3x more tax credits than annual year-end sweeps.',
+      '### 4. Direct Indexing & Tax-Optimized Asset Location',
+      'Direct indexing allows investors to own individual underlying benchmark equities rather than pre-packaged index funds. This creates hundreds of micro-harvesting opportunities within single stock components even during overall bull markets.',
+      '### Key Institutional Takeaways:',
+      '• Algorithmic execution continuously tracks 60-day wash-sale windows to guarantee strict IRS regulatory compliance.\n• Realized tax losses offset short-term gains, dividend income, and up to $3,000 in ordinary annual income.\n• Systematic year-round tax-loss harvesting adds an estimated 1.2% to 1.8% in net annual compounding performance.\n• Daily automated intraday scans capture up to 3x more tax-loss credits than traditional year-end rebalancing.'
+    ]
+  },
+  {
+    id: 'digital-assets-crypto-mechanics',
+    title: 'Understanding Digital Assets & Cryptocurrency Market Mechanics',
+    category: 'Crypto',
+    author: 'Marcus Vance (Director of Digital Assets)',
+    date: 'July 15, 2026',
+    readTime: '8 min read (600 words)',
+    abstract: 'Evaluating non-correlated institutional digital asset allocations, proof-of-stake yield engines, and dynamic volatility-weighted position budgeting.',
+    icon: <Wallet size={32} />,
+    gold: true,
+    url: 'https://www.investopedia.com/terms/c/cryptocurrency.asp',
+    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80",
+    imageAlt: "Digital Assets Vault & Algorithmic Cryptocurrency Staking Yield Analytics",
+    content: [
+      'Digital assets such as Bitcoin (BTC) and Ethereum (ETH) have evolved from niche speculative instruments into recognized global institutional asset classes. Multi-asset quantitative fund managers utilize controlled digital asset allocations to capture non-correlated alpha alongside traditional equity indices, sovereign bonds, and physical commodities.',
+      '### 1. Macro Economic Hedging & Non-Correlated Returns',
+      'Sovereign debt expansion, global central bank balance sheet growth, and monetary inflation have highlighted the strategic utility of scarce digital assets. Bitcoin operates with a hard-capped supply of 21 million units, offering programmatic scarcity that exhibits low long-term correlation to traditional sovereign credit markets.',
+      'Integrating a 3% to 5% allocation into a diversified portfolio improves overall portfolio Sharpe ratios and tail-risk resilience.',
+      '### 2. Volatility-Weighted Position Budgeting',
+      'Because digital assets exhibit higher historical price volatility than traditional equities, quantitative portfolio models deploy dynamic volatility-weighted position budgeting rather than static dollar allocations.',
+      'When digital asset volatility spikes above predefined risk thresholds, automated algorithms rebalance surplus gains into liquid short-term treasury reserves. Conversely, during market consolidation phases, the system systematically re-accumulates target positions.',
+      '### 3. Proof-of-Stake Yield Accumulation & Validator Staking',
+      'Beyond capital appreciation, proof-of-stake blockchain protocols enable institutional holders to generate native validator staking yields (typically 4% to 6% APY) on underlying Ethereum reserves.',
+      'Algorithmic smart vaults route staking rewards directly back into compounding principal balances while utilizing liquid staking derivative tokens to maintain immediate portfolio liquidity.',
+      '### 4. Qualified Institutional Custody & Cold-Storage Security',
+      'Securing institutional digital assets requires multi-signature cryptographic key architecture, hardware security modules (HSM), and SEC-compliant qualified custodians. Bank-grade offline cold storage vaults safeguard private keys against cyber threats.',
+      '### Key Institutional Takeaways:',
+      '• Non-correlated digital asset allocations enhance overall portfolio Sharpe ratios and macro inflation defense.\n• Volatility-weighted position budgeting automatically protects principal capital during digital market sell-offs.\n• Institutional qualified cold-storage custody ensures bank-grade security and full insurance coverage.\n• Native Proof-of-Stake validator rewards generate 4% - 6% APY in automated compounding yield.'
+    ]
+  },
+  {
+    id: 'sec-investor-alerts-risk-guidance',
+    title: 'U.S. SEC Investor Alerts & Regulatory Risk Management Guidance',
+    category: 'Macro Strategy',
+    author: 'Sarah Jenkins (Regulatory & Compliance Lead)',
+    date: 'July 10, 2026',
+    readTime: '7 min read (580 words)',
+    abstract: 'Official regulatory guidelines published by the U.S. SEC on fiduciary advisor mandates, transparent quantitative disclosures, and qualified independent asset custody.',
+    icon: <BarChart3 size={32} />,
+    gold: false,
+    url: 'https://www.sec.gov/investor/alerts',
+    image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80",
+    imageAlt: "Macroeconomic Volatility Shield & Risk Hedging Market Defense Graph",
+    content: [
+      'The U.S. Securities and Exchange Commission (SEC) regularly issues investor alerts, regulatory bulletins, and risk guidance to safeguard retail and accredited investor capital. Navigating regulatory compliance frameworks is paramount when selecting automated quantitative investment platforms and wealth advisory services.',
+      '### 1. Fiduciary Duties Under the Investment Advisers Act',
+      'Under the Investment Advisers Act of 1940, SEC-registered investment advisors (RIAs) are held to strict fiduciary standards. This legal mandate obligates advisory firms to act with uncompromised loyalty and prudence, placing client financial interests above firm profits.',
+      'Fiduciaries must provide complete transparency regarding algorithmic decision rules, fee schedules, and execution routing.',
+      '### 2. Independent Qualified Custody & Client Asset Isolation',
+      'SEC Rule 206(4)-2 (the Custody Rule) requires that client investment funds and securities must be maintained with independent qualified custodians—such as SEC-registered broker-dealers or FDIC-insured banks—rather than held directly on an advisory firm balance sheet.',
+      'Qualified custody ensures client funds remain segregated, covered by SIPC insurance up to $500,000, and protected from corporate operational risks.',
+      '### 3. Algorithmic Transparency & Model Backtest Disclosures',
+      'Regulatory guidance emphasizes that AI-driven quantitative investment platforms must provide clear disclosures regarding model backtesting methodologies, execution slippage estimates, and historical drawdown metrics.',
+      '### 4. Verifying Advisor Credentials & CRD Registrations',
+      'Investors can independently verify an advisory firm registration status, disciplinary history, and key executive disclosures using the SEC Investment Adviser Public Disclosure (IAPD) database and FINRA BrokerCheck system.',
+      '### Key Institutional Takeaways:',
+      '• SEC regulatory alerts provide authoritative benchmarks for verifying investment advisor registrations and credentials.\n• Fiduciary mandates legally compel registered advisors to prioritize client financial interests above all else.\n• Independent qualified custody isolates client assets in SIPC-insured brokerages protected from firm liabilities.\n• Verifying CRD registration numbers via the SEC IAPD database protects investors against unauthorized platforms.'
+    ]
+  }
+];
+
+export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPageProps) {
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [activeArticle, setActiveArticle] = useState<BlogArticle | null>(null);
+  const [copiedArticleUrl, setCopiedArticleUrl] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    if (path.includes('/blogs/') || path.includes('/blog/')) {
+      const articleId = path.split('/blog/')[1] || path.split('/blogs/')[1];
+      const match = standaloneBlogArticles.find(a => a.id === articleId);
+      if (match) setActiveArticle(match);
+    }
+  }, []);
+
+  const openArticle = (article: BlogArticle) => {
+    setActiveArticle(article);
+    const targetPath = `/blogs/${article.id}`;
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({ articleId: article.id }, '', targetPath);
+    }
+  };
+
+  const closeArticle = () => {
+    setActiveArticle(null);
+    if (window.location.pathname !== '/blogs') {
+      window.history.pushState(null, '', '/blogs');
+    }
+  };
+
+  const categories = ['All', 'AI & Tech', 'Crypto', 'Macro Strategy', 'Tax Strategy'];
+  
+  const filteredArticles = standaloneBlogArticles.filter(art => {
+    const matchesCategory = selectedCategory === 'All' || art.category === selectedCategory;
+    const matchesSearch = searchQuery === '' || 
+      art.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      art.abstract.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      art.author.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  const featuredArticle = (selectedCategory === 'All' && !searchQuery) ? standaloneBlogArticles[0] : null;
+  const gridArticles = featuredArticle ? filteredArticles.filter(art => art.id !== featuredArticle.id) : filteredArticles;
+
+  return (
+    <div className="lp-wrapper">
+      <ParticleBackground />
+
+      {/* Schema.org Blog & Article JSON-LD Structured Data */}
+      <script 
+        type="application/ld+json" 
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Blog",
+            "name": "AI Capital Official Research & Insights Directory",
+            "url": "https://ai-capital-investment.vercel.app/blogs",
+            "description": "Institutional quantitative research reports, tax alpha strategies, digital asset yield mechanics, and regulatory compliance guidance.",
+            "publisher": {
+              "@type": "Organization",
+              "name": "AI Capital Investment LLC",
+              "logo": "https://ai-capital-investment.vercel.app/logo.png"
+            },
+            "blogPost": standaloneBlogArticles.map(b => ({
+              "@type": "BlogPosting",
+              "headline": b.title,
+              "image": b.image,
+              "datePublished": "2026-07-20",
+              "author": {
+                "@type": "Person",
+                "name": b.author
+              },
+              "url": `https://ai-capital-investment.vercel.app/blogs/${b.id}`,
+              "description": b.abstract
+            }))
+          })
+        }} 
+      />
+
+      {/* ── Standalone Page Header ───────────────────────────────────── */}
+      <header className="lp-header">
+        <div className="lp-container lp-header-inner" style={{ padding: '12px 16px' }}>
+          <div className="logo" onClick={() => onNavigate('landing')} style={{ cursor: 'pointer' }}>
+            <div className="logo-symbol">AI</div>
+            <div className="logo-text">AI Capital<span>Investment</span></div>
+          </div>
+
+          <nav className={`lp-nav-wrapper ${mobileMenuOpen ? 'open' : ''}`}>
+            <ul className="lp-nav">
+              <li onClick={() => setMobileMenuOpen(false)}>
+                <a href="/" onClick={(e) => { e.preventDefault(); onNavigate('landing'); }}>Home</a>
+              </li>
+              <li onClick={() => setMobileMenuOpen(false)}>
+                <a href="/#about" onClick={(e) => { e.preventDefault(); onNavigate('landing'); }}>About</a>
+              </li>
+              <li onClick={() => setMobileMenuOpen(false)}>
+                <a href="/#services" onClick={(e) => { e.preventDefault(); onNavigate('landing'); }}>Services</a>
+              </li>
+              <li onClick={() => setMobileMenuOpen(false)} className="active">
+                <a href="/blogs" style={{ color: 'var(--color-gold)', fontWeight: 700 }}>Research & Blogs</a>
+              </li>
+              <li className="mobile-only-nav-item" style={{ marginTop: '14px', gap: '10px', width: '100%', justifyContent: 'center' }}>
+                <button className="btn btn-gold" style={{ padding: '10px 24px', fontSize: '0.85rem', width: '100%' }} onClick={() => { setMobileMenuOpen(false); onNavigate('login'); }}>
+                  Launch Web App / Sign In
+                </button>
+              </li>
+            </ul>
+          </nav>
+
+          <div className="lp-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <button 
+              className="btn btn-green-outline" 
+              style={{ fontSize: '0.78rem', padding: '6px 14px', borderRadius: '20px' }} 
+              onClick={() => onNavigate('login')}
+            >
+              Sign In / App
+            </button>
+
+            {/* Mobile Hamburger Button */}
+            <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* ── Main Content Area ────────────────────────────────────────── */}
+      <main className="lp-container" style={{ paddingTop: '32px', paddingBottom: '60px', minHeight: 'calc(100vh - 200px)' }}>
+        
+        {/* Back Link */}
+        <div style={{ marginBottom: '16px' }}>
+          <button 
+            type="button"
+            onClick={() => onNavigate('landing')}
+            style={{
+              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
+              color: 'var(--text-secondary)', fontSize: '0.82rem', padding: '6px 14px', borderRadius: '20px',
+              cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', transition: 'all 0.2s ease'
+            }}
+            onMouseEnter={e => e.currentTarget.style.color = 'var(--color-gold)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}
+          >
+            <ArrowLeft size={14} /> Back to Main Site
+          </button>
+        </div>
+
+        <div className="blogs-container">
+          {/* Header Banner */}
+          <div className="blog-header-banner">
+            <div>
+              <h1 style={{ fontSize: '1.65rem', fontWeight: 800, color: '#ffffff', marginBottom: '6px' }}>
+                Institutional Research & Market Intelligence 📊
+              </h1>
+              <p style={{ fontSize: '0.88rem', color: '#a1b3b8' }}>
+                Actionable quantitative strategies, tax alpha guides, digital asset yields, and SEC regulatory analysis.
+              </p>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', width: '100%', maxWidth: '580px', justifyContent: 'flex-end' }}>
+              <div className="blog-search-wrapper">
+                <Search size={16} className="blog-search-icon" />
+                <input 
+                  type="text"
+                  placeholder="Search research reports, topics, or authors..."
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  className="blog-search-input"
+                />
+              </div>
+              <a 
+                href="https://www.udenai.com/blog-studio" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="btn btn-green-outline"
+                style={{ fontSize: '0.82rem', padding: '9px 18px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer', whiteSpace: 'nowrap', borderRadius: '24px' }}
+              >
+                Publish Article <ArrowUpRight size={14} />
+              </a>
+            </div>
+          </div>
+
+          {/* Filter Category Pills */}
+          <div className="blog-filters">
+            {categories.map(cat => (
+              <button
+                key={cat}
+                type="button"
+                className={`blog-filter-btn ${selectedCategory === cat ? 'active' : ''}`}
+                onClick={() => setSelectedCategory(cat)}
+              >
+                {cat === 'All' ? '✨ All Insights' : cat === 'AI & Tech' ? '🤖 AI & Tech' : cat === 'Crypto' ? '🪙 Crypto' : cat === 'Macro Strategy' ? '📊 Macro Strategy' : '🛡️ Tax Strategy'}
+              </button>
+            ))}
+          </div>
+
+          {/* Blogs Grid & Hero Spotlight */}
+          <div className="blogs-grid">
+            {/* Hero Spotlight Featured Article */}
+            {featuredArticle && (
+              <div className="blog-featured-spotlight">
+                <div style={{ padding: '22px 26px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                    <span style={{ background: 'rgba(212, 175, 55, 0.15)', color: 'var(--color-gold)', border: '1px solid rgba(212, 175, 55, 0.3)', padding: '2px 8px', borderRadius: '10px', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.4px' }}>
+                      ⭐ FEATURED REPORT
+                    </span>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--color-gold)', fontFamily: 'monospace', fontWeight: 600 }}>
+                      {featuredArticle.readTime}
+                    </span>
+                  </div>
+
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff', marginBottom: '8px', lineHeight: 1.3 }} className="glow-text-gold">
+                    {featuredArticle.title}
+                  </h3>
+
+                  <p style={{ fontSize: '0.84rem', color: '#a1b3b8', lineHeight: 1.5, marginBottom: '16px', borderLeft: '2px solid var(--color-gold)', paddingLeft: '10px' }}>
+                    {featuredArticle.abstract}
+                  </p>
+
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
+                    <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
+                      <span style={{ color: '#ffffff', fontWeight: 600 }}>By {featuredArticle.author}</span> • <span>{featuredArticle.date}</span>
+                    </div>
+                    <button 
+                      type="button" 
+                      className="btn btn-gold"
+                      onClick={() => openArticle(featuredArticle)}
+                      style={{ fontSize: '0.78rem', padding: '6px 16px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                    >
+                      Read Report <ChevronRight size={14} />
+                    </button>
+                  </div>
+                </div>
+                <div className="blog-img-thumb-container" style={{ height: '100%', minHeight: '160px' }}>
+                  <img 
+                    src={featuredArticle.image} 
+                    alt={featuredArticle.imageAlt} 
+                    className="blog-img-thumb"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Standard Grid Articles */}
+            {gridArticles.map(article => (
+              <div
+                key={article.id}
+                className={`blog-card ${article.gold ? 'gold-border' : ''}`}
+              >
+                <div className="blog-img-thumb-container">
+                  <img 
+                    src={article.image} 
+                    alt={article.imageAlt} 
+                    className="blog-img-thumb"
+                  />
+                  <div style={{ position: 'absolute', top: '12px', right: '12px', background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)', padding: '3px 10px', borderRadius: '12px', fontSize: '0.72rem', color: 'var(--color-gold)', fontFamily: 'monospace', fontWeight: 600 }}>
+                    {article.readTime}
+                  </div>
+                </div>
+                <div className="blog-card-content">
+                  <span className="blog-badge">{article.category}</span>
+                  <h3 className="blog-card-title">{article.title}</h3>
+                  <p className="blog-card-abstract">{article.abstract}</p>
+                  <div className="blog-meta-footer">
+                    <div className="blog-meta-left">
+                      <span>{article.author}</span>
+                      <span>•</span>
+                      <span>{article.date}</span>
+                    </div>
+                    <span className="blog-read-link" onClick={() => openArticle(article)}>
+                      Read Report <ChevronRight size={14} />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Detailed Article Reader Overlay */}
+        {activeArticle && (
+          <div style={{
+            position: 'fixed', inset: 0, zIndex: 1000,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            backgroundColor: 'rgba(2, 8, 4, 0.75)', backdropFilter: 'blur(10px)',
+            padding: '20px'
+          }}>
+            <div className="glass-card" style={{
+              maxWidth: '400px', width: '90%', maxHeight: '82vh', overflowY: 'auto', padding: '16px 18px',
+              position: 'relative', border: activeArticle.gold ? '1px solid rgba(212, 175, 55, 0.3)' : '1px solid rgba(0, 230, 118, 0.3)',
+              background: 'rgba(6, 18, 10, 0.98)', boxShadow: activeArticle.gold ? '0 0 30px rgba(212, 175, 55, 0.15)' : '0 0 30px rgba(0, 230, 118, 0.15)',
+              transform: 'none', borderRadius: '16px'
+            }}>
+              <button onClick={closeArticle} style={{
+                position: 'absolute', top: '12px', right: '12px', zIndex: 10,
+                background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.15)', color: '#fff',
+                borderRadius: '50%', width: '28px', height: '28px',
+                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'all 0.2s ease'
+              }} onMouseEnter={e => e.currentTarget.style.color = '#00e676'} onMouseLeave={e => e.currentTarget.style.color = '#fff'}>
+                <X size={15} />
+              </button>
+              
+              <div style={{ borderRadius: '10px', overflow: 'hidden', height: '110px', marginBottom: '12px', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <img 
+                  src={activeArticle.image} 
+                  alt={activeArticle.imageAlt} 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                <span className="blog-badge" style={{ fontSize: '0.64rem', padding: '2px 7px' }}>{activeArticle.category}</span>
+                <span style={{ fontSize: '0.68rem', color: 'var(--color-gold)', fontWeight: 600, fontFamily: 'monospace' }}>{activeArticle.readTime}</span>
+              </div>
+
+              <h2 style={{ fontSize: '1.02rem', fontWeight: 700, marginBottom: '6px', color: '#ffffff', lineHeight: 1.3 }} className={activeArticle.gold ? 'glow-text-gold' : 'glow-text-green'}>
+                {activeArticle.title}
+              </h2>
+              
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '10px', paddingBottom: '6px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                <span style={{ color: '#ffffff', fontWeight: 600 }}>By {activeArticle.author}</span>
+                <span>•</span>
+                <span>{activeArticle.date}</span>
+              </div>
+
+              <div style={{
+                fontSize: '0.85rem', color: '#d1e0e4', lineHeight: '1.55',
+                textAlign: 'left'
+              }}>
+                {activeArticle.content.map((paragraph, index) => {
+                  if (paragraph.startsWith('### ')) {
+                    return (
+                      <h4 key={index} style={{
+                        fontSize: '0.94rem', color: '#ffffff', fontWeight: 700,
+                        marginTop: '14px', marginBottom: '6px',
+                        paddingLeft: '6px', borderLeft: activeArticle.gold ? '3px solid var(--color-gold)' : '3px solid #00e676'
+                      }}>
+                        {paragraph.replace('### ', '')}
+                      </h4>
+                    );
+                  }
+                  if (paragraph.includes('Key Institutional Takeaways:')) {
+                    const parts = paragraph.split('\n');
+                    return (
+                      <div key={index} style={{
+                        marginTop: '12px', marginBottom: '12px', padding: '10px 12px',
+                        background: 'rgba(0, 230, 118, 0.06)', borderLeft: '3px solid #00e676',
+                        borderRadius: '6px', border: '1px solid rgba(0, 230, 118, 0.2)'
+                      }}>
+                        <h5 style={{ color: '#00e676', fontSize: '0.84rem', fontWeight: 700, marginBottom: '4px' }}>
+                          📌 Key Institutional Takeaways
+                        </h5>
+                        {parts.slice(1).map((bullet, bIdx) => (
+                          <p key={bIdx} style={{ fontSize: '0.78rem', color: '#e0f2f1', marginBottom: '3px', lineHeight: '1.45' }}>
+                            {bullet}
+                          </p>
+                        ))}
+                      </div>
+                    );
+                  }
+                  return <p key={index} style={{ marginBottom: '8px' }}>{paragraph}</p>;
+                })}
+              </div>
+
+              {/* Shareable Article Link Box */}
+              <div style={{
+                marginTop: '10px', padding: '8px 10px', background: 'rgba(0, 230, 118, 0.05)',
+                border: '1px solid rgba(0, 230, 118, 0.2)', borderRadius: '6px',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '6px'
+              }}>
+                <div>
+                  <div style={{ fontSize: '0.62rem', color: '#00e676', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+                    🔗 Shareable Link
+                  </div>
+                  <div style={{ fontSize: '0.68rem', color: '#ffffff', fontFamily: 'monospace', wordBreak: 'break-all' }}>
+                    {`https://ai-capital-investment.vercel.app/blogs/${activeArticle.id}`}
+                  </div>
+                </div>
+                <button 
+                  type="button"
+                  onClick={() => {
+                    const shareUrl = `https://ai-capital-investment.vercel.app/blogs/${activeArticle.id}`;
+                    navigator.clipboard.writeText(shareUrl);
+                    setCopiedArticleUrl(activeArticle.id);
+                    setTimeout(() => setCopiedArticleUrl(null), 2500);
+                  }}
+                  className="btn btn-green-outline"
+                  style={{ fontSize: '0.68rem', padding: '4px 10px', display: 'inline-flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}
+                >
+                  {copiedArticleUrl === activeArticle.id ? '✓ Copied!' : '📋 Copy Link'}
+                </button>
+              </div>
+
+              {/* YMYL Financial Disclaimer Banner */}
+              <div style={{
+                marginTop: '8px', padding: '6px 8px', background: 'rgba(212, 175, 55, 0.06)',
+                borderLeft: '2px solid var(--color-gold)', borderRadius: '4px', fontSize: '0.64rem',
+                color: 'var(--text-muted)', lineHeight: 1.4
+              }}>
+                <strong>Notice:</strong> Insights provided by AI Capital LLC. Past performance does not guarantee future returns. Educational purposes only.
+              </div>
+              
+              <div style={{ marginTop: '12px', textAlign: 'center' }}>
+                <button 
+                  type="button" 
+                  className="btn btn-green-outline" 
+                  onClick={closeArticle} 
+                  style={{ fontSize: '0.76rem', padding: '5px 18px', borderRadius: '16px', cursor: 'pointer' }}
+                >
+                  Close Article
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* ── Footer ────────────────────────────────────────────────── */}
+      <footer className="lp-footer">
+        <div className="lp-container lp-footer-grid">
+          <div className="lp-footer-brand">
+            <div className="logo">
+              <div className="logo-symbol">AI</div>
+              <div className="logo-text">AI Capital<span>Investment</span></div>
+            </div>
+            <p>Next-generation financial solutions leveraging intelligent systems to grow your wealth.</p>
+          </div>
+          <div>
+            <h5>Quick Links</h5>
+            <ul className="lp-footer-links">
+              <li><a href="/" onClick={(e) => { e.preventDefault(); onNavigate('landing'); }}>Home</a></li>
+              <li><a href="/#about" onClick={(e) => { e.preventDefault(); onNavigate('landing'); }}>About</a></li>
+              <li><a href="/#services" onClick={(e) => { e.preventDefault(); onNavigate('landing'); }}>Services</a></li>
+              <li><a href="/blogs" onClick={(e) => { e.preventDefault(); onNavigate('blogs'); }}>Blogs</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5>Services</h5>
+            <ul className="lp-footer-links">
+              <li>Wealth Management</li>
+              <li>Investment Advisory</li>
+              <li>Retirement Planning</li>
+            </ul>
+          </div>
+          <div>
+            <h5>Contact & Regulatory</h5>
+            <ul className="lp-footer-links">
+              <li>SEBI Reg: INA000098765</li>
+              <li>SEC RIA #801-123456</li>
+              <li>info@aicapital.com</li>
+              <li>+1 (555) 123-4567</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="lp-footer-bottom">
+          <div className="lp-container">
+            <span>© 2026 AI Capital Investment. All rights reserved.</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
