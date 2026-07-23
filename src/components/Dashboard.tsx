@@ -1525,6 +1525,7 @@ const BlogsSection = () => {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [activeArticle, setActiveArticle] = useState<BlogArticle | null>(null);
     const [copiedArticleUrl, setCopiedArticleUrl] = useState<string | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         const path = window.location.pathname;
@@ -1551,42 +1552,120 @@ const BlogsSection = () => {
     };
 
     const categories = ['All', 'AI & Tech', 'Crypto', 'Macro Strategy', 'Tax Strategy'];
-    const filteredArticles = selectedCategory === 'All'
-        ? blogArticles
-        : blogArticles.filter(art => art.category === selectedCategory);
+    
+    const filteredArticles = blogArticles.filter(art => {
+        const matchesCategory = selectedCategory === 'All' || art.category === selectedCategory;
+        const matchesSearch = searchQuery === '' || 
+            art.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+            art.abstract.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            art.author.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesCategory && matchesSearch;
+    });
+
+    const featuredArticle = (selectedCategory === 'All' && !searchQuery) ? blogArticles[0] : null;
+    const gridArticles = featuredArticle ? filteredArticles.filter(art => art.id !== featuredArticle.id) : filteredArticles;
 
     return (
         <div className="blogs-container">
-            <div className="blog-filters" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                    {categories.map(cat => (
-                        <button
-                            key={cat}
-                            type="button"
-                            className={`blog-filter-btn ${selectedCategory === cat ? 'active' : ''}`}
-                            onClick={() => setSelectedCategory(cat)}
-                        >
-                            {cat}
-                        </button>
-                    ))}
+            {/* Header Control Banner */}
+            <div className="blog-header-banner">
+                <div>
+                    <h2 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#ffffff', marginBottom: '4px' }}>
+                        Institutional Research & Market Intelligence 📊
+                    </h2>
+                    <p style={{ fontSize: '0.84rem', color: '#a1b3b8' }}>
+                        Actionable quantitative strategies, tax alpha guides, and regulatory analysis for accredited portfolios.
+                    </p>
                 </div>
-                <a 
-                    href="https://www.udenai.com/blog-studio" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="btn btn-green-outline"
-                    style={{ fontSize: '0.8rem', padding: '6px 14px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
-                >
-                    Write a Blog <ArrowUpRight size={14} />
-                </a>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', width: '100%', maxWidth: '580px', justifyContent: 'flex-end' }}>
+                    <div className="blog-search-wrapper">
+                        <Search size={16} className="blog-search-icon" />
+                        <input 
+                            type="text"
+                            placeholder="Search research reports, topics, or authors..."
+                            value={searchQuery}
+                            onChange={e => setSearchQuery(e.target.value)}
+                            className="blog-search-input"
+                        />
+                    </div>
+                    <a 
+                        href="https://www.udenai.com/blog-studio" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="btn btn-green-outline"
+                        style={{ fontSize: '0.82rem', padding: '9px 18px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer', whiteSpace: 'nowrap', borderRadius: '24px' }}
+                    >
+                        Publish Article <ArrowUpRight size={14} />
+                    </a>
+                </div>
             </div>
 
+            {/* Filter Category Pills */}
+            <div className="blog-filters">
+                {categories.map(cat => (
+                    <button
+                        key={cat}
+                        type="button"
+                        className={`blog-filter-btn ${selectedCategory === cat ? 'active' : ''}`}
+                        onClick={() => setSelectedCategory(cat)}
+                    >
+                        {cat === 'All' ? '✨ All Insights' : cat === 'AI & Tech' ? '🤖 AI & Tech' : cat === 'Crypto' ? '🪙 Crypto' : cat === 'Macro Strategy' ? '📊 Macro Strategy' : '🛡️ Tax Strategy'}
+                    </button>
+                ))}
+            </div>
+
+            {/* Blogs Grid & Hero Spotlight */}
             <div className="blogs-grid">
-                {filteredArticles.map(article => (
+                {/* Hero Spotlight Featured Article */}
+                {featuredArticle && (
+                    <div className="blog-featured-spotlight">
+                        <div style={{ padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                                <span style={{ background: 'rgba(212, 175, 55, 0.15)', color: 'var(--color-gold)', border: '1px solid rgba(212, 175, 55, 0.3)', padding: '4px 12px', borderRadius: '14px', fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.5px' }}>
+                                    ⭐ FEATURED INSTITUTIONAL REPORT
+                                </span>
+                                <span style={{ fontSize: '0.78rem', color: 'var(--color-gold)', fontFamily: 'monospace', fontWeight: 600 }}>
+                                    {featuredArticle.readTime}
+                                </span>
+                            </div>
+
+                            <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#ffffff', marginBottom: '14px', lineHeight: 1.35 }} className="glow-text-gold">
+                                {featuredArticle.title}
+                            </h3>
+
+                            <p style={{ fontSize: '0.92rem', color: '#a1b3b8', lineHeight: 1.65, marginBottom: '22px', borderLeft: '3px solid var(--color-gold)', paddingLeft: '14px' }}>
+                                {featuredArticle.abstract}
+                            </p>
+
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+                                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                                    <span style={{ color: '#ffffff', fontWeight: 600 }}>By {featuredArticle.author}</span> • <span>{featuredArticle.date}</span>
+                                </div>
+                                <button 
+                                    type="button" 
+                                    className="btn btn-gold"
+                                    onClick={() => openArticle(featuredArticle)}
+                                    style={{ fontSize: '0.86rem', padding: '10px 22px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                >
+                                    Read Full Report <ChevronRight size={16} />
+                                </button>
+                            </div>
+                        </div>
+                        <div className="blog-img-thumb-container" style={{ height: '100%', minHeight: '260px' }}>
+                            <img 
+                                src={featuredArticle.image} 
+                                alt={featuredArticle.imageAlt} 
+                                className="blog-img-thumb"
+                            />
+                        </div>
+                    </div>
+                )}
+
+                {/* Standard Grid Articles */}
+                {gridArticles.map(article => (
                     <div
                         key={article.id}
-                        className={`widget blog-card glass-card ${article.gold ? 'gold-border' : 'green-border'}`}
-                        style={{ padding: 0, overflow: 'hidden' }}
+                        className={`blog-card ${article.gold ? 'gold-border' : ''}`}
                     >
                         <div className="blog-img-thumb-container">
                             <img 
@@ -1594,6 +1673,9 @@ const BlogsSection = () => {
                                 alt={article.imageAlt} 
                                 className="blog-img-thumb"
                             />
+                            <div style={{ position: 'absolute', top: '12px', right: '12px', background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)', padding: '3px 10px', borderRadius: '12px', fontSize: '0.72rem', color: 'var(--color-gold)', fontFamily: 'monospace', fontWeight: 600 }}>
+                                {article.readTime}
+                            </div>
                         </div>
                         <div className="blog-card-content">
                             <span className="blog-badge">{article.category}</span>
@@ -1605,8 +1687,8 @@ const BlogsSection = () => {
                                     <span>•</span>
                                     <span>{article.date}</span>
                                 </div>
-                                <span className="blog-read-link" onClick={() => openArticle(article)} style={{ cursor: 'pointer' }}>
-                                    Read Article <ChevronRight size={14} />
+                                <span className="blog-read-link" onClick={() => openArticle(article)}>
+                                    Read Report <ChevronRight size={14} />
                                 </span>
                             </div>
                         </div>
