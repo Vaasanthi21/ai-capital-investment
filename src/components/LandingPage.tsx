@@ -428,8 +428,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
               <Globe size={12} /> {language === 'en' ? 'हिंदी' : 'EN'}
             </button>
             
-            <button className="btn btn-green-outline desktop-signin" onClick={() => onNavigate('login')}>{t.signIn}</button>
-            <button className="btn btn-gold desktop-signin" style={{ fontSize: '0.78rem', padding: '5px 12px' }} onClick={() => onNavigate('signup')}>{t.getStarted}</button>
+            <button className="btn btn-green-outline" onClick={() => onNavigate('login')}>{t.signIn}</button>
             
             {/* Mobile Hamburger Button */}
             <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
