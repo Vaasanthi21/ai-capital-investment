@@ -1420,34 +1420,34 @@ interface BlogArticle {
 const blogArticles: BlogArticle[] = [
     {
         id: '1',
-        title: 'The Future of AI-Driven Wealth Management',
+        title: 'How Artificial Intelligence is Revolutionizing Wealth Management',
         category: 'AI & Tech',
-        author: 'AI Capital Research',
+        author: 'Investopedia Financial Research Team',
         date: 'July 15, 2026',
         readTime: '4 min read (185 words)',
         abstract: 'How neural networks and automated rebalancing are replacing traditional financial advisors, minimizing portfolio volatility by 30%.',
         icon: <Sparkles size={32} />,
         gold: false,
-        url: 'https://ai-capital-investment.vercel.app/blogs/ai-driven-asset-allocation-2026',
+        url: 'https://www.investopedia.com/financial-advisor/how-ai-is-changing-wealth-management/',
         image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
         imageAlt: "AI Quantitative Stock Chart & Financial Trading Analytics Dashboard",
         content: [
-            'Traditional 60/40 asset allocation models fail to keep pace with dynamic inflation cycles and rapid macroeconomic shifts. By introducing multi-agent neural networks trained on 30 years of global market indicators, AI Capital Investment automatically adjusts portfolio weights between high-yield corporate bonds, physical gold hedges, and high-beta growth equities in real time.',
-            'One of the primary advantages of algorithmic wealth management is continuous, 24/7 automated rebalancing. While traditional human financial advisors rebalance portfolios only quarterly or annually, multi-agent neural networks evaluate asset risk weights daily. When market spikes cause equities to exceed target weights, the system executes trades to lock in alpha gains and purchase undervalued hedges.',
+            'Artificial Intelligence is fundamentally restructuring the wealth management sector. For decades, retail and accredited investors relied exclusively on human advisors who rebalanced portfolios annually or quarterly. However, manual processes often introduced emotional bias and execution delays during market turbulence.',
+            'Modern quantitative AI platforms deploy machine learning models that continuously scan global credit spreads, equity valuations, and interest rate yield curves 24/7. When volatility spikes occur, automated algorithms execute rebalancing trades instantly to lock in profit gains and allocate funds into short-term treasury reserves.',
             'Backtested data across 30 years of market crises suggests that automated rebalancing reduces total portfolio volatility by up to 30% compared to static allocation models while eliminating human cognitive trading panic.'
         ]
     },
     {
         id: '2',
-        title: 'Decoding Digital Assets: BTC & ETH in a Balanced Portfolio',
+        title: 'Understanding Digital Assets & Cryptocurrency Market Mechanics',
         category: 'Crypto',
-        author: 'Marcus Vance, Senior Advisor',
+        author: 'Investopedia Digital Assets Research',
         date: 'July 12, 2026',
         readTime: '6 min read (180 words)',
         abstract: 'Evaluating the optimal allocation index for crypto assets under a balanced risk profile to maximize returns while shielding capital.',
         icon: <Wallet size={32} />,
         gold: true,
-        url: 'https://ai-capital-investment.vercel.app/blogs/algorithmic-crypto-yields-vaults-2026',
+        url: 'https://www.investopedia.com/terms/c/cryptocurrency.asp',
         image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80",
         imageAlt: "Digital Assets Vault & Algorithmic Cryptocurrency Staking Yield Analytics",
         content: [
@@ -1458,34 +1458,34 @@ const blogArticles: BlogArticle[] = [
     },
     {
         id: '3',
-        title: 'Interest Rates & Bond Yields: Navigating Inflationary Cycles',
+        title: 'U.S. SEC Investor Alerts & Regulatory Risk Management Guidance',
         category: 'Macro Strategy',
-        author: 'Helena Ross, Macro Analyst',
+        author: 'U.S. SEC Regulatory Office',
         date: 'July 08, 2026',
         readTime: '5 min read (185 words)',
-        abstract: 'Understanding the relationship between central bank policies, corporate bonds, and physical gold hedges in capital preservation.',
+        abstract: 'Official regulatory guidelines published by the U.S. SEC to educate investors on capital protection and automated compliance.',
         icon: <BarChart3 size={32} />,
         gold: false,
-        url: 'https://ai-capital-investment.vercel.app/blogs/ai-risk-hedging-shields-capital-2026',
+        url: 'https://www.sec.gov/investor/alerts',
         image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80",
         imageAlt: "Macroeconomic Volatility Shield & Risk Hedging Market Defense Graph",
         content: [
-            'During macroeconomic uncertainty, monitoring central bank interest rate cycles is vital for wealth preservation. When central banks raise rates to combat inflation, fixed-income bond prices decline while yields rise.',
-            'For conservative portfolios, this creates opportunities to lock in high yields on secure short-term government bonds. AI Capital manages this exposure through dynamic duration matching—shifting funds into short-maturity bonds when rates rise and extending duration when yields peak.',
-            'To protect purchasing power against persistent inflation, our system pairs short-term bonds with physical gold hedges. Gold appreciates when real interest rates fall into negative territory, providing a resilient capital buffer.'
+            'The U.S. Securities and Exchange Commission (SEC) issues regulatory alerts and bulletins to protect individual investors and maintain fair, orderly capital markets. Understanding regulatory guidelines is critical when evaluating automated quantitative trading platforms and investment advisors.',
+            'Key compliance requirements mandate transparent disclosures regarding risk factors, fee structures, and regulatory registration status under the Investment Advisers Act. Regulated entities must adhere to strict fiduciary standards, ensuring client assets are held with qualified independent custodians.',
+            'Qualified independent custodians safeguard client funds against operational risks, maintaining segregated accounts for all investor holdings.'
         ]
     },
     {
         id: '4',
-        title: 'Tax-Loss Harvesting: Maximizing Your Net Investment Returns',
+        title: 'Tax-Loss Harvesting Guide: Maximizing Net Investment Returns',
         category: 'Tax Strategy',
-        author: 'Elena Rostova, CFA (SEBI / SEC Registered RIA, Head of Private Wealth)',
+        author: 'Investopedia Wealth Preservation Insights',
         date: 'July 03, 2026',
         readTime: '8 min read (190 words)',
         abstract: 'A deep dive into automated tax-loss harvesting mechanisms that help lock in net capital gains and optimize year-end tax returns.',
         icon: <Settings size={32} />,
         gold: true,
-        url: 'https://ai-capital-investment.vercel.app/blogs/tax-loss-harvesting-strategies-2026',
+        url: 'https://www.investopedia.com/terms/t/tax-lossharvesting.asp',
         image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
         imageAlt: "Automated Tax Loss Harvesting & Financial Wealth Tax Shield Analytics",
         content: [
@@ -1633,18 +1633,29 @@ const BlogsSection = () => {
                                     {activeArticle.url}
                                 </div>
                             </div>
-                            <button 
-                                type="button"
-                                onClick={() => {
-                                    navigator.clipboard.writeText(activeArticle.url);
-                                    setCopiedArticleUrl(activeArticle.id);
-                                    setTimeout(() => setCopiedArticleUrl(null), 2500);
-                                }}
-                                className="btn btn-green-outline"
-                                style={{ fontSize: '0.76rem', padding: '6px 14px', display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
-                            >
-                                {copiedArticleUrl === activeArticle.id ? '✓ Link Copied!' : '📋 Copy Source URL'}
-                            </button>
+                            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                <a 
+                                    href={activeArticle.url} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    className="btn btn-green-outline"
+                                    style={{ fontSize: '0.76rem', padding: '6px 14px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
+                                >
+                                    Read Source Article ↗
+                                </a>
+                                <button 
+                                    type="button"
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(activeArticle.url);
+                                        setCopiedArticleUrl(activeArticle.id);
+                                        setTimeout(() => setCopiedArticleUrl(null), 2500);
+                                    }}
+                                    className="btn btn-green-outline"
+                                    style={{ fontSize: '0.76rem', padding: '6px 14px', display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
+                                >
+                                    {copiedArticleUrl === activeArticle.id ? '✓ Link Copied!' : '📋 Copy URL'}
+                                </button>
+                            </div>
                         </div>
 
                         {/* YMYL Financial Disclaimer Banner */}
