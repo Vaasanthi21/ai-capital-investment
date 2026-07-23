@@ -269,12 +269,11 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
         return 'home';
     };
 
-    const [riskTolerance, setRiskTolerance] = useState(userData.riskTolerance || 'Balanced');
+    const [riskTolerance, setRiskTolerance] = useState(userData?.riskTolerance || 'Balanced');
     const [selectedTab, setSelectedTab] = useState(getInitialTab);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [aiBubbleText, setAiBubbleText] = useState('');
     const [aiBubbleFade, setAiBubbleFade] = useState(false);
-    const [copiedArticleUrl, setCopiedArticleUrl] = useState<string | null>(null);
 
     const [tickers, setTickers] = useState({
         btc: { price: 64250, change: 1.2, flash: '' },
@@ -529,7 +528,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                 >
                     <header className="dash-header">
                         <div className="dash-header-left">
-                            <h1 className="glow-text-green">Welcome Back, {userData.name.split(" ")[0]}!</h1>
+                            <h1 className="glow-text-green">Welcome Back, {userData?.name ? userData.name.split(" ")[0] : 'Investor'}!</h1>
                             <p>Here is your real-time portfolio analysis and AI insights.</p>
                         </div>
                         <div className="dash-header-right">
@@ -1499,6 +1498,7 @@ const blogArticles: BlogArticle[] = [
 const BlogsSection = () => {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [activeArticle, setActiveArticle] = useState<BlogArticle | null>(null);
+    const [copiedArticleUrl, setCopiedArticleUrl] = useState<string | null>(null);
 
     useEffect(() => {
         const path = window.location.pathname;
