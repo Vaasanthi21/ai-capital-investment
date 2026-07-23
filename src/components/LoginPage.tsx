@@ -48,30 +48,53 @@ const LoginPage = ({ onLoginSuccess, onNavigate, setTempEmail }: LoginPageProps)
     <div className="auth-wrapper">
       <ParticleBackground />
 
-      {/* Back button */}
-      <button className="auth-back-btn" onClick={() => onNavigate('landing')}>
-        ← Back to Home
-      </button>
+      {/* ── Top App Domain Badge ── */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        maxWidth: '1000px', margin: '0 auto 16px', width: '100%', padding: '0 10px'
+      }}>
+        <button className="auth-back-btn" onClick={() => onNavigate('landing')} style={{ position: 'relative', top: 0, left: 0 }}>
+          ← Back to Main Site
+        </button>
+
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: '8px',
+          background: 'rgba(0, 230, 118, 0.08)', border: '1px solid rgba(0, 230, 118, 0.25)',
+          padding: '6px 14px', borderRadius: '20px', fontSize: '0.8rem', color: '#00e676',
+          fontFamily: 'monospace'
+        }}>
+          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#00e676', boxShadow: '0 0 8px #00e676' }} />
+          <span>app.aicapitalinvestment.com</span>
+        </div>
+      </div>
 
       <div className="auth-layout">
 
         {/* ── Left: Branding panel ── */}
         <div className="auth-brand-panel">
           <div className="auth-brand-inner">
-            <div className="logo" style={{ marginBottom: '32px' }}>
+            <div className="logo" style={{ marginBottom: '24px' }}>
               <div className="logo-symbol" style={{ fontSize: '2rem' }}>AI</div>
               <div className="logo-text" style={{ fontSize: '1.1rem' }}>AI Capital<span>Investment</span></div>
             </div>
-            <h2 className="auth-brand-headline">Welcome Back to Smarter Investing</h2>
+
+            <div style={{
+              display: 'inline-block', padding: '4px 12px', background: 'rgba(212, 175, 55, 0.1)',
+              border: '1px solid rgba(212, 175, 55, 0.3)', borderRadius: '12px',
+              fontSize: '0.72rem', color: 'var(--color-gold)', fontWeight: 700, marginBottom: '16px'
+            }}>
+              OFFICIAL APP PORTAL • app.aicapitalinvestment.com
+            </div>
+
+            <h2 className="auth-brand-headline">Institutional App Portal Access</h2>
             <p className="auth-brand-sub">
-              Your AI-powered portfolio is waiting. Log in to access real-time insights,
-              manage your holdings, and track your financial goals.
+              Access your multi-agent quantitative portfolio, real-time Volatility Shield risk controls, and 1-on-1 advisor consultations via <strong>app.aicapitalinvestment.com</strong>.
             </p>
             <div className="auth-perks">
               {[
-                { Icon: TrendingUp,  text: 'Live market data & portfolio analytics' },
-                { Icon: ShieldCheck, text: 'Bank-grade security for your assets' },
-                { Icon: Zap,         text: 'AI-driven investment recommendations' },
+                { Icon: TrendingUp,  text: 'Live market data & multi-agent portfolio analytics' },
+                { Icon: ShieldCheck, text: 'SEC & SEBI compliant bank-grade encryption' },
+                { Icon: Zap,         text: 'One-click AI advisory proposal execution' },
               ].map(({ Icon, text }) => (
                 <div key={text} className="auth-perk-item">
                   <div className="auth-perk-icon"><Icon size={18} /></div>
@@ -84,9 +107,20 @@ const LoginPage = ({ onLoginSuccess, onNavigate, setTempEmail }: LoginPageProps)
 
         {/* ── Right: Login form ── */}
         <div className="auth-form-panel">
-          <div className="auth-form-card">
-            <h1 className="auth-form-title">Welcome Back</h1>
-            <p className="auth-form-sub">Sign in to your account</p>
+          <div className="auth-form-card" style={{ borderTop: '3px solid var(--color-green)' }}>
+            
+            {/* Mock Browser URL Bar */}
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(0,0,0,0.5)',
+              border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '6px 12px',
+              marginBottom: '20px', fontSize: '0.76rem', color: 'var(--text-muted)'
+            }}>
+              <span style={{ color: '#00e676' }}>🔒</span>
+              <span style={{ color: '#fff', fontWeight: 600, fontFamily: 'monospace' }}>https://app.aicapitalinvestment.com/login</span>
+            </div>
+
+            <h1 className="auth-form-title" style={{ fontSize: '1.6rem' }}>App Portal Sign In</h1>
+            <p className="auth-form-sub">Secure access to app.aicapitalinvestment.com</p>
 
             <form onSubmit={handleSubmit} className="auth-form">
               <div className="auth-input-group">

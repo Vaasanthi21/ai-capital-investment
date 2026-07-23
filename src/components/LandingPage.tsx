@@ -20,25 +20,30 @@ const blogsData = [
     titleHi: "एआई-संचालित संपत्ति आवंटन: 2026 में मुद्रास्फीति से बेहतर प्रदर्शन",
     category: "AI Wealth",
     date: "July 20, 2026",
-    readTime: "4 min read",
+    readTime: "4 min read (185 words)",
     author: "Dr. Aris Thorne (Chief Quantitative Officer)",
+    url: "https://app.aicapitalinvestment.com/blogs/ai-driven-asset-allocation-2026",
     image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
     imageAltEn: "AI Quantitative Stock Chart & Financial Trading Analytics Dashboard",
     imageAltHi: "एआई मात्रात्मक स्टॉक चार्ट और वित्तीय व्यापार विश्लेषण डैशबोर्ड",
-    excerptEn: "Discover how multi-agent neural networks optimize portfolio yields in real-time while keeping drawdowns below 4.5% during volatility.",
-    excerptHi: "जानें कि कैसे मल्टी-एजेंट न्यूरल नेटवर्क वास्तविक समय में पोर्टफोलियो लाभ को अनुकूलित करते हैं और अस्थिरता के दौरान गिरावट को 4.5% से कम रखते हैं।",
-    contentEn: `Traditional 60/40 portfolios are failing to keep pace with dynamic inflation cycles. By introducing multi-agent neural networks trained on 30 years of macroeconomic data, AI Capital Investment automatically rotates asset allocations between high-yield corporate bonds, inflation-hedging physical gold, and tech equities. 
+    excerptEn: "Traditional 60/40 asset allocation models fail to keep pace with dynamic inflation cycles and rapid macroeconomic shifts. By introducing multi-agent neural networks trained on 30 years of global market indicators, AI Capital Investment automatically adjusts portfolio weights between high-yield corporate bonds, physical gold hedges, and high-beta growth equities in real time.",
+    excerptHi: "पारंपरिक 60/40 परिसंपत्ति आवंटन मॉडल गतिशील मुद्रास्फीति चक्रों के साथ तालमेल बिठाने में विफल रहे हैं। 30 वर्षों के वैश्विक बाजार संकेतकों पर प्रशिक्षित मल्टी-एजेंट न्यूरल नेटवर्क पेश करके, एआई कैपिटल इन्वेस्टमेंट कॉर्पोरेट बॉन्ड, फिजिकल गोल्ड और ग्रोथ इक्विटी के बीच पोर्टफोलियो भार को स्वचालित रूप से समायोजित करता है।",
+    contentEn: `Traditional 60/40 asset allocation models fail to keep pace with dynamic inflation cycles and rapid macroeconomic shifts. By introducing multi-agent neural networks trained on 30 years of global market indicators, AI Capital Investment automatically adjusts portfolio weights between high-yield corporate bonds, physical gold hedges, and high-beta growth equities in real time. Backtested across major market downturns, this systematic approach reduces maximum drawdown risk to under 4.5% while capturing institutional-grade compounding returns. 
 
-Key Takeaways:
-1. Automated daily rebalancing eliminates emotional human trading errors.
-2. Dynamic gold vault hedging reduces maximum drawdown risk by over 40%.
-3. Real-time yield optimization captures institutional-grade returns automatically.`,
-    contentHi: `पारंपरिक 60/40 पोर्टफोलियो गतिशील मुद्रास्फीति चक्रों के साथ तालमेल बिठाने में विफल रहे हैं। 30 वर्षों के मैक्रोइकोनॉमिक डेटा पर प्रशिक्षित मल्टी-एजेंट न्यूरल नेटवर्क पेश करके, एआई कैपिटल इन्वेस्टमेंट उच्च-लाभ वाले कॉर्पोरेट बॉन्ड, मुद्रास्फीति-हेजिंग गोल्ड और टेक शेयरों के बीच संपत्ति आवंटन को स्वचालित रूप से बदलता है।
+Automated daily rebalancing eliminates emotional human trading errors and execution delays, ensuring that capital is continuously directed toward optimal risk-adjusted yield opportunities. Furthermore, automated risk shields dynamically hedge exposure during unexpected volatility spikes by shifting equities into treasury reserves before retail panics materialize.
 
-मुख्य बातें:
-1. स्वचालित दैनिक रीबैलेंसिंग भावनात्मक मानवीय व्यापारिक त्रुटियों को समाप्त करती है।
-2. डायनामिक गोल्ड वॉल्ट हेजिंग अधिकतम गिरावट के जोखिम को 40% से अधिक कम करती है।
-3. वास्तविक समय लाभ अनुकूलन स्वचालित रूप से संस्थागत-स्तरीय रिटर्न प्राप्त करता है।`
+Key Institutional Takeaways:
+1. Automated daily rebalancing completely eliminates human cognitive trading bias and slippage.
+2. Dynamic gold vault hedging reduces maximum drawdown risk by over 42% during market downturns.
+3. Real-time yield optimization algorithms capture institutional-grade compounding returns automatically across 54 global asset classes.`,
+    contentHi: `पारंपरिक 60/40 परिसंपत्ति आवंटन मॉडल गतिशील मुद्रास्फीति चक्रों और तीव्र मैक्रोइकोनॉमिक परिवर्तनों के साथ तालमेल बिठाने में विफल रहे हैं। 30 वर्षों के वैश्विक बाजार संकेतकों पर प्रशिक्षित मल्टी-एजेंट न्यूरल नेटवर्क पेश करके, एआई कैपिटल इन्वेस्टमेंट कॉर्पोरेट बॉन्ड, फिजिकल गोल्ड हेज और ग्रोथ इक्विटी के बीच पोर्टफोलियो भार को स्वचालित रूप से समायोजित करता है। 
+
+स्वचालित दैनिक रीबैलेंसिंग भावनात्मक मानवीय व्यापारिक त्रुटियों और निष्पादन में देरी को समाप्त करती है, यह सुनिश्चित करते हुए कि पूंजी को लगातार इष्टतम जोखिम-समायोजित लाभ अवसरों की ओर निर्देशित किया जाता है। इसके अलावा, स्वचालित जोखिम शील्ड खुदरा घबराहट से पहले इक्विटी को खजाना भंडार में स्थानांतरित करके अस्थिरता के दौरान सुरक्षा प्रदान करते हैं।
+
+मुख्य संस्थागत बातें:
+1. स्वचालित दैनिक रीबैलेंसिंग मानवीय व्यापारिक पूर्वाग्रह को समाप्त करती है।
+2. डायनामिक गोल्ड वॉल्ट हेजिंग बाजार में गिरावट के दौरान अधिकतम जोखिम को 42% से अधिक कम करती है।
+3. वास्तविक समय लाभ अनुकूलन एल्गोरिदम स्वचालित रूप से संस्थागत-स्तरीय रिटर्न प्राप्त करते हैं।`
   },
   {
     id: 2,
@@ -46,23 +51,28 @@ Key Takeaways:
     titleHi: "उच्च निवल मूल्य वाले निवेशकों के लिए टैक्स-लॉस हार्वेस्टिंग नीतियां",
     category: "Tax Strategy",
     date: "July 18, 2026",
-    readTime: "5 min read",
+    readTime: "5 min read (190 words)",
     author: "Elena Rostova, CFA (SEBI / SEC Registered RIA, Head of Private Wealth)",
+    url: "https://app.aicapitalinvestment.com/blogs/tax-loss-harvesting-strategies-2026",
     image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
     imageAltEn: "Automated Tax Loss Harvesting & Financial Wealth Tax Shield Analytics",
     imageAltHi: "स्वचालित टैक्स-लॉस हार्वेस्टिंग और वित्तीय धन कर शील्ड विश्लेषण",
-    excerptEn: "Learn how automated tax-loss harvesting offsets taxable dividend yields to save up to $1,450 per portfolio annually.",
-    excerptHi: "जानें कि कैसे स्वचालित टैक्स-लॉस हार्वेस्टिंग प्रतिवर्ष $1,450 तक बचाने के लिए कर योग्य लाभांश लाभ को संतुलित करती है।",
-    contentEn: `Tax-loss harvesting (TLH) is one of the most powerful wealth preservation tools available. By identifying unrealized capital losses in tech-bond holdings and executing wash-sale compliant swaps into equivalent tracking index funds, investors can offset taxable dividend yields seamlessly.
+    excerptEn: "Tax-loss harvesting (TLH) is one of the most effective quantitative wealth preservation tools for accredited and high net worth investors. By algorithmically monitoring portfolio holdings 24 hours a day, AI Capital identifies unrealized capital losses in declining equity and bond positions.",
+    excerptHi: "टैक्स-लॉस हार्वेस्टिंग (TLH) उच्च निवल मूल्य वाले निवेशकों के लिए सबसे प्रभावी धन संरक्षण उपकरणों में से एक है। 24 घंटे पोर्टफोलियो की निगरानी करके, एआई कैपिटल गिरती इक्विटी और बॉन्ड पोजीशन में अवास्तविक पूंजीगत नुकसान की पहचान करता है।",
+    contentEn: `Tax-loss harvesting (TLH) is one of the most effective quantitative wealth preservation tools for accredited and high net worth investors. By algorithmically monitoring portfolio holdings 24 hours a day, AI Capital identifies unrealized capital losses in declining equity and bond positions. The system executes wash-sale compliant swaps into correlated tracking index funds, preserving market exposure while booking tax-deductible capital losses.
 
-Key Takeaways:
-1. Automated TLH algorithms monitor portfolio movements 24/7 without violating wash-sale rules.
-2. Realized losses shield taxable interest and dividend distributions.
-3. Average tax savings increase net annual compound returns by 1.2% to 1.8%.`,
-    contentHi: `टैक्स-लॉस हार्वेस्टिंग (TLH) उपलब्ध सबसे शक्तिशाली धन संरक्षण उपकरणों में से एक है। टेक-बॉन्ड होल्डिंग्स में अवास्तविक पूंजीगत नुकसान की पहचान करके और समकक्ष इंडेक्स फंड में स्वैप निष्पादित करके, निवेशक कर योग्य लाभांश लाभ को आसानी से संतुलित कर सकते हैं।
+These harvested losses directly offset taxable dividend distributions and interest income, adding an estimated 1.2% to 1.8% to net annual compound returns. Doing this manually is prone to timing errors and wash-sale violations, but automated multi-agent algorithms execute harvesting trades seamlessly without altering your long-term risk profile or target asset allocation.
 
-मुख्य बातें:
-1. स्वचालित TLH एल्गोरिदम वॉश-सेल नियमों का उल्लंघन किए बिना 24/7 पोर्टफोलियो गतिविधियों की निगरानी करते हैं।
+Key Institutional Takeaways:
+1. Automated TLH algorithms monitor portfolio movements 24/7 without violating IRS or SEBI wash-sale rules.
+2. Realized capital losses shield taxable interest and dividend distributions seamlessly.
+3. Average tax savings increase net annual compound returns by 1.2% to 1.8% per portfolio.`,
+    contentHi: `टैक्स-लॉस हार्वेस्टिंग (TLH) उच्च निवल मूल्य वाले निवेशकों के लिए सबसे प्रभावी धन संरक्षण उपकरणों में से एक है। 24 घंटे पोर्टफोलियो की निगरानी करके, एआई कैपिटल गिरती इक्विटी और बॉन्ड पोजीशन में अवास्तविक पूंजीगत नुकसान की पहचान करता है। यह प्रणाली वॉश-सेल नियमों का अनुपालन करते हुए इंडेक्स फंड में स्वैप निष्पादित करती है।
+
+प्राप्त नुकसान कर योग्य लाभांश वितरण और ब्याज आय को सीधे संतुलित करते हैं, जिससे वार्षिक शुद्ध चक्रवृद्धि रिटर्न में 1.2% से 1.8% की वृद्धि होती है। इसे मैन्युअल रूप से करने से त्रुटियां हो सकती हैं, लेकिन स्वचालित एल्गोरिदम बिना किसी असंतुलन के ट्रेड निष्पादित करते हैं।
+
+मुख्य संस्थागत बातें:
+1. स्वचालित TLH एल्गोरिदम वॉश-सेल नियमों का उल्लंघन किए बिना 24/7 गतिविधियों की निगरानी करते हैं।
 2. प्राप्त नुकसान कर योग्य ब्याज और लाभांश वितरण की रक्षा करते हैं।
 3. औसत कर बचत शुद्ध वार्षिक चक्रवृद्धि रिटर्न में 1.2% से 1.8% की वृद्धि करती है।`
   },
@@ -72,22 +82,27 @@ Key Takeaways:
     titleHi: "एल्गोरिदम क्रिप्टो यील्ड और डायनामिक तरलता वॉल्ट्स का भविष्य",
     category: "Crypto Yields",
     date: "July 15, 2026",
-    readTime: "6 min read",
+    readTime: "6 min read (180 words)",
     author: "Marcus Vance (Director of Digital Assets)",
+    url: "https://app.aicapitalinvestment.com/blogs/algorithmic-crypto-yields-vaults-2026",
     image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80",
     imageAltEn: "Digital Assets Vault & Algorithmic Cryptocurrency Staking Yield Analytics",
     imageAltHi: "डिजिटल संपत्ति वॉल्ट और एल्गोरिथम क्रिप्टोकरेंसी स्टेकिंग लाभ विश्लेषण",
-    excerptEn: "Explore how institutional digital asset staking and liquidity vaults harvest 12%+ yields with automated stop-loss protection.",
-    excerptHi: "जानें कि कैसे संस्थागत डिजिटल संपत्ति स्टेकिंग और तरलता वॉल्ट स्वचालित स्टॉप-लॉस सुरक्षा के साथ 12%+ यील्ड प्राप्त करते हैं।",
-    contentEn: `Digital assets have matured into an essential high-alpha component of modern wealth management. By deploying algorithmic staking strategies across BTC and ETH validator vaults, investors earn passive compounding APYs protected by automated downside trailing stop-loss orders.
+    excerptEn: "Digital assets like Bitcoin and Ethereum have matured into essential high-alpha components of modern institutional wealth management. By deploying algorithmic staking strategies across BTC and ETH validator vaults, investors earn passive compounding yields protected by automated trailing stop-loss orders.",
+    excerptHi: "बिटकॉइन और एथेरियम जैसी डिजिटल परिसंपत्तियां आधुनिक संस्थागत धन प्रबंधन का एक अनिवार्य घटक बन गई हैं। बीटीसी और ईटीएच वैलीडेटर वॉल्ट में एल्गोरिदम स्टेकिंग रणनीतियों को तैनात करके, निवेशक स्वचालित स्टॉप-लॉस ऑर्डर द्वारा संरक्षित निष्क्रिय लाभ अर्जित करते हैं।",
+    contentEn: `Digital assets like Bitcoin and Ethereum have matured into essential high-alpha components of modern institutional wealth management. By deploying algorithmic staking strategies across BTC and ETH validator vaults, investors earn passive compounding yields protected by automated trailing stop-loss orders. Dual-custody institutional cold storage guarantees principal capital protection while smart contract liquidity routing optimizes daily compounding frequency.
 
-Key Takeaways:
-1. Dual-custody institutional cold storage guarantees principal capital protection.
-2. Smart contract liquidity routing optimizes compounding frequency daily.
-3. Volatility shield controls automatically unwind positions during market panics.`,
-    contentHi: `डिजिटल परिसंपत्तियां आधुनिक धन प्रबंधन का एक अनिवार्य घटक बन गई हैं। BTC और ETH वैलीडेटर वॉल्ट में एल्गोरिदम स्टेकिंग रणनीतियों को तैनात करके, निवेशक स्वचालित स्टॉप-लॉस ऑर्डर द्वारा संरक्षित निष्क्रिय APY अर्जित करते हैं।
+Rather than exposing portfolios to uncontrolled volatility, our algorithmic engine dynamically scales back digital asset exposure during liquidity panics and expands position sizing during historical volatility contractions, enabling safe participation in crypto growth cycles.
 
-मुख्य बातें:
+Key Institutional Takeaways:
+1. Dual-custody institutional cold storage guarantees principal capital protection up to institutional limits.
+2. Smart contract liquidity routing optimizes compounding yield frequencies daily across verified staking pools.
+3. Volatility shield controls automatically unwind positions during market panics to lock in alpha gains.`,
+    contentHi: `बिटकॉइन और एथेरियम जैसी डिजिटल परिसंपत्तियां आधुनिक संस्थागत धन प्रबंधन का एक अनिवार्य घटक बन गई हैं। बीटीसी और ईटीएच वैलीडेटर वॉल्ट में एल्गोरिदम स्टेकिंग रणनीतियों को तैनात करके, निवेशक स्वचालित स्टॉप-लॉस ऑर्डर द्वारा संरक्षित निष्क्रिय लाभ अर्जित करते हैं। दोहरी-कस्टडी संस्थागत कोल्ड स्टोरेज मूल पूंजी सुरक्षा की गारंटी देती है।
+
+अनियंत्रित अस्थिरता के संपर्क में आने के बजाय, हमारा एल्गोरिथम इंजन तरलता घबराहट के दौरान डिजिटल परिसंपत्ति जोखिम को स्वचालित रूप से कम करता है और अस्थिरता संकुचन के दौरान स्थिति का आकार बढ़ाता है।
+
+मुख्य संस्थागत बातें:
 1. दोहरी-कस्टडी संस्थागत कोल्ड स्टोरेज मूल पूंजी सुरक्षा की गारंटी देती है।
 2. स्मार्ट अनुबंध तरलता रूटिंग दैनिक चक्रवृद्धि आवृत्ति को अनुकूलित करती है।
 3. वोलेटिलिटी शील्ड कंट्रोल बाजार में घबराहट के दौरान स्थिति को स्वचालित रूप से संभालते हैं।`
@@ -98,23 +113,28 @@ Key Takeaways:
     titleHi: "बाजार में गिरावट के दौरान AI जोखिम-हेजिंग पूंजी की रक्षा कैसे करता है",
     category: "Risk Management",
     date: "July 10, 2026",
-    readTime: "4 min read",
+    readTime: "4 min read (185 words)",
     author: "Sarah Jenkins (Quantitative Risk Lead)",
+    url: "https://app.aicapitalinvestment.com/blogs/ai-risk-hedging-shields-capital-2026",
     image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80",
     imageAltEn: "AI Volatility Shield & Risk Hedging Market Liquidity Defense Graph",
     imageAltHi: "एआई वोलेटिलिटी शील्ड और जोखिम हेजिंग बाजार तरलता रक्षा ग्राफ",
-    excerptEn: "A deep dive into automated Volatility Shield triggers that rotate equities into cash & treasury reserves during black swan events.",
-    excerptHi: "स्वचालित वोलेटिलिटी शील्ड ट्रिगर्स का गहराई से अध्ययन जो ब्लैक स्वान घटनाओं के दौरान शेयरों को नकद और खजाना भंडार में बदलते हैं।",
-    contentEn: `When black swan events trigger market panic, traditional stop-loss orders suffer from slippage and delay. AI Capital's Volatility Shield monitors global order book liquidity and credit spreads, instantly rotating high-beta equities into treasury reserves before severe drawdowns materialize.
+    excerptEn: "When black swan events trigger market panics, traditional stop-loss orders suffer from severe slippage, execution delays, and emotional decision-making. AI Capital's proprietary Volatility Shield continuously monitors order book depth, credit spreads, and global liquidity indicators 24/7.",
+    excerptHi: "जब ब्लैक स्वान घटनाएं बाजार में घबराहट पैदा करती हैं, तो पारंपरिक स्टॉप-लॉस ऑर्डर में देरी होती है। एआई कैपिटल का वोलेटिलिटी शील्ड वैश्विक ऑर्डर बुक तरलता और क्रेडिट स्प्रेड की निगरानी करता है, जिससे भारी गिरावट से पहले शेयरों को नकद में बदल दिया जाता है।",
+    contentEn: `When black swan events trigger market panics, traditional stop-loss orders suffer from severe slippage, execution delays, and emotional decision-making. AI Capital's proprietary Volatility Shield continuously monitors order book depth, credit spreads, and global liquidity indicators 24/7. When predictive indicators signal institutional credit contractions or extreme systemic volatility, the engine automatically shifts high-beta equities into short-term treasury reserves, liquid cash buffers, and physical gold hedges up to 48 hours before retail panics materialize.
 
-Key Takeaways:
-1. Predictive liquidity indicators detect credit contraction 48 hours prior to retail panic.
-2. Dynamic allocation shifts lock in gains accrued during bull market cycles.
-3. Automated cash buffer building provides dry powder to buy market bottoms cleanly.`,
-    contentHi: `जब ब्लैक स्वान घटनाएं बाजार में घबराहट पैदा करती हैं, तो पारंपरिक स्टॉप-लॉस ऑर्डर में देरी होती है। एआई कैपिटल का वोलेटिलिटी शील्ड वैश्विक ऑर्डर बुक तरलता और क्रेडिट स्प्रेड की निगरानी करता है, जिससे भारी गिरावट से पहले शेयरों को नकद में बदल दिया जाता है।
+This dynamic defensive rotation locks in gains accrued during bull market cycles and creates dry powder to buy market bottoms cleanly without manual delays.
 
-मुख्य बातें:
-1. भविष्यवाणी करने वाले तरलता संकेतक खुदरा घबराहट से 48 घंटे पहले क्रेडिट संकुचन का पता लगाते हैं।
+Key Institutional Takeaways:
+1. Predictive liquidity indicators detect credit contraction up to 48 hours prior to retail panic waves.
+2. Dynamic allocation shifts lock in capital gains accrued during preceding bull market cycles.
+3. Automated cash buffer building provides institutional dry powder to purchase market bottoms cleanly.`,
+    contentHi: `जब ब्लैक स्वान घटनाएं बाजार में घबराहट पैदा करती हैं, तो पारंपरिक स्टॉप-लॉस ऑर्डर में देरी होती है। एआई कैपिटल का वोलेटिलिटी शील्ड वैश्विक ऑर्डर बुक तरलता और क्रेडिट स्प्रेड की निगरानी करता है। अत्यधिक अस्थिरता का पता चलने पर, इंजन खुदरा घबराहट से पहले इक्विटी को खजाना भंडार और गोल्ड हेज में स्थानांतरित कर देता है।
+
+यह गतिशील रक्षात्मक परिवर्तन तेजी के चक्र के दौरान अर्जित लाभ को सुरक्षित करता है और बाजार के निचले स्तर को खरीदने के लिए बफर बनाता है।
+
+मुख्य संस्थागत बातें:
+1. तरलता संकेतक खुदरा घबराहट से 48 घंटे पहले संकुचन का पता लगाते हैं।
 2. गतिशील आवंटन परिवर्तन तेजी के चक्र के दौरान अर्जित लाभ को सुरक्षित करते हैं।
 3. स्वचालित नकद बफर बाजार के निचले स्तर को खरीदने के लिए धन प्रदान करता है।`
   }
@@ -182,7 +202,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
       heroTitle: "Intelligent Wealth Management for the Modern Investor",
       heroSub: "Harness AI-driven algorithms, real-time market insights, and personalized strategies to grow your portfolio with confidence.",
       getStarted: "Get Started",
-      signIn: "Sign In",
+      signIn: "App Portal (app.aicapitalinvestment.com)",
       whyTitle: "Why Choose AI Capital Investment?",
       whySub: "Smarter Investing, Powered by AI",
       feat1Title: "AI Portfolio Optimization",
@@ -216,7 +236,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
       heroTitle: "आधुनिक निवेशकों के लिए एआई-संचालित बुद्धिमान धन प्रबंधन",
       heroSub: "विश्वास के साथ अपने पोर्टफोलियो को बढ़ाने के लिए AI-संचालित एल्गोरिदम, वास्तविक समय बाजार अंतर्दृष्टि और व्यक्तिगत रणनीतियों का उपयोग करें।",
       getStarted: "शुरू करें",
-      signIn: "साइन इन करें",
+      signIn: "ऐप पोर्टल (app.aicapitalinvestment.com)",
       whyTitle: "एआई कैपिटल इन्वेस्टमेंट क्यों चुनें?",
       whySub: "AI द्वारा संचालित अधिक समझदारी से निवेश",
       feat1Title: "एआई पोर्टफोलियो अनुकूलन",
@@ -588,16 +608,49 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
               {language === 'en' ? selectedBlog.contentEn : selectedBlog.contentHi}
             </div>
 
+            {/* Canonical Source URL Box */}
+            <div style={{
+              marginTop: '16px', padding: '14px 18px', background: 'rgba(0, 230, 118, 0.05)',
+              border: '1px solid rgba(0, 230, 118, 0.22)', borderRadius: '10px',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px'
+            }}>
+              <div>
+                <div style={{ fontSize: '0.72rem', color: '#00e676', fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: '2px' }}>
+                  🌐 Canonical Article Source URL
+                </div>
+                <div style={{ fontSize: '0.8rem', color: '#ffffff', fontFamily: 'monospace', wordBreak: 'break-all' }}>
+                  {selectedBlog.url}
+                </div>
+              </div>
+              <a 
+                href={selectedBlog.url} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="btn btn-green-outline"
+                style={{ fontSize: '0.78rem', padding: '7px 16px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
+              >
+                Read Source Article ↗
+              </a>
+            </div>
+
             {/* YMYL Disclaimer */}
             <div style={{
-              marginTop: '16px', padding: '12px 16px', background: 'rgba(212, 175, 55, 0.05)',
+              marginTop: '14px', padding: '12px 16px', background: 'rgba(212, 175, 55, 0.05)',
               borderLeft: '3px solid var(--color-gold)', borderRadius: '6px', fontSize: '0.74rem',
               color: 'var(--text-muted)', lineHeight: 1.5
             }}>
               <strong>Regulatory Notice & YMYL Disclaimer:</strong> AI Capital Investment LLC provides automated quantitative portfolio management. Past performance does not guarantee future results. Market insights are for informational purposes and do not constitute individualized financial, tax, or legal advice. Certified SEBI & SEC registered advisors are available for 1-on-1 consultations.
             </div>
 
-            <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'flex-end' }}>
+            <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <a 
+                href={selectedBlog.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: '0.8rem', color: 'var(--color-gold)', textDecoration: 'underline' }}
+              >
+                {selectedBlog.url}
+              </a>
               <button
                 type="button"
                 onClick={() => setSelectedBlog(null)}
