@@ -22,7 +22,15 @@ interface UserProfile {
 }
 
 function App() {
-  const [view, setView] = useState<View>('landing');
+  const getInitialView = (): View => {
+    const path = window.location.pathname.toLowerCase();
+    if (path.includes('login')) return 'login';
+    if (path.includes('signup')) return 'signup';
+    if (path.includes('dashboard')) return 'dashboard';
+    return 'landing';
+  };
+
+  const [view, setViewState] = useState<View>(getInitialView);
   const [tempEmail, setTempEmail] = useState('');
   const [regRole, setRegRole] = useState<'investor' | 'advisor'>('investor');
   const [userProfile, setUserProfile] = useState<UserProfile>({
@@ -31,6 +39,32 @@ function App() {
     investmentAmount: 25000,
     riskTolerance: 'Balanced',
     goal: 'Growth',
+  });
+
+  const setView = (newView: View) => {
+    setViewState(newView);
+    const pathMap: Record<View, string> = {
+      'landing': '/',
+      'login': '/login',
+      'signup': '/signup',
+      'otp-verify': '/verify',
+      'payment': '/payment',
+      'forgot-password': '/forgot-password',
+      'dashboard': '/dashboard'
+    };
+    const targetPath = pathMap[newView] || '/';
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({ view: newView }, '', targetPath);
+    }
+  };
+
+  // Handle browser back / forward navigation
+  useState(() => {
+    const handlePopState = () => {
+      setViewState(getInitialView());
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   });
 
   return (
