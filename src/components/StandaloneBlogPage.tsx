@@ -343,7 +343,7 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
       />
 
       {/* ── Standalone Page Header (Identical to Main Landing Header) ─────────────── */}
-      <header className="lp-header" style={{ position: 'relative', zIndex: 10 }}>
+      <header className="lp-header" style={{ position: 'sticky', top: 0, zIndex: 1000 }}>
         <div className="lp-container lp-header-inner">
           <div className="logo" onClick={() => onNavigate('landing')} style={{ cursor: 'pointer' }}>
             <div className="logo-symbol">AI</div>
@@ -399,7 +399,7 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
       </header>
 
       {/* ── Main Content Area ────────────────────────────────────────── */}
-      <main className="lp-container" style={{ position: 'relative', zIndex: 10, paddingTop: '28px', paddingBottom: '60px', minHeight: 'calc(100vh - 200px)' }}>
+      <main className="lp-container" style={{ position: 'relative', zIndex: 1, paddingTop: '28px', paddingBottom: '60px', minHeight: 'calc(100vh - 200px)' }}>
         
         {/* Back Link & Search Controls Row */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
