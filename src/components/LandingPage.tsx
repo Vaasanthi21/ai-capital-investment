@@ -192,6 +192,15 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
       obs.observe(el);
       if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('is-visible');
     });
+
+    // Check for blog deep link in URL
+    const path = window.location.pathname;
+    if (path.includes('/blogs/')) {
+      const slug = path.split('/blogs/')[1];
+      const match = blogsData.find(b => b.url.includes(slug) || b.id.toString() === slug);
+      if (match) setSelectedBlog(match);
+    }
+
     return () => els.forEach(el => obs.unobserve(el));
   }, []);
 
@@ -507,7 +516,12 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
                     <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{b.date}</span>
                     <button
                       type="button"
-                      onClick={() => setSelectedBlog(b)}
+                      onClick={() => {
+                        setSelectedBlog(b);
+                        if (window.location.pathname !== b.url) {
+                          window.history.pushState({ blogId: b.id }, '', b.url);
+                        }
+                      }}
                       className="blog-read-link"
                       style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
                     >
@@ -570,7 +584,12 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             borderRadius: '16px'
           }}>
             <button
-              onClick={() => setSelectedBlog(null)}
+              onClick={() => {
+                setSelectedBlog(null);
+                if (window.location.pathname !== '/') {
+                  window.history.pushState(null, '', '/');
+                }
+              }}
               style={{
                 position: 'absolute', top: '20px', right: '20px', zIndex: 10,
                 background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff',
@@ -652,7 +671,12 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
               </span>
               <button
                 type="button"
-                onClick={() => setSelectedBlog(null)}
+                onClick={() => {
+                  setSelectedBlog(null);
+                  if (window.location.pathname !== '/') {
+                    window.history.pushState(null, '', '/');
+                  }
+                }}
                 className="btn btn-gold"
                 style={{ padding: '8px 24px', fontSize: '0.84rem' }}
               >

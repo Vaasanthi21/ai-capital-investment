@@ -24,9 +24,9 @@ interface UserProfile {
 function App() {
   const getInitialView = (): View => {
     const path = window.location.pathname.toLowerCase();
-    if (path.includes('login')) return 'login';
-    if (path.includes('signup')) return 'signup';
-    if (path.includes('dashboard') || path.includes('blogs') || path.includes('settings') || path.includes('advisor')) return 'dashboard';
+    if (path.includes('/login')) return 'login';
+    if (path.includes('/signup')) return 'signup';
+    if (path.includes('/dashboard') || path.includes('/advisor')) return 'dashboard';
     return 'landing';
   };
 
