@@ -21,6 +21,14 @@ const HeroCanvas = () => {
         const NUM_BARS = 20;
         let phase = 0;
         let animId: number;
+        let isVisible = true;
+        let lastTime = 0;
+        const fpsInterval = 1000 / 30;
+
+        const observer = new IntersectionObserver(([entry]) => {
+            isVisible = entry.isIntersecting;
+        }, { threshold: 0.01 });
+        observer.observe(canvas);
 
         // Sparks floating upward
         const sparks: { x: number; y: number; size: number; vy: number; gold: boolean; alpha: number }[] = [];
@@ -34,11 +42,14 @@ const HeroCanvas = () => {
             });
         }
 
-        const draw = () => {
-            if (W <= 0 || H <= 0) {
-                animId = requestAnimationFrame(draw);
-                return;
-            }
+        const draw = (now: number) => {
+            animId = requestAnimationFrame(draw);
+            if (!isVisible) return;
+            const elapsed = now - lastTime;
+            if (elapsed < fpsInterval) return;
+            lastTime = now - (elapsed % fpsInterval);
+
+            if (W <= 0 || H <= 0) return;
             ctx.clearRect(0, 0, W, H);
 
             // Dark gradient background
@@ -147,13 +158,13 @@ const HeroCanvas = () => {
             });
 
             phase += 0.012;
-            animId = requestAnimationFrame(draw);
         };
 
-        draw();
+        draw(performance.now());
 
         return () => {
             cancelAnimationFrame(animId);
+            observer.disconnect();
             window.removeEventListener('resize', resize);
         };
     }, []);

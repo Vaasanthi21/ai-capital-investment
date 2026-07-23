@@ -42,13 +42,24 @@ const ParticleBackground = () => {
 
         let t = 0;
         let animId: number;
+        let isVisible = true;
+        let lastTime = 0;
+        const fpsInterval = 1000 / 30;
 
-        const draw = () => {
+        const observer = new IntersectionObserver(([entry]) => {
+            isVisible = entry.isIntersecting;
+        }, { threshold: 0.01 });
+        observer.observe(canvas);
+
+        const draw = (now: number) => {
+            animId = requestAnimationFrame(draw);
+            if (!isVisible) return;
+            const elapsed = now - lastTime;
+            if (elapsed < fpsInterval) return;
+            lastTime = now - (elapsed % fpsInterval);
+
             const W = canvas.width, H = canvas.height;
-            if (W <= 0 || H <= 0) {
-                animId = requestAnimationFrame(draw);
-                return;
-            }
+            if (W <= 0 || H <= 0) return;
 
             // Base
             ctx.fillStyle = '#060e08';
@@ -112,13 +123,13 @@ const ParticleBackground = () => {
             });
 
             t += 0.012;
-            animId = requestAnimationFrame(draw);
         };
 
-        draw();
+        draw(performance.now());
 
         return () => {
             cancelAnimationFrame(animId);
+            observer.disconnect();
             window.removeEventListener('resize', resize);
         };
     }, []);
