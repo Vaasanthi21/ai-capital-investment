@@ -616,7 +616,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
               {language === 'en' ? selectedBlog.contentEn : selectedBlog.contentHi}
             </div>
 
-            {/* Canonical Source URL Box */}
+            {/* Shareable Article Link Box */}
             <div style={{
               marginTop: '16px', padding: '14px 18px', background: 'rgba(0, 230, 118, 0.05)',
               border: '1px solid rgba(0, 230, 118, 0.22)', borderRadius: '10px',
@@ -624,35 +624,25 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             }}>
               <div>
                 <div style={{ fontSize: '0.72rem', color: '#00e676', fontWeight: 700, letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: '2px' }}>
-                  🌐 Canonical Article Source URL
+                  🔗 Direct Shareable Article Link
                 </div>
                 <div style={{ fontSize: '0.8rem', color: '#ffffff', fontFamily: 'monospace', wordBreak: 'break-all' }}>
-                  {selectedBlog.url}
+                  {`https://ai-capital-investment.vercel.app/blogs/${selectedBlog.id}`}
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                <a 
-                  href={selectedBlog.url} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="btn btn-green-outline"
-                  style={{ fontSize: '0.78rem', padding: '7px 16px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
-                >
-                  Read Source Article ↗
-                </a>
-                <button 
-                  type="button"
-                  onClick={() => {
-                    navigator.clipboard.writeText(selectedBlog.url);
-                    setCopiedBlogUrl(selectedBlog.id);
-                    setTimeout(() => setCopiedBlogUrl(null), 2500);
-                  }}
-                  className="btn btn-green-outline"
-                  style={{ fontSize: '0.78rem', padding: '7px 16px', display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
-                >
-                  {copiedBlogUrl === selectedBlog.id ? '✓ Link Copied!' : '📋 Copy URL'}
-                </button>
-              </div>
+              <button 
+                type="button"
+                onClick={() => {
+                  const shareUrl = `https://ai-capital-investment.vercel.app/blogs/${selectedBlog.id}`;
+                  navigator.clipboard.writeText(shareUrl);
+                  setCopiedBlogUrl(selectedBlog.id);
+                  setTimeout(() => setCopiedBlogUrl(null), 2500);
+                }}
+                className="btn btn-green-outline"
+                style={{ fontSize: '0.78rem', padding: '7px 16px', display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
+              >
+                {copiedBlogUrl === selectedBlog.id ? '✓ Link Copied!' : '📋 Copy Shareable Link'}
+              </button>
             </div>
 
             {/* YMYL Disclaimer */}
@@ -666,7 +656,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
 
             <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: '0.8rem', color: 'var(--color-gold)', fontFamily: 'monospace' }}>
-                {selectedBlog.url}
+                {`https://ai-capital-investment.vercel.app/blogs/${selectedBlog.id}`}
               </span>
               <button
                 type="button"

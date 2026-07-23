@@ -1643,7 +1643,7 @@ const BlogsSection = () => {
                             ))}
                         </div>
 
-                        {/* Canonical Source URL Box */}
+                        {/* Shareable Article Link Box */}
                         <div style={{
                             marginTop: '16px', padding: '12px 16px', background: 'rgba(0, 230, 118, 0.05)',
                             border: '1px solid rgba(0, 230, 118, 0.2)', borderRadius: '8px',
@@ -1651,35 +1651,25 @@ const BlogsSection = () => {
                         }}>
                             <div>
                                 <div style={{ fontSize: '0.7rem', color: '#00e676', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                                    🌐 Canonical Article Source URL
+                                    🔗 Direct Shareable Article Link
                                 </div>
                                 <div style={{ fontSize: '0.78rem', color: '#ffffff', fontFamily: 'monospace', wordBreak: 'break-all' }}>
-                                    {activeArticle.url}
+                                    {`https://ai-capital-investment.vercel.app/blogs/${activeArticle.id}`}
                                 </div>
                             </div>
-                            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                                <a 
-                                    href={activeArticle.url} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer" 
-                                    className="btn btn-green-outline"
-                                    style={{ fontSize: '0.76rem', padding: '6px 14px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
-                                >
-                                    Read Source Article ↗
-                                </a>
-                                <button 
-                                    type="button"
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(activeArticle.url);
-                                        setCopiedArticleUrl(activeArticle.id);
-                                        setTimeout(() => setCopiedArticleUrl(null), 2500);
-                                    }}
-                                    className="btn btn-green-outline"
-                                    style={{ fontSize: '0.76rem', padding: '6px 14px', display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
-                                >
-                                    {copiedArticleUrl === activeArticle.id ? '✓ Link Copied!' : '📋 Copy URL'}
-                                </button>
-                            </div>
+                            <button 
+                                type="button"
+                                onClick={() => {
+                                    const shareUrl = `https://ai-capital-investment.vercel.app/blogs/${activeArticle.id}`;
+                                    navigator.clipboard.writeText(shareUrl);
+                                    setCopiedArticleUrl(activeArticle.id);
+                                    setTimeout(() => setCopiedArticleUrl(null), 2500);
+                                }}
+                                className="btn btn-green-outline"
+                                style={{ fontSize: '0.76rem', padding: '6px 14px', display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
+                            >
+                                {copiedArticleUrl === activeArticle.id ? '✓ Link Copied!' : '📋 Copy Shareable Link'}
+                            </button>
                         </div>
 
                         {/* YMYL Financial Disclaimer Banner */}
