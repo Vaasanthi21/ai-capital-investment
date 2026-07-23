@@ -129,8 +129,8 @@ export const standaloneBlogArticles: BlogArticle[] = [
     icon: <BarChart3 size={32} />,
     gold: false,
     url: 'https://www.sec.gov/investor/alerts',
-    image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80",
-    imageAlt: "Macroeconomic Volatility Shield & Risk Hedging Market Defense Graph",
+    image: "https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=800&q=80",
+    imageAlt: "SEC Regulatory Compliance & Legal Fiduciary Oversight",
     content: [
       'The U.S. Securities and Exchange Commission (SEC) regularly issues investor alerts, regulatory bulletins, and risk guidance to safeguard retail and accredited investor capital. Navigating regulatory compliance frameworks is paramount when selecting automated quantitative investment platforms and wealth advisory services.',
       '### 1. Fiduciary Duties Under the Investment Advisers Act',
@@ -202,8 +202,8 @@ export const standaloneBlogArticles: BlogArticle[] = [
     icon: <Wallet size={32} />,
     gold: true,
     url: 'https://www.investopedia.com/decentralized-finance-defi-4846382',
-    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80",
-    imageAlt: "Decentralized Finance Liquidity Vault Security",
+    image: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80",
+    imageAlt: "DeFi Liquidity Vault & Decentralized Staking Tokens",
     content: [
       'Decentralized liquidity protocols offer attractive native yield opportunities for digital asset portfolios, provided rigorous formal verification and smart contract audit procedures are enforced.',
       '### 1. Mitigating Impermanent Loss in AMM Pools',
@@ -223,8 +223,8 @@ export const standaloneBlogArticles: BlogArticle[] = [
     icon: <Settings size={32} />,
     gold: false,
     url: 'https://www.investopedia.com/estate-planning-4689720',
-    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
-    imageAlt: "Estate Planning & Wealth Preservation Document",
+    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80",
+    imageAlt: "Estate Planning Keys & Family Wealth Transfer",
     content: [
       'Intergenerational wealth preservation requires integrated estate planning algorithms that harmonize capital gains tax minimization, gift tax exemptions, and legacy trust structures.',
       '### Key Institutional Takeaways:',
@@ -242,8 +242,8 @@ export const standaloneBlogArticles: BlogArticle[] = [
     icon: <Sparkles size={32} />,
     gold: false,
     url: 'https://www.investopedia.com/terms/r/rebalancing.asp',
-    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
-    imageAlt: "Dynamic Rebalancing Stock Portfolio Chart",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+    imageAlt: "Quantitative Rebalancing Analytics Dashboard",
     content: [
       'Continuous portfolio rebalancing ensures that asset weightings remain strictly aligned with target risk profiles while minimizing unnecessary turnover and execution drag.',
       '### Key Institutional Takeaways:',
