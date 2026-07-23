@@ -1418,7 +1418,7 @@ interface BlogArticle {
 
 const blogArticles: BlogArticle[] = [
     {
-        id: '1',
+        id: 'ai-wealth-management-revolution',
         title: 'How Artificial Intelligence is Revolutionizing Wealth Management',
         category: 'AI & Tech',
         author: 'Investopedia Financial Research Team',
@@ -1437,7 +1437,7 @@ const blogArticles: BlogArticle[] = [
         ]
     },
     {
-        id: '2',
+        id: 'digital-assets-crypto-mechanics',
         title: 'Understanding Digital Assets & Cryptocurrency Market Mechanics',
         category: 'Crypto',
         author: 'Investopedia Digital Assets Research',
@@ -1456,7 +1456,7 @@ const blogArticles: BlogArticle[] = [
         ]
     },
     {
-        id: '3',
+        id: 'sec-investor-alerts-risk-guidance',
         title: 'U.S. SEC Investor Alerts & Regulatory Risk Management Guidance',
         category: 'Macro Strategy',
         author: 'U.S. SEC Regulatory Office',
@@ -1475,7 +1475,7 @@ const blogArticles: BlogArticle[] = [
         ]
     },
     {
-        id: '4',
+        id: 'tax-loss-harvesting-guide',
         title: 'Tax-Loss Harvesting Guide: Maximizing Net Investment Returns',
         category: 'Tax Strategy',
         author: 'Investopedia Wealth Preservation Insights',

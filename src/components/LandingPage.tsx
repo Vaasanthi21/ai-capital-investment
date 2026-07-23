@@ -15,7 +15,7 @@ interface LandingPageProps {
 
 const blogsData = [
   {
-    id: 1,
+    id: "ai-wealth-management-revolution",
     titleEn: "How Artificial Intelligence is Revolutionizing Wealth Management",
     titleHi: "आर्टिफिशियल इंटेलिजेंस धन प्रबंधन में कैसे क्रांति ला रहा है",
     category: "AI Wealth",
@@ -43,7 +43,7 @@ Key Global Takeaways:
 2. स्वचालित रीबैलेंसिंग स्थिर 60/40 मॉडल की तुलना में पोर्टफोलियो जोखिम को कम करती है।`
   },
   {
-    id: 2,
+    id: "tax-loss-harvesting-guide",
     titleEn: "Tax-Loss Harvesting Guide: Maximizing Net Investment Returns",
     titleHi: "टैक्स-लॉस हार्वेस्टिंग गाइड: शुद्ध निवेश रिटर्न को अधिकतम करना",
     category: "Tax Strategy",
@@ -71,7 +71,7 @@ Key Global Takeaways:
 2. एल्गोरिथम निष्पादन वॉश-सेल नियमों का अनुपालन सुनिश्चित करता है।`
   },
   {
-    id: 3,
+    id: "digital-assets-crypto-mechanics",
     titleEn: "Understanding Digital Assets & Cryptocurrency Market Mechanics",
     titleHi: "डिजिटल परिसंपत्तियों और क्रिप्टोकरेंसी बाजार तंत्र को समझना",
     category: "Crypto Yields",
@@ -99,7 +99,7 @@ Key Global Takeaways:
 2. वोलेटिलिटी-भारित आवंटन बाजार की गिरावट के दौरान मूल पूंजी की रक्षा करता है।`
   },
   {
-    id: 4,
+    id: "sec-investor-alerts-risk-guidance",
     titleEn: "U.S. Securities & Exchange Commission Investor Alerts & Risk Guidance",
     titleHi: "अमेरिकी प्रतिभूति और विनिमय आयोग निवेशक अलर्ट और जोखिम मार्गदर्शन",
     category: "Risk Management",
