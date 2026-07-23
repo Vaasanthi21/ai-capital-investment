@@ -92,17 +92,13 @@ const HeroCanvas = () => {
                         gr.addColorStop(0.2, 'rgba(0,230,118,0.85)');
                         gr.addColorStop(0.7, 'rgba(0,140,60,0.5)');
                         gr.addColorStop(1, 'rgba(0,60,25,0.2)');
-                        ctx.shadowBlur = 0;
                     } else {
                         const a = 0.12 / g;
                         gr.addColorStop(0, `rgba(0,230,118,${a})`);
                         gr.addColorStop(1, 'rgba(0,0,0,0)');
-                        ctx.shadowColor = '#00e676';
-                        ctx.shadowBlur = g * 18;
                     }
                     ctx.fillStyle = gr;
                     ctx.fillRect(bX, bY, bWW, bH);
-                    ctx.shadowBlur = 0;
                 }
 
                 // Bright top cap
@@ -110,10 +106,7 @@ const HeroCanvas = () => {
                 cap.addColorStop(0, 'rgba(210,255,230,1)');
                 cap.addColorStop(1, 'rgba(0,230,118,0.3)');
                 ctx.fillStyle = cap;
-                ctx.shadowColor = '#aaffcc';
-                ctx.shadowBlur = 14;
                 ctx.fillRect(bX, bY, bWW, 4);
-                ctx.shadowBlur = 0;
             }
 
             // Gold trend line over bars
@@ -127,20 +120,14 @@ const HeroCanvas = () => {
                 }
                 ctx.strokeStyle = '#d4af37';
                 ctx.lineWidth = 2.5;
-                ctx.shadowColor = '#d4af37';
-                ctx.shadowBlur = 22;
                 ctx.stroke();
-                ctx.shadowBlur = 0;
 
                 // Gold dot at peak
                 const peak = linePoints.reduce((a, b) => (a.y < b.y ? a : b));
                 ctx.beginPath();
                 ctx.arc(peak.x, peak.y - 14, 5, 0, Math.PI * 2);
                 ctx.fillStyle = '#ffe066';
-                ctx.shadowColor = '#d4af37';
-                ctx.shadowBlur = 25;
                 ctx.fill();
-                ctx.shadowBlur = 0;
             }
 
             // Floating sparks
@@ -153,14 +140,10 @@ const HeroCanvas = () => {
                 ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
                 if (s.gold) {
                     ctx.fillStyle = `rgba(212,175,55,${s.alpha * tw})`;
-                    ctx.shadowColor = '#d4af37';
                 } else {
                     ctx.fillStyle = `rgba(0,230,118,${s.alpha * tw})`;
-                    ctx.shadowColor = '#00e676';
                 }
-                ctx.shadowBlur = s.size * 6;
                 ctx.fill();
-                ctx.shadowBlur = 0;
             });
 
             phase += 0.012;

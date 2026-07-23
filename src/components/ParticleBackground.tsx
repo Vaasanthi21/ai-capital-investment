@@ -105,14 +105,10 @@ const ParticleBackground = () => {
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 if (p.gold) {
                     ctx.fillStyle = `rgba(212,175,55,${p.alpha * twinkle})`;
-                    ctx.shadowColor = '#d4af37';
                 } else {
                     ctx.fillStyle = `rgba(0,230,118,${p.alpha * twinkle})`;
-                    ctx.shadowColor = '#00e676';
                 }
-                ctx.shadowBlur = p.size * 5;
                 ctx.fill();
-                ctx.shadowBlur = 0;
             });
 
             t += 0.012;
