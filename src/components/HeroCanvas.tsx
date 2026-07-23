@@ -35,6 +35,10 @@ const HeroCanvas = () => {
         }
 
         const draw = () => {
+            if (W <= 0 || H <= 0) {
+                animId = requestAnimationFrame(draw);
+                return;
+            }
             ctx.clearRect(0, 0, W, H);
 
             // Dark gradient background

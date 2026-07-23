@@ -45,6 +45,10 @@ const ParticleBackground = () => {
 
         const draw = () => {
             const W = canvas.width, H = canvas.height;
+            if (W <= 0 || H <= 0) {
+                animId = requestAnimationFrame(draw);
+                return;
+            }
 
             // Base
             ctx.fillStyle = '#060e08';

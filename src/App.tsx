@@ -62,13 +62,13 @@ function App() {
   };
 
   // Handle browser back / forward navigation
-  useState(() => {
+  useEffect(() => {
     const handlePopState = () => {
       setViewState(getInitialView());
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  });
+  }, []);
 
   return (
     <>
