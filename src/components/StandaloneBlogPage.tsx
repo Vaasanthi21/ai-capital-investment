@@ -392,8 +392,8 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
       {/* ── Main Content Area ────────────────────────────────────────── */}
       <main className="lp-container" style={{ position: 'relative', zIndex: 10, paddingTop: '28px', paddingBottom: '60px', minHeight: 'calc(100vh - 200px)' }}>
         
-        {/* Back Link */}
-        <div style={{ marginBottom: '20px' }}>
+        {/* Back Link & Search Controls Row */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
           <button 
             type="button"
             onClick={() => onNavigate('landing')}
@@ -407,51 +407,17 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
           >
             <ArrowLeft size={14} /> Back to Main Site
           </button>
-        </div>
 
-        {/* Hero Header Banner */}
-        <div style={{
-          background: 'linear-gradient(135deg, rgba(6, 26, 16, 0.95) 0%, rgba(2, 12, 6, 0.98) 100%)',
-          border: '1px solid rgba(0, 230, 118, 0.22)',
-          borderRadius: '16px',
-          padding: '28px 32px',
-          marginBottom: '28px',
-          boxShadow: '0 10px 30px rgba(0, 230, 118, 0.06)'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-            <span style={{ background: 'rgba(0, 230, 118, 0.12)', color: '#00e676', border: '1px solid rgba(0, 230, 118, 0.3)', padding: '3px 10px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.5px' }}>
-              📊 OFFICIAL RESEARCH DIRECTORY
-            </span>
-          </div>
-          <h1 style={{ fontSize: '2.1rem', fontWeight: 800, color: '#ffffff', marginBottom: '8px', lineHeight: 1.2 }}>
-            AI Capital Market Research & Intelligence Hub
-          </h1>
-          <p style={{ fontSize: '0.94rem', color: '#b0bec5', maxWidth: '780px', lineHeight: 1.6, marginBottom: '20px' }}>
-            Actionable quantitative strategies, tax-loss harvesting guides, digital asset yield mechanics, and SEC regulatory compliance analysis.
-          </p>
-
-          {/* Controls Bar: Search + Publish */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
-            <div className="blog-search-wrapper" style={{ maxWidth: '420px', width: '100%' }}>
-              <Search size={16} className="blog-search-icon" />
-              <input 
-                type="text"
-                placeholder="Search research reports, topics, or authors..."
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                className="blog-search-input"
-                style={{ background: 'rgba(0,0,0,0.6)', padding: '10px 14px 10px 38px', fontSize: '0.86rem' }}
-              />
-            </div>
-            <a 
-              href="https://www.udenai.com/blog-studio" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="btn btn-green-outline"
-              style={{ fontSize: '0.82rem', padding: '10px 20px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer', whiteSpace: 'nowrap', borderRadius: '24px' }}
-            >
-              Publish Article <ArrowUpRight size={14} />
-            </a>
+          <div className="blog-search-wrapper" style={{ maxWidth: '380px', width: '100%' }}>
+            <Search size={16} className="blog-search-icon" />
+            <input 
+              type="text"
+              placeholder="Search research reports, topics, or authors..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              className="blog-search-input"
+              style={{ background: 'rgba(0,0,0,0.6)', padding: '9px 14px 9px 38px', fontSize: '0.84rem' }}
+            />
           </div>
         </div>
 
