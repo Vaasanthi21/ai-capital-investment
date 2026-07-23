@@ -658,7 +658,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             <p>{t.footerSub}</p>
           </div>
           <div>
-            <h4>Quick Links</h4>
+            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Quick Links</div>
             <ul className="lp-footer-links">
               {['home', 'about', 'services', 'blogs'].map((id, idx) => (
                 <li key={id}><a href={`#${id}`}>{t.nav[idx]}</a></li>
@@ -666,7 +666,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             </ul>
           </div>
           <div>
-            <h4>Services</h4>
+            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Services</div>
             <ul className="lp-footer-links">
               <li>{t.svc1Title}</li>
               <li>{t.svc2Title}</li>
@@ -674,7 +674,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             </ul>
           </div>
           <div>
-            <h4>Contact & Regulatory</h4>
+            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Contact & Regulatory</div>
             <ul className="lp-footer-links">
               <li>SEBI Reg: INA000098765</li>
               <li>SEC RIA #801-123456</li>
@@ -683,7 +683,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             </ul>
           </div>
           <div>
-            <h4>Follow Us</h4>
+            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Follow Us</div>
             <div className="lp-social-row">
               {['𝕏','in','📸','f'].map(s => <a key={s} className="lp-social-icon" href="#" aria-label={`Follow us on ${s}`}>{s}</a>)}
             </div>

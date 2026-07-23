@@ -914,7 +914,7 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
             <p>Next-generation financial solutions leveraging intelligent systems to grow your wealth.</p>
           </div>
           <div>
-            <h5>Quick Links</h5>
+            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Quick Links</div>
             <ul className="lp-footer-links">
               <li><a href="/" onClick={(e) => { e.preventDefault(); onNavigate('landing'); }}>Home</a></li>
               <li><a href="/#about" onClick={(e) => { e.preventDefault(); onNavigate('landing'); }}>About</a></li>
@@ -923,7 +923,7 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
             </ul>
           </div>
           <div>
-            <h5>Services</h5>
+            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Services</div>
             <ul className="lp-footer-links">
               <li>Wealth Management</li>
               <li>Investment Advisory</li>
@@ -931,7 +931,7 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
             </ul>
           </div>
           <div>
-            <h5>Contact & Regulatory</h5>
+            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Contact & Regulatory</div>
             <ul className="lp-footer-links">
               <li>SEBI Reg: INA000098765</li>
               <li>SEC RIA #801-123456</li>
