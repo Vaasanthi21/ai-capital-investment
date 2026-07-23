@@ -258,8 +258,19 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
         setSimulationLogs(logs);
     };
 
+    const getInitialTab = (): string => {
+        const path = window.location.pathname.toLowerCase();
+        if (path.includes('blogs')) return 'blogs';
+        if (path.includes('settings')) return 'settings';
+        if (path.includes('assets') || path.includes('portfolio')) return 'portfolio';
+        if (path.includes('deposit') || path.includes('history')) return 'deposit';
+        if (path.includes('advisory')) return 'advisory';
+        if (path.includes('analytics')) return 'analytics';
+        return 'home';
+    };
+
     const [riskTolerance, setRiskTolerance] = useState(userData.riskTolerance || 'Balanced');
-    const [selectedTab, setSelectedTab] = useState('home');
+    const [selectedTab, setSelectedTab] = useState(getInitialTab);
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [aiBubbleText, setAiBubbleText] = useState('');
     const [aiBubbleFade, setAiBubbleFade] = useState(false);
@@ -272,7 +283,23 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
 
     const handleTabSwitch = (tab: string) => {
         setIsTransitioning(true);
-        setTimeout(() => { setSelectedTab(tab); setIsTransitioning(false); }, 250);
+        setTimeout(() => { 
+            setSelectedTab(tab); 
+            setIsTransitioning(false); 
+            const tabPathMap: Record<string, string> = {
+                'home': '/dashboard/overview',
+                'portfolio': '/dashboard/assets',
+                'deposit': '/dashboard/deposit',
+                'advisory': '/dashboard/advisory',
+                'analytics': '/dashboard/analytics',
+                'blogs': '/dashboard/blogs',
+                'settings': '/dashboard/settings'
+            };
+            const targetPath = tabPathMap[tab] || '/dashboard';
+            if (window.location.pathname !== targetPath) {
+                window.history.pushState({ tab }, '', targetPath);
+            }
+        }, 250);
     };
 
     useEffect(() => {

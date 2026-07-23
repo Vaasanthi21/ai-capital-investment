@@ -53,10 +53,34 @@ interface AdvisorDashboardProps {
 }
 
 const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
+    const getInitialTab = (): string => {
+        const path = window.location.pathname.toLowerCase();
+        if (path.includes('proposals')) return 'proposals';
+        if (path.includes('performance')) return 'performance';
+        if (path.includes('compliance')) return 'compliance';
+        if (path.includes('settings')) return 'settings';
+        return 'clients';
+    };
+
     const [clients, setClients] = useState<Client[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [selectedTab, setSelectedTab] = useState('clients');
+    const [selectedTab, setSelectedTabState] = useState(getInitialTab);
+
+    const setSelectedTab = (tab: string) => {
+        setSelectedTabState(tab);
+        const pathMap: Record<string, string> = {
+            'clients': '/advisor/clients',
+            'proposals': '/advisor/proposals',
+            'performance': '/advisor/performance',
+            'compliance': '/advisor/compliance',
+            'settings': '/advisor/settings'
+        };
+        const targetPath = pathMap[tab] || '/advisor';
+        if (window.location.pathname !== targetPath) {
+            window.history.pushState({ tab }, '', targetPath);
+        }
+    };
     const [activeClient, setActiveClient] = useState<Client | null>(null);
     const [advisorTip, setAdvisorTip] = useState('');
     const [sendingTip, setSendingTip] = useState(false);
