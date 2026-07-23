@@ -274,6 +274,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [aiBubbleText, setAiBubbleText] = useState('');
     const [aiBubbleFade, setAiBubbleFade] = useState(false);
+    const [copiedArticleUrl, setCopiedArticleUrl] = useState<string | null>(null);
 
     const [tickers, setTickers] = useState({
         btc: { price: 64250, change: 1.2, flash: '' },
@@ -1632,15 +1633,18 @@ const BlogsSection = () => {
                                     {activeArticle.url}
                                 </div>
                             </div>
-                            <a 
-                                href={activeArticle.url} 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
+                            <button 
+                                type="button"
+                                onClick={() => {
+                                    navigator.clipboard.writeText(activeArticle.url);
+                                    setCopiedArticleUrl(activeArticle.id);
+                                    setTimeout(() => setCopiedArticleUrl(null), 2500);
+                                }}
                                 className="btn btn-green-outline"
-                                style={{ fontSize: '0.76rem', padding: '6px 14px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
+                                style={{ fontSize: '0.76rem', padding: '6px 14px', display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
                             >
-                                Open Source Article ↗
-                            </a>
+                                {copiedArticleUrl === activeArticle.id ? '✓ Link Copied!' : '📋 Copy Source URL'}
+                            </button>
                         </div>
 
                         {/* YMYL Financial Disclaimer Banner */}

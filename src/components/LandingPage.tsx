@@ -176,6 +176,7 @@ const faqData = [
 const LandingPage = ({ onNavigate }: LandingPageProps) => {
   const [language, setLanguage] = useState<'en' | 'hi'>('en');
   const [selectedBlog, setSelectedBlog] = useState<any | null>(null);
+  const [copiedBlogUrl, setCopiedBlogUrl] = useState<any | null>(null);
   const [blogCategory, setBlogCategory] = useState<string>('All');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
@@ -622,15 +623,18 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
                   {selectedBlog.url}
                 </div>
               </div>
-              <a 
-                href={selectedBlog.url} 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <button 
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(selectedBlog.url);
+                  setCopiedBlogUrl(selectedBlog.id);
+                  setTimeout(() => setCopiedBlogUrl(null), 2500);
+                }}
                 className="btn btn-green-outline"
-                style={{ fontSize: '0.78rem', padding: '7px 16px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
+                style={{ fontSize: '0.78rem', padding: '7px 16px', display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
               >
-                Read Source Article ↗
-              </a>
+                {copiedBlogUrl === selectedBlog.id ? '✓ Link Copied!' : '📋 Copy Source URL'}
+              </button>
             </div>
 
             {/* YMYL Disclaimer */}
@@ -643,14 +647,9 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             </div>
 
             <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <a 
-                href={selectedBlog.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ fontSize: '0.8rem', color: 'var(--color-gold)', textDecoration: 'underline' }}
-              >
+              <span style={{ fontSize: '0.8rem', color: 'var(--color-gold)', fontFamily: 'monospace' }}>
                 {selectedBlog.url}
-              </a>
+              </span>
               <button
                 type="button"
                 onClick={() => setSelectedBlog(null)}
