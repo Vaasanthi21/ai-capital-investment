@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import LandingPage from './components/LandingPage';
-import LoginPage from './components/LoginPage';
-import SignupPage from './components/SignupPage';
-import Dashboard from './components/Dashboard';
-import AdvisorDashboard from './components/AdvisorDashboard';
-import OtpVerification from './components/OtpVerification';
-import ForgotPassword from './components/ForgotPassword';
-import PaymentPage from './components/PaymentPage';
-import StandaloneBlogPage from './components/StandaloneBlogPage';
+
+const LoginPage = lazy(() => import('./components/LoginPage'));
+const SignupPage = lazy(() => import('./components/SignupPage'));
+const Dashboard = lazy(() => import('./components/Dashboard'));
+const AdvisorDashboard = lazy(() => import('./components/AdvisorDashboard'));
+const OtpVerification = lazy(() => import('./components/OtpVerification'));
+const ForgotPassword = lazy(() => import('./components/ForgotPassword'));
+const PaymentPage = lazy(() => import('./components/PaymentPage'));
+const StandaloneBlogPage = lazy(() => import('./components/StandaloneBlogPage'));
 
 type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'payment' | 'forgot-password' | 'dashboard' | 'blogs';
 
@@ -71,7 +72,7 @@ function App() {
   }, []);
 
   return (
-    <>
+    <Suspense fallback={<div style={{ minHeight: '100vh', background: '#060e08' }} />}>
       {view === 'landing'   && <LandingPage onNavigate={setView} />}
       {view === 'blogs'     && <StandaloneBlogPage onNavigate={setView} />}
       {view === 'login'     && <LoginPage onLoginSuccess={(user) => { setUserProfile(user); setView('dashboard'); }} onNavigate={setView} setTempEmail={setTempEmail} />}
@@ -86,7 +87,7 @@ function App() {
       ) : (
         <Dashboard userData={userProfile} onLogout={() => setView('landing')} onUpdateUser={(user) => setUserProfile(user)} />
       ))}
-    </>
+    </Suspense>
   );
 }
 
