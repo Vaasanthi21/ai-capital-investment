@@ -1400,7 +1400,7 @@ const blogArticles: BlogArticle[] = [
         abstract: 'How neural networks and automated rebalancing are replacing traditional financial advisors, minimizing portfolio volatility by 30%.',
         icon: <Sparkles size={32} />,
         gold: false,
-        url: 'https://app.aicapitalinvestment.com/blogs/future-ai-wealth-management-2026',
+        url: 'https://www.investopedia.com/financial-advisor/how-ai-is-changing-wealth-management/',
         image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
         imageAlt: "AI Quantitative Stock Chart & Financial Trading Analytics Dashboard",
         content: [
@@ -1419,7 +1419,7 @@ const blogArticles: BlogArticle[] = [
         abstract: 'Evaluating the optimal allocation index for crypto assets under a balanced risk profile to maximize returns while shielding capital.',
         icon: <Wallet size={32} />,
         gold: true,
-        url: 'https://app.aicapitalinvestment.com/blogs/algorithmic-crypto-yields-vaults-2026',
+        url: 'https://www.investopedia.com/terms/c/cryptocurrency.asp',
         image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80",
         imageAlt: "Digital Assets Vault & Algorithmic Cryptocurrency Staking Yield Analytics",
         content: [
@@ -1438,7 +1438,7 @@ const blogArticles: BlogArticle[] = [
         abstract: 'Understanding the relationship between central bank policies, corporate bonds, and physical gold hedges in capital preservation.',
         icon: <BarChart3 size={32} />,
         gold: false,
-        url: 'https://app.aicapitalinvestment.com/blogs/interest-rates-bond-yields-2026',
+        url: 'https://www.investopedia.com/terms/b/bond.asp',
         image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80",
         imageAlt: "Macroeconomic Volatility Shield & Risk Hedging Market Defense Graph",
         content: [
@@ -1457,7 +1457,7 @@ const blogArticles: BlogArticle[] = [
         abstract: 'A deep dive into automated tax-loss harvesting mechanisms that help lock in net capital gains and optimize year-end tax returns.',
         icon: <Settings size={32} />,
         gold: true,
-        url: 'https://app.aicapitalinvestment.com/blogs/tax-loss-harvesting-strategies-2026',
+        url: 'https://www.investopedia.com/terms/t/tax-lossharvesting.asp',
         image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
         imageAlt: "Automated Tax Loss Harvesting & Financial Wealth Tax Shield Analytics",
         content: [
