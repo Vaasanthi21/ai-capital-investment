@@ -1619,39 +1619,39 @@ const BlogsSection = () => {
                 {/* Hero Spotlight Featured Article */}
                 {featuredArticle && (
                     <div className="blog-featured-spotlight">
-                        <div style={{ padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                                <span style={{ background: 'rgba(212, 175, 55, 0.15)', color: 'var(--color-gold)', border: '1px solid rgba(212, 175, 55, 0.3)', padding: '4px 12px', borderRadius: '14px', fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.5px' }}>
-                                    ⭐ FEATURED INSTITUTIONAL REPORT
+                        <div style={{ padding: '18px 22px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                                <span style={{ background: 'rgba(212, 175, 55, 0.15)', color: 'var(--color-gold)', border: '1px solid rgba(212, 175, 55, 0.3)', padding: '2px 8px', borderRadius: '10px', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.4px' }}>
+                                    ⭐ FEATURED REPORT
                                 </span>
-                                <span style={{ fontSize: '0.78rem', color: 'var(--color-gold)', fontFamily: 'monospace', fontWeight: 600 }}>
+                                <span style={{ fontSize: '0.72rem', color: 'var(--color-gold)', fontFamily: 'monospace', fontWeight: 600 }}>
                                     {featuredArticle.readTime}
                                 </span>
                             </div>
 
-                            <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#ffffff', marginBottom: '14px', lineHeight: 1.35 }} className="glow-text-gold">
+                            <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#ffffff', marginBottom: '8px', lineHeight: 1.3 }} className="glow-text-gold">
                                 {featuredArticle.title}
                             </h3>
 
-                            <p style={{ fontSize: '0.92rem', color: '#a1b3b8', lineHeight: 1.65, marginBottom: '22px', borderLeft: '3px solid var(--color-gold)', paddingLeft: '14px' }}>
+                            <p style={{ fontSize: '0.82rem', color: '#a1b3b8', lineHeight: 1.5, marginBottom: '14px', borderLeft: '2px solid var(--color-gold)', paddingLeft: '10px' }}>
                                 {featuredArticle.abstract}
                             </p>
 
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
-                                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
+                                <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
                                     <span style={{ color: '#ffffff', fontWeight: 600 }}>By {featuredArticle.author}</span> • <span>{featuredArticle.date}</span>
                                 </div>
                                 <button 
                                     type="button" 
                                     className="btn btn-gold"
                                     onClick={() => openArticle(featuredArticle)}
-                                    style={{ fontSize: '0.86rem', padding: '10px 22px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                                    style={{ fontSize: '0.78rem', padding: '6px 16px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                                 >
-                                    Read Full Report <ChevronRight size={16} />
+                                    Read Report <ChevronRight size={14} />
                                 </button>
                             </div>
                         </div>
-                        <div className="blog-img-thumb-container" style={{ height: '100%', minHeight: '260px' }}>
+                        <div className="blog-img-thumb-container" style={{ height: '100%', minHeight: '140px' }}>
                             <img 
                                 src={featuredArticle.image} 
                                 alt={featuredArticle.imageAlt} 
