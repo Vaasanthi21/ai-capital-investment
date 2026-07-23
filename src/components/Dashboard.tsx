@@ -1419,29 +1419,30 @@ interface BlogArticle {
 const blogArticles: BlogArticle[] = [
     {
         id: 'ai-wealth-management-revolution',
-        title: 'How Artificial Intelligence is Revolutionizing Wealth Management',
+        title: 'AI-Driven Asset Allocation: Outperforming Inflation & Market Volatility in 2026',
         category: 'AI & Tech',
         author: 'Dr. Aris Thorne (Chief Quantitative Strategist)',
         date: 'July 20, 2026',
-        readTime: '8 min read (520 words)',
-        abstract: 'How neural networks and real-time multi-agent algorithmic execution are replacing traditional quarterly rebalancing, reducing portfolio drawdown risk to under 4.5%.',
+        readTime: '6 min read (460 words)',
+        abstract: 'How graduates and first-time investors can leverage AI asset allocation, automated rebalancing, and risk shields to build financial resilience against market inflation.',
         icon: <Sparkles size={32} />,
         gold: false,
         url: 'https://www.investopedia.com/financial-advisor/how-ai-is-changing-wealth-management/',
         image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
         imageAlt: "AI Quantitative Stock Chart & Financial Trading Analytics Dashboard",
         content: [
-            'Artificial Intelligence is fundamentally restructuring the global wealth management sector by replacing retrospective quarterly rebalancing with real-time, multi-agent algorithmic execution. For decades, retail and accredited investors relied exclusively on traditional human wealth advisors who rebalanced portfolios on fixed annual or quarterly calendars. However, manual quarterly rebalancing introduces significant emotional bias, execution friction, and catastrophic timing delays during high-volatility market crashes.',
-            '### 1. The Fall of Static 60/40 Asset Allocation',
-            'Modern quantitative AI platforms deploy deep neural network models trained on over 30 years of global macroeconomic indicators, including credit spreads, equity valuations, interest rate yield curves, and order-book liquidity depth. Static 60/40 equity-to-bond allocation models performed poorly during recent inflationary market cycles because equities and fixed-income assets dropped in tandem. Algorithmic multi-agent architectures eliminate static constraints by continuously adjusting target risk budgets 24 hours a day across global equities, sovereign debt, corporate credit, and physical gold reserves.',
-            '### 2. Sub-Second Micro-Rebalancing & Volatility Defense',
-            'When market volatility spikes trigger liquidity panic across global stock exchanges, automated algorithms execute micro-rebalancing swaps in sub-second intervals. By locking in profit gains during peak bull rallies and systematically accumulating undervalued hedges during market pullbacks, the AI Volatility Shield minimizes maximum drawdown risks without requiring manual intervention from the investor.',
-            '### 3. Quantitative Risk Hedging & Capital Preservation',
-            'In addition to dynamic asset allocation, quantitative algorithms incorporate real-time tail-risk hedging. During systemic credit stress, the engine automatically reallocates a portion of portfolio risk into short-term treasury bills, high-grade cash equivalents, and inverse volatility hedges. Backtested performance data across major market crises (including 2008, 2020, and 2022) indicates that dynamic tail-risk hedging reduces maximum drawdowns to under 4.5%, preserving compounding momentum.',
-            '### 4. Democratizing Institutional Alpha for Accredited Investors',
-            'Historically, multi-agent quantitative models were restricted to multibillion-dollar hedge funds and institutional family offices due to high computational costs and proprietary data requirements. Today, scalable cloud infrastructure and advanced API integrations bring institutional-grade portfolio optimization directly to individual accredited investors, delivering transparent 24/7 account management.',
+            'If you are just starting your financial journey, AI-Driven Asset Allocation: Outperforming Inflation & Market Volatility in 2026 may sound advanced or even intimidating. But the idea is actually simple: use smarter technology to build, monitor, and adjust your portfolio so your money has a better chance of keeping up with inflation while reducing the emotional mistakes that often happen during market swings.',
+            'For graduates and first-time investors, that matters a lot. You are balancing career decisions, rising living costs, and uncertainty about what the market will do next. The good news is that AI investing tools are becoming more practical, more accessible, and easier to understand.',
+            '### Why 2026 Feels Challenging for Beginner Investors',
+            'Inflation has changed how people think about savings. Leaving money idle can feel safe in the short term, but over time, inflation can quietly reduce purchasing power. At the same time, market volatility can make investing feel risky, especially when headlines shift daily. That is exactly why AI-Driven Asset Allocation is gaining attention. Instead of relying only on static portfolios or emotional decision-making, AI-powered systems can respond faster to changing conditions.',
+            '### What AI-Driven Asset Allocation Actually Means',
+            'At its core, AI-Driven Asset Allocation in 2026 means using machine learning and automated decision systems to decide how much of your portfolio should be in different asset classes, such as equities, bonds, cash alternatives, or inflation-sensitive investments. Think of it like having a smart co-pilot—it does not just set a portfolio once and forget it. It keeps watching the road.',
+            '### Multi-Agent Neural Networks & 24/7 Rebalancing',
+            'Instead of one model doing everything, multiple AI agents specialize in different tasks: monitoring macroeconomic signals, tracking market volatility, identifying portfolio drift, spotting tax-saving opportunities, and stress-testing risk scenarios. Automated 24/7 rebalancing maintains target allocations automatically, trimming overperforming assets and redirecting capital into underweighted hedges.',
+            '### Volatility Shield Risk Controls & Step-by-Step Guide',
+            'A Volatility Shield monitors market stress, correlation changes, and sudden drawdown risk to keep your portfolio aligned with your long-term comfort level. Step 1: Start with your life goals. Step 2: Define your risk level honestly. Step 3: Use automation for consistency. Step 4: Review periodically without obsessing over daily market charts.',
             '### Key Institutional Takeaways:',
-            '• Continuous 24/7 algorithmic tracking eliminates human cognitive trading panic and execution slippage.\n• Dynamic risk budgeting reduces maximum drawdown risks to under 4.5% in backtested market crashes.\n• Institutional-grade yield optimization strategies are now available to retail portfolios automatically.\n• Real-time tail-risk hedging protects principal capital during systemic liquidity contractions.'
+            '• AI asset allocation replaces static models with 24/7 continuous market monitoring and risk-adjusted rebalancing.\n• Multi-agent neural networks specialize in tracking volatility, tax-loss harvesting, and macroeconomic signals.\n• Automated Volatility Shields help protect capital during market drawdowns while keeping up with inflation.\n• Ideal for graduates and beginner investors seeking disciplined, low-friction, long-term wealth building.'
         ]
     },
     {
@@ -1705,22 +1706,22 @@ const BlogsSection = () => {
                     padding: '20px'
                 }}>
                     <div className="glass-card" style={{
-                        maxWidth: '520px', width: '92%', maxHeight: '72vh', overflowY: 'auto', padding: '16px 20px',
+                        maxWidth: '450px', width: '92%', maxHeight: '60vh', overflowY: 'auto', padding: '12px 14px',
                         position: 'relative', border: activeArticle.gold ? '1px solid rgba(212, 175, 55, 0.3)' : '1px solid rgba(0, 230, 118, 0.3)',
-                        background: 'rgba(6, 18, 10, 0.96)', boxShadow: activeArticle.gold ? '0 0 30px rgba(212, 175, 55, 0.12)' : '0 0 30px rgba(0, 230, 118, 0.12)',
-                        transform: 'none', borderRadius: '16px'
+                        background: 'rgba(6, 18, 10, 0.96)', boxShadow: activeArticle.gold ? '0 0 24px rgba(212, 175, 55, 0.12)' : '0 0 24px rgba(0, 230, 118, 0.12)',
+                        transform: 'none', borderRadius: '14px'
                     }}>
                         <button onClick={closeArticle} style={{
-                            position: 'absolute', top: '12px', right: '12px', zIndex: 10,
+                            position: 'absolute', top: '10px', right: '10px', zIndex: 10,
                             background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.15)', color: '#fff',
-                            borderRadius: '50%', width: '30px', height: '30px',
+                            borderRadius: '50%', width: '26px', height: '26px',
                             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                             transition: 'all 0.2s ease'
                         }} onMouseEnter={e => e.currentTarget.style.color = '#00e676'} onMouseLeave={e => e.currentTarget.style.color = '#fff'}>
-                            <X size={16} />
+                            <X size={14} />
                         </button>
                         
-                        <div style={{ borderRadius: '10px', overflow: 'hidden', height: '110px', marginBottom: '12px', border: '1px solid rgba(255,255,255,0.08)' }}>
+                        <div style={{ borderRadius: '8px', overflow: 'hidden', height: '80px', marginBottom: '8px', border: '1px solid rgba(255,255,255,0.08)' }}>
                             <img 
                                 src={activeArticle.image} 
                                 alt={activeArticle.imageAlt} 
@@ -1728,33 +1729,33 @@ const BlogsSection = () => {
                             />
                         </div>
 
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
-                            <span className="blog-badge" style={{ fontSize: '0.68rem', padding: '2px 8px' }}>{activeArticle.category}</span>
-                            <span style={{ fontSize: '0.7rem', color: 'var(--color-gold)', fontWeight: 600, fontFamily: 'monospace' }}>{activeArticle.readTime}</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+                            <span className="blog-badge" style={{ fontSize: '0.62rem', padding: '2px 6px' }}>{activeArticle.category}</span>
+                            <span style={{ fontSize: '0.66rem', color: 'var(--color-gold)', fontWeight: 600, fontFamily: 'monospace' }}>{activeArticle.readTime}</span>
                         </div>
 
-                        <h2 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '6px', color: '#ffffff', lineHeight: 1.3 }} className={activeArticle.gold ? 'glow-text-gold' : 'glow-text-green'}>
+                        <h2 style={{ fontSize: '0.98rem', fontWeight: 700, marginBottom: '4px', color: '#ffffff', lineHeight: 1.25 }} className={activeArticle.gold ? 'glow-text-gold' : 'glow-text-green'}>
                             {activeArticle.title}
                         </h2>
                         
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: '12px', paddingBottom: '8px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.68rem', color: 'var(--text-muted)', marginBottom: '8px', paddingBottom: '6px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                             <span style={{ color: '#ffffff', fontWeight: 600 }}>By {activeArticle.author}</span>
                             <span>•</span>
                             <span>{activeArticle.date}</span>
                         </div>
 
                         <div style={{
-                            maxHeight: '220px', overflowY: 'auto', paddingRight: '8px',
-                            fontSize: '0.84rem', color: '#d1e0e4', lineHeight: '1.55',
+                            maxHeight: '160px', overflowY: 'auto', paddingRight: '6px',
+                            fontSize: '0.78rem', color: '#d1e0e4', lineHeight: '1.48',
                             textAlign: 'left'
                         }}>
                             {activeArticle.content.map((paragraph, index) => {
                                 if (paragraph.startsWith('### ')) {
                                     return (
                                         <h4 key={index} style={{
-                                            fontSize: '0.94rem', color: '#ffffff', fontWeight: 700,
-                                            marginTop: '12px', marginBottom: '6px',
-                                            paddingLeft: '8px', borderLeft: activeArticle.gold ? '3px solid var(--color-gold)' : '3px solid #00e676'
+                                            fontSize: '0.86rem', color: '#ffffff', fontWeight: 700,
+                                            marginTop: '10px', marginBottom: '4px',
+                                            paddingLeft: '6px', borderLeft: activeArticle.gold ? '2px solid var(--color-gold)' : '2px solid #00e676'
                                         }}>
                                             {paragraph.replace('### ', '')}
                                         </h4>
@@ -1764,22 +1765,22 @@ const BlogsSection = () => {
                                     const parts = paragraph.split('\n');
                                     return (
                                         <div key={index} style={{
-                                            marginTop: '12px', marginBottom: '12px', padding: '10px 12px',
-                                            background: 'rgba(0, 230, 118, 0.06)', borderLeft: '3px solid #00e676',
+                                            marginTop: '8px', marginBottom: '8px', padding: '8px 10px',
+                                            background: 'rgba(0, 230, 118, 0.06)', borderLeft: '2px solid #00e676',
                                             borderRadius: '6px', border: '1px solid rgba(0, 230, 118, 0.2)'
                                         }}>
-                                            <h5 style={{ color: '#00e676', fontSize: '0.86rem', fontWeight: 700, marginBottom: '6px' }}>
+                                            <h5 style={{ color: '#00e676', fontSize: '0.8rem', fontWeight: 700, marginBottom: '4px' }}>
                                                 📌 Key Institutional Takeaways
                                             </h5>
                                             {parts.slice(1).map((bullet, bIdx) => (
-                                                <p key={bIdx} style={{ fontSize: '0.8rem', color: '#e0f2f1', marginBottom: '3px', lineHeight: '1.45' }}>
+                                                <p key={bIdx} style={{ fontSize: '0.74rem', color: '#e0f2f1', marginBottom: '2px', lineHeight: '1.4' }}>
                                                     {bullet}
                                                 </p>
                                             ))}
                                         </div>
                                     );
                                 }
-                                return <p key={index} style={{ marginBottom: '8px' }}>{paragraph}</p>;
+                                return <p key={index} style={{ marginBottom: '6px' }}>{paragraph}</p>;
                             })}
                         </div>
 
