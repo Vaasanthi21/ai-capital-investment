@@ -277,16 +277,16 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
       </header>
 
       {/* ── Main Content Area ────────────────────────────────────────── */}
-      <main className="lp-container" style={{ paddingTop: '32px', paddingBottom: '60px', minHeight: 'calc(100vh - 200px)' }}>
+      <main className="lp-container" style={{ paddingTop: '28px', paddingBottom: '60px', minHeight: 'calc(100vh - 200px)' }}>
         
         {/* Back Link */}
-        <div style={{ marginBottom: '16px' }}>
+        <div style={{ marginBottom: '20px' }}>
           <button 
             type="button"
             onClick={() => onNavigate('landing')}
             style={{
               background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-              color: 'var(--text-secondary)', fontSize: '0.82rem', padding: '6px 14px', borderRadius: '20px',
+              color: 'var(--text-secondary)', fontSize: '0.82rem', padding: '7px 16px', borderRadius: '20px',
               cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', transition: 'all 0.2s ease'
             }}
             onMouseEnter={e => e.currentTarget.style.color = 'var(--color-gold)'}
@@ -296,135 +296,171 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
           </button>
         </div>
 
-        <div className="blogs-container">
-          {/* Header Banner */}
-          <div className="blog-header-banner">
-            <div>
-              <h1 style={{ fontSize: '1.65rem', fontWeight: 800, color: '#ffffff', marginBottom: '6px' }}>
-                Institutional Research & Market Intelligence 📊
-              </h1>
-              <p style={{ fontSize: '0.88rem', color: '#a1b3b8' }}>
-                Actionable quantitative strategies, tax alpha guides, digital asset yields, and SEC regulatory analysis.
-              </p>
+        {/* Hero Header Banner */}
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(6, 26, 16, 0.95) 0%, rgba(2, 12, 6, 0.98) 100%)',
+          border: '1px solid rgba(0, 230, 118, 0.22)',
+          borderRadius: '16px',
+          padding: '28px 32px',
+          marginBottom: '28px',
+          boxShadow: '0 10px 30px rgba(0, 230, 118, 0.06)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+            <span style={{ background: 'rgba(0, 230, 118, 0.12)', color: '#00e676', border: '1px solid rgba(0, 230, 118, 0.3)', padding: '3px 10px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.5px' }}>
+              📊 OFFICIAL RESEARCH DIRECTORY
+            </span>
+          </div>
+          <h1 style={{ fontSize: '2.1rem', fontWeight: 800, color: '#ffffff', marginBottom: '8px', lineHeight: 1.2 }}>
+            AI Capital Market Research & Intelligence Hub
+          </h1>
+          <p style={{ fontSize: '0.94rem', color: '#b0bec5', maxWidth: '780px', lineHeight: 1.6, marginBottom: '20px' }}>
+            Actionable quantitative strategies, tax-loss harvesting guides, digital asset yield mechanics, and SEC regulatory compliance analysis.
+          </p>
+
+          {/* Controls Bar: Search + Publish */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
+            <div className="blog-search-wrapper" style={{ maxWidth: '420px', width: '100%' }}>
+              <Search size={16} className="blog-search-icon" />
+              <input 
+                type="text"
+                placeholder="Search research reports, topics, or authors..."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="blog-search-input"
+                style={{ background: 'rgba(0,0,0,0.6)', padding: '10px 14px 10px 38px', fontSize: '0.86rem' }}
+              />
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', width: '100%', maxWidth: '580px', justifyContent: 'flex-end' }}>
-              <div className="blog-search-wrapper">
-                <Search size={16} className="blog-search-icon" />
-                <input 
-                  type="text"
-                  placeholder="Search research reports, topics, or authors..."
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  className="blog-search-input"
+            <a 
+              href="https://www.udenai.com/blog-studio" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="btn btn-green-outline"
+              style={{ fontSize: '0.82rem', padding: '10px 20px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer', whiteSpace: 'nowrap', borderRadius: '24px' }}
+            >
+              Publish Article <ArrowUpRight size={14} />
+            </a>
+          </div>
+        </div>
+
+        {/* Filter Category Pills */}
+        <div className="blog-filters" style={{ marginBottom: '24px' }}>
+          {categories.map(cat => (
+            <button
+              key={cat}
+              type="button"
+              className={`blog-filter-btn ${selectedCategory === cat ? 'active' : ''}`}
+              onClick={() => setSelectedCategory(cat)}
+              style={{ padding: '7px 18px', fontSize: '0.82rem' }}
+            >
+              {cat === 'All' ? '✨ All Insights' : cat === 'AI & Tech' ? '🤖 AI & Tech' : cat === 'Crypto' ? '🪙 Crypto' : cat === 'Macro Strategy' ? '📊 Macro Strategy' : '🛡️ Tax Strategy'}
+            </button>
+          ))}
+        </div>
+
+        {/* Blogs Grid & Hero Spotlight */}
+        <div className="blogs-grid">
+          {/* Hero Spotlight Featured Article */}
+          {featuredArticle && (
+            <div style={{
+              gridColumn: '1 / -1',
+              display: 'grid',
+              gridTemplateColumns: '1.2fr 1fr',
+              background: 'linear-gradient(135deg, rgba(8, 28, 16, 0.98) 0%, rgba(4, 16, 8, 0.95) 100%)',
+              border: '1px solid rgba(212, 175, 55, 0.35)',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              boxShadow: '0 10px 32px rgba(212, 175, 55, 0.12)',
+              marginBottom: '10px'
+            }}>
+              <div style={{ padding: '26px 30px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                  <span style={{ background: 'rgba(212, 175, 55, 0.18)', color: 'var(--color-gold)', border: '1px solid rgba(212, 175, 55, 0.35)', padding: '3px 10px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.5px' }}>
+                    ⭐ FEATURED REPORT
+                  </span>
+                  <span style={{ fontSize: '0.76rem', color: 'var(--color-gold)', fontFamily: 'monospace', fontWeight: 600 }}>
+                    {featuredArticle.readTime}
+                  </span>
+                </div>
+
+                <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff', marginBottom: '10px', lineHeight: 1.3 }}>
+                  {featuredArticle.title}
+                </h2>
+
+                <p style={{ fontSize: '0.88rem', color: '#c0d0d5', lineHeight: 1.55, marginBottom: '18px', borderLeft: '3px solid var(--color-gold)', paddingLeft: '12px' }}>
+                  {featuredArticle.abstract}
+                </p>
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                    <span style={{ color: '#ffffff', fontWeight: 600 }}>By {featuredArticle.author}</span> • <span style={{ color: 'var(--color-gold)' }}>{featuredArticle.date}</span>
+                  </div>
+                  <button 
+                    type="button" 
+                    className="btn btn-gold"
+                    onClick={() => openArticle(featuredArticle)}
+                    style={{ fontSize: '0.82rem', padding: '8px 20px', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
+                  >
+                    Read Report <ChevronRight size={14} />
+                  </button>
+                </div>
+              </div>
+              <div style={{ height: '100%', minHeight: '220px', overflow: 'hidden' }}>
+                <img 
+                  src={featuredArticle.image} 
+                  alt={featuredArticle.imageAlt} 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               </div>
-              <a 
-                href="https://www.udenai.com/blog-studio" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="btn btn-green-outline"
-                style={{ fontSize: '0.82rem', padding: '9px 18px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer', whiteSpace: 'nowrap', borderRadius: '24px' }}
-              >
-                Publish Article <ArrowUpRight size={14} />
-              </a>
             </div>
-          </div>
+          )}
 
-          {/* Filter Category Pills */}
-          <div className="blog-filters">
-            {categories.map(cat => (
-              <button
-                key={cat}
-                type="button"
-                className={`blog-filter-btn ${selectedCategory === cat ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(cat)}
-              >
-                {cat === 'All' ? '✨ All Insights' : cat === 'AI & Tech' ? '🤖 AI & Tech' : cat === 'Crypto' ? '🪙 Crypto' : cat === 'Macro Strategy' ? '📊 Macro Strategy' : '🛡️ Tax Strategy'}
-              </button>
-            ))}
-          </div>
-
-          {/* Blogs Grid & Hero Spotlight */}
-          <div className="blogs-grid">
-            {/* Hero Spotlight Featured Article */}
-            {featuredArticle && (
-              <div className="blog-featured-spotlight">
-                <div style={{ padding: '22px 26px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                    <span style={{ background: 'rgba(212, 175, 55, 0.15)', color: 'var(--color-gold)', border: '1px solid rgba(212, 175, 55, 0.3)', padding: '2px 8px', borderRadius: '10px', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.4px' }}>
-                      ⭐ FEATURED REPORT
-                    </span>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--color-gold)', fontFamily: 'monospace', fontWeight: 600 }}>
-                      {featuredArticle.readTime}
-                    </span>
-                  </div>
-
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff', marginBottom: '8px', lineHeight: 1.3 }} className="glow-text-gold">
-                    {featuredArticle.title}
-                  </h3>
-
-                  <p style={{ fontSize: '0.84rem', color: '#a1b3b8', lineHeight: 1.5, marginBottom: '16px', borderLeft: '2px solid var(--color-gold)', paddingLeft: '10px' }}>
-                    {featuredArticle.abstract}
-                  </p>
-
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
-                    <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
-                      <span style={{ color: '#ffffff', fontWeight: 600 }}>By {featuredArticle.author}</span> • <span>{featuredArticle.date}</span>
-                    </div>
-                    <button 
-                      type="button" 
-                      className="btn btn-gold"
-                      onClick={() => openArticle(featuredArticle)}
-                      style={{ fontSize: '0.78rem', padding: '6px 16px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-                    >
-                      Read Report <ChevronRight size={14} />
-                    </button>
-                  </div>
-                </div>
-                <div className="blog-img-thumb-container" style={{ height: '100%', minHeight: '160px' }}>
-                  <img 
-                    src={featuredArticle.image} 
-                    alt={featuredArticle.imageAlt} 
-                    className="blog-img-thumb"
-                  />
+          {/* Standard Grid Articles */}
+          {gridArticles.map(article => (
+            <div
+              key={article.id}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                borderRadius: '14px',
+                overflow: 'hidden',
+                background: 'rgba(6, 18, 10, 0.92)',
+                border: article.gold ? '1px solid rgba(212, 175, 55, 0.3)' : '1px solid rgba(0, 230, 118, 0.18)',
+                boxShadow: '0 6px 20px rgba(0,0,0,0.4)',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              <div style={{ position: 'relative', height: '150px', overflow: 'hidden' }}>
+                <img 
+                  src={article.image} 
+                  alt={article.imageAlt} 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+                <div style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(6px)', padding: '3px 9px', borderRadius: '10px', fontSize: '0.68rem', color: 'var(--color-gold)', fontFamily: 'monospace', fontWeight: 600 }}>
+                  {article.readTime}
                 </div>
               </div>
-            )}
-
-            {/* Standard Grid Articles */}
-            {gridArticles.map(article => (
-              <div
-                key={article.id}
-                className={`blog-card ${article.gold ? 'gold-border' : ''}`}
-              >
-                <div className="blog-img-thumb-container">
-                  <img 
-                    src={article.image} 
-                    alt={article.imageAlt} 
-                    className="blog-img-thumb"
-                  />
-                  <div style={{ position: 'absolute', top: '12px', right: '12px', background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)', padding: '3px 10px', borderRadius: '12px', fontSize: '0.72rem', color: 'var(--color-gold)', fontFamily: 'monospace', fontWeight: 600 }}>
-                    {article.readTime}
-                  </div>
-                </div>
-                <div className="blog-card-content">
-                  <span className="blog-badge">{article.category}</span>
-                  <h3 className="blog-card-title">{article.title}</h3>
-                  <p className="blog-card-abstract">{article.abstract}</p>
-                  <div className="blog-meta-footer">
-                    <div className="blog-meta-left">
-                      <span>{article.author}</span>
-                      <span>•</span>
-                      <span>{article.date}</span>
-                    </div>
-                    <span className="blog-read-link" onClick={() => openArticle(article)}>
-                      Read Report <ChevronRight size={14} />
-                    </span>
-                  </div>
+              <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                <span className="blog-badge" style={{ fontSize: '0.65rem', alignSelf: 'flex-start', marginBottom: '8px' }}>{article.category}</span>
+                <h3 style={{ fontSize: '1.02rem', fontWeight: 700, color: '#ffffff', marginBottom: '8px', lineHeight: 1.35 }}>
+                  {article.title}
+                </h3>
+                <p style={{ fontSize: '0.82rem', color: '#a0b0b5', lineHeight: 1.5, marginBottom: '14px', flex: 1 }}>
+                  {article.abstract}
+                </p>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--text-muted)', paddingTop: '10px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                  <span>{article.author.split(' (')[0]}</span>
+                  <button 
+                    type="button"
+                    className="btn btn-green-outline"
+                    onClick={() => openArticle(article)}
+                    style={{ fontSize: '0.72rem', padding: '4px 10px', display: 'inline-flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}
+                  >
+                    Read <ChevronRight size={12} />
+                  </button>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
 
         {/* Detailed Article Reader Overlay */}
