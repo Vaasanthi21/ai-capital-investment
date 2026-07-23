@@ -1500,6 +1500,30 @@ const BlogsSection = () => {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [activeArticle, setActiveArticle] = useState<BlogArticle | null>(null);
 
+    useEffect(() => {
+        const path = window.location.pathname;
+        if (path.includes('/dashboard/blogs/')) {
+            const articleId = path.split('/dashboard/blogs/')[1];
+            const match = blogArticles.find(a => a.id === articleId);
+            if (match) setActiveArticle(match);
+        }
+    }, []);
+
+    const openArticle = (article: BlogArticle) => {
+        setActiveArticle(article);
+        const targetPath = `/dashboard/blogs/${article.id}`;
+        if (window.location.pathname !== targetPath) {
+            window.history.pushState({ articleId: article.id }, '', targetPath);
+        }
+    };
+
+    const closeArticle = () => {
+        setActiveArticle(null);
+        if (window.location.pathname !== '/dashboard/blogs') {
+            window.history.pushState(null, '', '/dashboard/blogs');
+        }
+    };
+
     const categories = ['All', 'AI & Tech', 'Crypto', 'Macro Strategy', 'Tax Strategy'];
     const filteredArticles = selectedCategory === 'All'
         ? blogArticles
@@ -1555,7 +1579,7 @@ const BlogsSection = () => {
                                     <span>•</span>
                                     <span>{article.date}</span>
                                 </div>
-                                <span className="blog-read-link" onClick={() => setActiveArticle(article)}>
+                                <span className="blog-read-link" onClick={() => openArticle(article)} style={{ cursor: 'pointer' }}>
                                     Read Article <ChevronRight size={14} />
                                 </span>
                             </div>
@@ -1578,7 +1602,7 @@ const BlogsSection = () => {
                         background: 'rgba(6, 18, 10, 0.95)', boxShadow: activeArticle.gold ? '0 0 40px rgba(212, 175, 55, 0.1)' : '0 0 40px rgba(0, 230, 118, 0.1)',
                         transform: 'none', borderRadius: '16px'
                     }}>
-                        <button onClick={() => setActiveArticle(null)} style={{
+                        <button onClick={closeArticle} style={{
                             position: 'absolute', top: '16px', right: '16px', zIndex: 10,
                             background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff',
                             borderRadius: '50%', width: '36px', height: '36px',
@@ -1667,7 +1691,7 @@ const BlogsSection = () => {
                             <strong>Regulatory Notice & YMYL Disclaimer:</strong> Algorithmic strategy insights provided by AI Capital Investment LLC (SEBI Reg: INA000098765 / SEC RIA #801-123456). Past performance is no guarantee of future returns. Content is intended for educational purposes and does not constitute personalized financial or tax advice.
                         </div>
                         
-                        <button className="btn btn-green-outline" onClick={() => setActiveArticle(null)} style={{ marginTop: '18px', width: '100%' }}>
+                        <button className="btn btn-green-outline" onClick={closeArticle} style={{ marginTop: '18px', width: '100%' }}>
                             Close Article
                         </button>
                     </div>
