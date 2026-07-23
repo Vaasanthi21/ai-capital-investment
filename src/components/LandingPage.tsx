@@ -420,22 +420,26 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
               onClick={() => setLanguage(l => l === 'en' ? 'hi' : 'en')}
               className="btn btn-green-outline"
               style={{ fontSize: '0.72rem', padding: '4px 8px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '3px' }}
+              aria-label="Switch language"
             >
               <Globe size={12} /> {language === 'en' ? 'हिंदी' : 'EN'}
             </button>
             
-            <button className="btn btn-green-outline" onClick={() => onNavigate('login')}>{t.signIn}</button>
+            <button className="btn btn-green-outline" onClick={() => onNavigate('login')} aria-label="Sign in to platform">{t.signIn}</button>
             
             {/* Mobile Hamburger Button */}
-            <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle navigation menu">
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              <span className="sr-only">Toggle navigation menu</span>
             </button>
           </div>
         </div>
       </header>
 
-      {/* ── Hero ──────────────────────────────────────────────────── */}
-      <section className="lp-hero" id="home">
+      {/* ── Main Content Landmark ──────────────────────────────────────── */}
+      <main className="lp-main">
+        {/* ── Hero ──────────────────────────────────────────────────── */}
+        <section className="lp-hero" id="home">
         <div className="lp-container lp-hero-inner">
           <div className="lp-hero-text fade-in-section">
             <h1 className="lp-hero-title">
@@ -492,7 +496,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             <div key={label} className="lp-metric-item">
               <div className={`lp-metric-icon ${gold ? 'gold' : 'green'}`}><Icon size={22} /></div>
               <div>
-                <h4 className="lp-metric-val">{val}</h4>
+                <div className="lp-metric-val">{val}</div>
                 <p className="lp-metric-label">{label}</p>
               </div>
             </div>
@@ -537,6 +541,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
                 type="button"
                 onClick={() => setBlogCategory(cat)}
                 className={`blog-filter-btn ${blogCategory === cat ? 'active' : ''}`}
+                aria-label={`Filter blogs by category ${cat}`}
               >
                 {cat}
               </button>
@@ -581,6 +586,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
                       }}
                       className="blog-read-link"
                       style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
+                      aria-label={`Read article: ${language === 'en' ? b.titleEn : b.titleHi}`}
                     >
                       {language === 'en' ? 'Read Article' : 'लेख पढ़ें'} <ArrowRight size={14} />
                     </button>
@@ -597,6 +603,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
               className="btn btn-gold"
               onClick={() => onNavigate('blogs')}
               style={{ fontSize: '0.92rem', padding: '12px 28px', borderRadius: '24px', display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer', boxShadow: '0 4px 20px rgba(212, 175, 55, 0.25)' }}
+              aria-label="Explore All Research Reports & Blogs"
             >
               📖 Explore All Research Reports & Blogs <ArrowRight size={16} />
             </button>
@@ -622,6 +629,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
                     className="faq-question-btn"
                     onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
                     aria-expanded={isOpen}
+                    aria-label={`Toggle FAQ: ${language === 'en' ? item.qEn : item.qHi}`}
                   >
                     <span>{language === 'en' ? item.qEn : item.qHi}</span>
                     {isOpen ? <ChevronUp size={18} style={{ color: 'var(--color-gold)' }} /> : <ChevronDown size={18} style={{ color: 'var(--text-muted)' }} />}
@@ -637,6 +645,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
           </div>
         </div>
       </section>
+      </main>
 
       {/* ── Footer ────────────────────────────────────────────────── */}
       <footer className="lp-footer">
@@ -649,7 +658,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             <p>{t.footerSub}</p>
           </div>
           <div>
-            <h5>Quick Links</h5>
+            <h4>Quick Links</h4>
             <ul className="lp-footer-links">
               {['home', 'about', 'services', 'blogs'].map((id, idx) => (
                 <li key={id}><a href={`#${id}`}>{t.nav[idx]}</a></li>
@@ -657,7 +666,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             </ul>
           </div>
           <div>
-            <h5>Services</h5>
+            <h4>Services</h4>
             <ul className="lp-footer-links">
               <li>{t.svc1Title}</li>
               <li>{t.svc2Title}</li>
@@ -665,7 +674,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             </ul>
           </div>
           <div>
-            <h5>Contact & Regulatory</h5>
+            <h4>Contact & Regulatory</h4>
             <ul className="lp-footer-links">
               <li>SEBI Reg: INA000098765</li>
               <li>SEC RIA #801-123456</li>
@@ -674,9 +683,9 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             </ul>
           </div>
           <div>
-            <h5>Follow Us</h5>
+            <h4>Follow Us</h4>
             <div className="lp-social-row">
-              {['𝕏','in','📸','f'].map(s => <a key={s} className="lp-social-icon" href="#">{s}</a>)}
+              {['𝕏','in','📸','f'].map(s => <a key={s} className="lp-social-icon" href="#" aria-label={`Follow us on ${s}`}>{s}</a>)}
             </div>
           </div>
         </div>

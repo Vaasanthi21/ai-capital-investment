@@ -418,15 +418,17 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
               onClick={() => setLanguage(l => l === 'en' ? 'hi' : 'en')}
               className="btn btn-green-outline"
               style={{ fontSize: '0.72rem', padding: '4px 8px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '3px' }}
+              aria-label="Switch language"
             >
               <Globe size={12} /> {language === 'en' ? 'हिंदी' : 'EN'}
             </button>
 
-            <button className="btn btn-green-outline" onClick={() => onNavigate('login')}>Sign In</button>
+            <button className="btn btn-green-outline" onClick={() => onNavigate('login')} aria-label="Sign in to platform">Sign In</button>
 
             {/* Mobile Hamburger Button */}
-            <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle navigation menu">
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              <span className="sr-only">Toggle navigation menu</span>
             </button>
           </div>
         </div>
@@ -768,6 +770,7 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
                   onChange={e => setSearchQuery(e.target.value)}
                   className="blog-search-input"
                   style={{ background: 'rgba(0,0,0,0.6)', padding: '9px 14px 9px 38px', fontSize: '0.84rem' }}
+                  aria-label="Search research reports, topics, or authors"
                 />
               </div>
             </div>
@@ -781,6 +784,7 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
                   className={`blog-filter-btn ${selectedCategory === cat ? 'active' : ''}`}
                   onClick={() => setSelectedCategory(cat)}
                   style={{ padding: '7px 18px', fontSize: '0.82rem' }}
+                  aria-label={`Filter articles by category ${cat}`}
                 >
                   {cat === 'All' ? '✨ All Insights' : cat === 'AI & Tech' ? '🤖 AI & Tech' : cat === 'Crypto' ? '🪙 Crypto' : cat === 'Macro Strategy' ? '📊 Macro Strategy' : '🛡️ Tax Strategy'}
                 </button>

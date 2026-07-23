@@ -1,0 +1,9 @@
+# AI Capital Investment Platform
+
+> AI Capital Investment is an SEC and SEBI registered quantitative wealth management and algorithmic asset allocation platform.
+
+## Institutional Research & Standalone Blogs
+- [Standalone Research Directory](https://ai-capital-investment.vercel.app/blogs): Comprehensive quantitative research reports, tax alpha strategies, digital asset yield mechanics, and regulatory compliance guidance.
+- [AI Wealth Management Revolution](https://ai-capital-investment.vercel.app/blogs/ai-wealth-management-revolution): Deep-dive into 24/7 multi-agent neural network asset allocation and market volatility shields.
+- [Portfolio Drift Analysis & Dynamic Rebalancing](https://ai-capital-investment.vercel.app/blogs/rebalancing-drift-algorithms): Quantitative model analyzing tolerance band rebalancing and execution drag reduction.
+- [SEC Investor Alerts & Regulatory Compliance](https://ai-capital-investment.vercel.app/blogs/sec-investor-alerts-guidance): Fiduciary compliance bulletin, SIPC asset isolation, and SEC registered advisory standards.
