@@ -600,24 +600,36 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
                 <button 
                   type="button" 
                   className="lp-social-icon" 
-                  onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank')}
-                  title="Share on Facebook"
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                    setCopiedArticleUrl(activeArticle.id);
+                    setTimeout(() => setCopiedArticleUrl(null), 2500);
+                  }}
+                  title="Share Article"
                 >
                   f
                 </button>
                 <button 
                   type="button" 
                   className="lp-social-icon" 
-                  onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(activeArticle.title)}`, '_blank')}
-                  title="Share on X"
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                    setCopiedArticleUrl(activeArticle.id);
+                    setTimeout(() => setCopiedArticleUrl(null), 2500);
+                  }}
+                  title="Share Article"
                 >
                   𝕏
                 </button>
                 <button 
                   type="button" 
                   className="lp-social-icon" 
-                  onClick={() => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`, '_blank')}
-                  title="Share on LinkedIn"
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                    setCopiedArticleUrl(activeArticle.id);
+                    setTimeout(() => setCopiedArticleUrl(null), 2500);
+                  }}
+                  title="Share Article"
                 >
                   in
                 </button>
@@ -631,7 +643,7 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
                   className="btn btn-green-outline"
                   style={{ fontSize: '0.78rem', padding: '6px 14px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                 >
-                  {copiedArticleUrl === activeArticle.id ? '✓ Link Copied!' : '📋 Copy Share Link'}
+                  {copiedArticleUrl === activeArticle.id ? '✓ Link Copied to Clipboard!' : '📋 Copy Share Link'}
                 </button>
               </div>
             </div>

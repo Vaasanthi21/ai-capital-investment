@@ -224,8 +224,6 @@ const faqData = [
 
 const LandingPage = ({ onNavigate }: LandingPageProps) => {
   const [language, setLanguage] = useState<'en' | 'hi'>('en');
-  const [selectedBlog, setSelectedBlog] = useState<any | null>(null);
-  const [copiedBlogUrl, setCopiedBlogUrl] = useState<any | null>(null);
   const [blogCategory, setBlogCategory] = useState<string>('All');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
@@ -244,10 +242,8 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
 
     // Check for blog deep link in URL
     const path = window.location.pathname;
-    if (path.includes('/blogs/')) {
-      const slug = path.split('/blogs/')[1];
-      const match = blogsData.find(b => b.url.includes(slug) || b.id.toString() === slug);
-      if (match) setSelectedBlog(match);
+    if (path.includes('/blogs/') || path === '/blogs') {
+      onNavigate('blogs');
     }
 
     return () => els.forEach(el => obs.unobserve(el));
@@ -579,7 +575,6 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
                     <button
                       type="button"
                       onClick={() => {
-                        setSelectedBlog(b);
                         if (window.location.pathname !== b.url) {
                           window.history.pushState({ blogId: b.id }, '', b.url);
                         }
