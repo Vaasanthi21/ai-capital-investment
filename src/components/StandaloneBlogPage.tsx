@@ -270,13 +270,13 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
   }, []);
 
   useEffect(() => {
-    if (mobileMenuOpen) {
+    if (mobileMenuOpen || activeArticle) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
     return () => { document.body.style.overflow = ''; };
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, activeArticle]);
 
   const openArticle = (article: BlogArticle) => {
     setActiveArticle(article);
@@ -557,15 +557,15 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
         {/* Detailed Article Reader Overlay */}
         {activeArticle && (
           <div style={{
-            position: 'fixed', inset: 0, zIndex: 1000,
+            position: 'fixed', inset: 0, zIndex: 9999999,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            backgroundColor: 'rgba(2, 8, 4, 0.75)', backdropFilter: 'blur(10px)',
-            padding: '20px'
+            backgroundColor: 'rgba(2, 6, 3, 0.96)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+            padding: '16px'
           }}>
-            <div className="glass-card" style={{
-              maxWidth: '400px', width: '90%', maxHeight: '82vh', overflowY: 'auto', padding: '16px 18px',
-              position: 'relative', border: activeArticle.gold ? '1px solid rgba(212, 175, 55, 0.3)' : '1px solid rgba(0, 230, 118, 0.3)',
-              background: 'rgba(6, 18, 10, 0.98)', boxShadow: activeArticle.gold ? '0 0 30px rgba(212, 175, 55, 0.15)' : '0 0 30px rgba(0, 230, 118, 0.15)',
+            <div style={{
+              maxWidth: '400px', width: '92%', maxHeight: '85vh', overflowY: 'auto', padding: '18px 20px',
+              position: 'relative', border: activeArticle.gold ? '1px solid rgba(212, 175, 55, 0.4)' : '1px solid rgba(0, 230, 118, 0.4)',
+              background: '#040d07', boxShadow: '0 20px 60px rgba(0, 0, 0, 0.98)',
               transform: 'none', borderRadius: '16px'
             }}>
               <button onClick={closeArticle} style={{
