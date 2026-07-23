@@ -556,6 +556,10 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
                     src={b.image} 
                     alt={language === 'en' ? b.imageAltEn : b.imageAltHi} 
                     className="blog-img-thumb"
+                    loading="lazy"
+                    decoding="async"
+                    width="600"
+                    height="338"
                   />
                 </div>
                 <div className="blog-card-content" style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
