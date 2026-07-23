@@ -440,17 +440,20 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
         <div className="blogs-grid">
           {/* Hero Spotlight Featured Article */}
           {featuredArticle && (
-            <div style={{
-              gridColumn: '1 / -1',
-              display: 'grid',
-              gridTemplateColumns: '1.2fr 1fr',
-              background: 'linear-gradient(135deg, rgba(8, 28, 16, 0.98) 0%, rgba(4, 16, 8, 0.95) 100%)',
-              border: '1px solid rgba(212, 175, 55, 0.35)',
-              borderRadius: '16px',
-              overflow: 'hidden',
-              boxShadow: '0 10px 32px rgba(212, 175, 55, 0.12)',
-              marginBottom: '10px'
-            }}>
+            <div 
+              className="blog-featured-spotlight"
+              style={{
+                gridColumn: '1 / -1',
+                display: 'grid',
+                gridTemplateColumns: '1.2fr 1fr',
+                background: 'linear-gradient(135deg, rgba(8, 28, 16, 0.98) 0%, rgba(4, 16, 8, 0.95) 100%)',
+                border: '1px solid rgba(212, 175, 55, 0.35)',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                boxShadow: '0 10px 32px rgba(212, 175, 55, 0.12)',
+                marginBottom: '10px'
+              }}
+            >
               <div style={{ padding: '26px 30px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
                   <span style={{ background: 'rgba(212, 175, 55, 0.18)', color: 'var(--color-gold)', border: '1px solid rgba(212, 175, 55, 0.35)', padding: '3px 10px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.5px' }}>
