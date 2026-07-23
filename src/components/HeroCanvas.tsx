@@ -9,13 +9,15 @@ const HeroCanvas = () => {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        let W = canvas.width = canvas.clientWidth || 360;
-        let H = canvas.height = canvas.clientHeight || 240;
+        let W = 360;
+        let H = 240;
 
         const resize = () => {
+            if (!canvas) return;
             W = canvas.width = canvas.clientWidth || 360;
             H = canvas.height = canvas.clientHeight || 240;
         };
+        requestAnimationFrame(resize);
         window.addEventListener('resize', resize);
 
         const NUM_BARS = 20;

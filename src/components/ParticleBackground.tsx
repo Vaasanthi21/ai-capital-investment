@@ -13,7 +13,7 @@ const ParticleBackground = () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         };
-        resize();
+        requestAnimationFrame(resize);
         window.addEventListener('resize', resize);
 
         // Particles
