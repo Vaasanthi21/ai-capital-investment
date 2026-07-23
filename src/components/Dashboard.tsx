@@ -1705,22 +1705,22 @@ const BlogsSection = () => {
                     padding: '20px'
                 }}>
                     <div className="glass-card" style={{
-                        maxWidth: '650px', width: '100%', maxHeight: '88vh', overflowY: 'auto', padding: '24px 28px',
+                        maxWidth: '520px', width: '92%', maxHeight: '72vh', overflowY: 'auto', padding: '16px 20px',
                         position: 'relative', border: activeArticle.gold ? '1px solid rgba(212, 175, 55, 0.3)' : '1px solid rgba(0, 230, 118, 0.3)',
-                        background: 'rgba(6, 18, 10, 0.96)', boxShadow: activeArticle.gold ? '0 0 40px rgba(212, 175, 55, 0.12)' : '0 0 40px rgba(0, 230, 118, 0.12)',
-                        transform: 'none', borderRadius: '18px'
+                        background: 'rgba(6, 18, 10, 0.96)', boxShadow: activeArticle.gold ? '0 0 30px rgba(212, 175, 55, 0.12)' : '0 0 30px rgba(0, 230, 118, 0.12)',
+                        transform: 'none', borderRadius: '16px'
                     }}>
                         <button onClick={closeArticle} style={{
-                            position: 'absolute', top: '16px', right: '16px', zIndex: 10,
+                            position: 'absolute', top: '12px', right: '12px', zIndex: 10,
                             background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.15)', color: '#fff',
-                            borderRadius: '50%', width: '34px', height: '34px',
+                            borderRadius: '50%', width: '30px', height: '30px',
                             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                             transition: 'all 0.2s ease'
                         }} onMouseEnter={e => e.currentTarget.style.color = '#00e676'} onMouseLeave={e => e.currentTarget.style.color = '#fff'}>
-                            <X size={18} />
+                            <X size={16} />
                         </button>
                         
-                        <div style={{ borderRadius: '12px', overflow: 'hidden', height: '170px', marginBottom: '16px', border: '1px solid rgba(255,255,255,0.08)' }}>
+                        <div style={{ borderRadius: '10px', overflow: 'hidden', height: '110px', marginBottom: '12px', border: '1px solid rgba(255,255,255,0.08)' }}>
                             <img 
                                 src={activeArticle.image} 
                                 alt={activeArticle.imageAlt} 
@@ -1728,33 +1728,33 @@ const BlogsSection = () => {
                             />
                         </div>
 
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
-                            <span className="blog-badge" style={{ fontSize: '0.72rem', padding: '3px 10px' }}>{activeArticle.category}</span>
-                            <span style={{ fontSize: '0.74rem', color: 'var(--color-gold)', fontWeight: 600, fontFamily: 'monospace' }}>{activeArticle.readTime}</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                            <span className="blog-badge" style={{ fontSize: '0.68rem', padding: '2px 8px' }}>{activeArticle.category}</span>
+                            <span style={{ fontSize: '0.7rem', color: 'var(--color-gold)', fontWeight: 600, fontFamily: 'monospace' }}>{activeArticle.readTime}</span>
                         </div>
 
-                        <h2 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: '10px', color: '#ffffff', lineHeight: 1.35 }} className={activeArticle.gold ? 'glow-text-gold' : 'glow-text-green'}>
+                        <h2 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '6px', color: '#ffffff', lineHeight: 1.3 }} className={activeArticle.gold ? 'glow-text-gold' : 'glow-text-green'}>
                             {activeArticle.title}
                         </h2>
                         
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '18px', paddingBottom: '12px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: '12px', paddingBottom: '8px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                             <span style={{ color: '#ffffff', fontWeight: 600 }}>By {activeArticle.author}</span>
                             <span>•</span>
                             <span>{activeArticle.date}</span>
                         </div>
 
                         <div style={{
-                            maxHeight: '380px', overflowY: 'auto', paddingRight: '10px',
-                            fontSize: '0.92rem', color: '#d1e0e4', lineHeight: '1.68',
+                            maxHeight: '220px', overflowY: 'auto', paddingRight: '8px',
+                            fontSize: '0.84rem', color: '#d1e0e4', lineHeight: '1.55',
                             textAlign: 'left'
                         }}>
                             {activeArticle.content.map((paragraph, index) => {
                                 if (paragraph.startsWith('### ')) {
                                     return (
                                         <h4 key={index} style={{
-                                            fontSize: '1.05rem', color: '#ffffff', fontWeight: 700,
-                                            marginTop: '18px', marginBottom: '8px',
-                                            paddingLeft: '10px', borderLeft: activeArticle.gold ? '3px solid var(--color-gold)' : '3px solid #00e676'
+                                            fontSize: '0.94rem', color: '#ffffff', fontWeight: 700,
+                                            marginTop: '12px', marginBottom: '6px',
+                                            paddingLeft: '8px', borderLeft: activeArticle.gold ? '3px solid var(--color-gold)' : '3px solid #00e676'
                                         }}>
                                             {paragraph.replace('### ', '')}
                                         </h4>
@@ -1764,36 +1764,36 @@ const BlogsSection = () => {
                                     const parts = paragraph.split('\n');
                                     return (
                                         <div key={index} style={{
-                                            marginTop: '18px', marginBottom: '16px', padding: '14px 16px',
+                                            marginTop: '12px', marginBottom: '12px', padding: '10px 12px',
                                             background: 'rgba(0, 230, 118, 0.06)', borderLeft: '3px solid #00e676',
-                                            borderRadius: '8px', border: '1px solid rgba(0, 230, 118, 0.2)'
+                                            borderRadius: '6px', border: '1px solid rgba(0, 230, 118, 0.2)'
                                         }}>
-                                            <h5 style={{ color: '#00e676', fontSize: '0.94rem', fontWeight: 700, marginBottom: '8px' }}>
+                                            <h5 style={{ color: '#00e676', fontSize: '0.86rem', fontWeight: 700, marginBottom: '6px' }}>
                                                 📌 Key Institutional Takeaways
                                             </h5>
                                             {parts.slice(1).map((bullet, bIdx) => (
-                                                <p key={bIdx} style={{ fontSize: '0.88rem', color: '#e0f2f1', marginBottom: '4px', lineHeight: '1.5' }}>
+                                                <p key={bIdx} style={{ fontSize: '0.8rem', color: '#e0f2f1', marginBottom: '3px', lineHeight: '1.45' }}>
                                                     {bullet}
                                                 </p>
                                             ))}
                                         </div>
                                     );
                                 }
-                                return <p key={index} style={{ marginBottom: '12px' }}>{paragraph}</p>;
+                                return <p key={index} style={{ marginBottom: '8px' }}>{paragraph}</p>;
                             })}
                         </div>
 
                         {/* Shareable Article Link Box */}
                         <div style={{
-                            marginTop: '14px', padding: '10px 14px', background: 'rgba(0, 230, 118, 0.05)',
-                            border: '1px solid rgba(0, 230, 118, 0.2)', borderRadius: '8px',
-                            display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px'
+                            marginTop: '10px', padding: '8px 10px', background: 'rgba(0, 230, 118, 0.05)',
+                            border: '1px solid rgba(0, 230, 118, 0.2)', borderRadius: '6px',
+                            display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '6px'
                         }}>
                             <div>
-                                <div style={{ fontSize: '0.68rem', color: '#00e676', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                                    🔗 Direct Shareable Article Link
+                                <div style={{ fontSize: '0.64rem', color: '#00e676', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                                    🔗 Shareable Link
                                 </div>
-                                <div style={{ fontSize: '0.76rem', color: '#ffffff', fontFamily: 'monospace', wordBreak: 'break-all' }}>
+                                <div style={{ fontSize: '0.7rem', color: '#ffffff', fontFamily: 'monospace', wordBreak: 'break-all' }}>
                                     {`https://ai-capital-investment.vercel.app/blogs/${activeArticle.id}`}
                                 </div>
                             </div>
@@ -1806,27 +1806,27 @@ const BlogsSection = () => {
                                     setTimeout(() => setCopiedArticleUrl(null), 2500);
                                 }}
                                 className="btn btn-green-outline"
-                                style={{ fontSize: '0.74rem', padding: '5px 12px', display: 'inline-flex', alignItems: 'center', gap: '5px', whiteSpace: 'nowrap' }}
+                                style={{ fontSize: '0.7rem', padding: '4px 10px', display: 'inline-flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}
                             >
-                                {copiedArticleUrl === activeArticle.id ? '✓ Link Copied!' : '📋 Copy Shareable Link'}
+                                {copiedArticleUrl === activeArticle.id ? '✓ Copied!' : '📋 Copy Link'}
                             </button>
                         </div>
 
                         {/* YMYL Financial Disclaimer Banner */}
                         <div style={{
-                            marginTop: '12px', padding: '10px 12px', background: 'rgba(212, 175, 55, 0.06)',
-                            borderLeft: '3px solid var(--color-gold)', borderRadius: '6px', fontSize: '0.7rem',
-                            color: 'var(--text-muted)', lineHeight: 1.45
+                            marginTop: '8px', padding: '8px 10px', background: 'rgba(212, 175, 55, 0.06)',
+                            borderLeft: '2px solid var(--color-gold)', borderRadius: '4px', fontSize: '0.66rem',
+                            color: 'var(--text-muted)', lineHeight: 1.4
                         }}>
-                            <strong>Regulatory Notice & YMYL Disclaimer:</strong> Algorithmic strategy insights provided by AI Capital Investment LLC (SEBI Reg: INA000098765 / SEC RIA #801-123456). Past performance is no guarantee of future returns. Content is intended for educational purposes and does not constitute personalized financial or tax advice.
+                            <strong>Notice:</strong> Insights provided by AI Capital LLC. Past performance does not guarantee future returns. Educational purposes only.
                         </div>
                         
-                        <div style={{ marginTop: '16px', textAlign: 'center' }}>
+                        <div style={{ marginTop: '12px', textAlign: 'center' }}>
                             <button 
                                 type="button" 
                                 className="btn btn-green-outline" 
                                 onClick={closeArticle} 
-                                style={{ fontSize: '0.8rem', padding: '6px 24px', borderRadius: '20px', cursor: 'pointer' }}
+                                style={{ fontSize: '0.75rem', padding: '4px 18px', borderRadius: '16px', cursor: 'pointer' }}
                             >
                                 Close Article
                             </button>
