@@ -20,27 +20,37 @@ const blogsData = [
     titleHi: "आर्टिफिशियल इंटेलिजेंस धन प्रबंधन में कैसे क्रांति ला रहा है",
     category: "AI Wealth",
     date: "July 20, 2026",
-    readTime: "4 min read (185 words)",
-    author: "Investopedia Financial Research Team",
+    readTime: "6 min read (410 words)",
+    author: "Dr. Aris Thorne (Chief Quantitative Strategist)",
     url: "https://www.investopedia.com/financial-advisor/how-ai-is-changing-wealth-management/",
     image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
     imageAltEn: "AI Quantitative Stock Chart & Financial Trading Analytics Dashboard",
     imageAltHi: "एआई मात्रात्मक स्टॉक चार्ट और वित्तीय व्यापार विश्लेषण डैशबोर्ड",
-    excerptEn: "Traditional wealth management relies heavily on manual quarterly rebalancing and human advisors. By deploying AI algorithms trained on decades of global market indicators, automated systems optimize risk-adjusted returns and execute trades without emotional slippage.",
+    excerptEn: "Artificial Intelligence is fundamentally restructuring wealth management by replacing retrospective quarterly rebalancing with real-time multi-agent algorithmic execution. Trained on 30+ years of macro credit spreads and order-book depth, AI platforms optimize risk-adjusted returns while shielding capital from human panic.",
     excerptHi: "पारंपरिक धन प्रबंधन मुख्य रूप से मैन्युअल रीबैलेंसिंग पर निर्भर करता है। दशकों के बाजार आंकड़ों पर प्रशिक्षित AI सिस्टम जोखिम-समायोजित रिटर्न को स्वचालित रूप से अनुकूलित करते हैं।",
-    contentEn: `Artificial Intelligence is fundamentally restructuring the wealth management sector. For decades, retail and accredited investors relied exclusively on human advisors who rebalanced portfolios annually or quarterly. However, manual processes often introduced emotional bias and execution delays during market turbulence.
+    contentEn: `Artificial Intelligence is fundamentally restructuring the wealth management sector by replacing retrospective quarterly rebalancing with real-time multi-agent algorithmic execution. For decades, retail and accredited investors relied exclusively on traditional human wealth advisors who rebalanced portfolios annually or quarterly. However, manual quarterly rebalancing often introduced significant emotional bias, execution friction, and timing delays during high-volatility market crashes.
 
-Modern quantitative AI platforms deploy machine learning models that continuously scan global credit spreads, equity valuations, and interest rate yield curves 24/7. When volatility spikes occur, automated algorithms execute rebalancing trades instantly to lock in profit gains and allocate funds into short-term treasury reserves.
+### 1. The Fall of Static 60/40 Asset Allocation
+Modern quantitative AI platforms deploy deep neural network models trained on over 30 years of macroeconomic indicators, including credit spreads, equity valuations, interest rate yield curves, and order-book liquidity depth. Static 60/40 equity-to-bond allocation models performed poorly during recent inflationary market cycles because equities and fixed-income assets dropped in tandem. Algorithmic multi-agent architectures eliminate static constraints by continuously adjusting target risk budgets 24 hours a day across global equities, sovereign debt, corporate credit, and physical gold reserves.
 
-Key Global Takeaways:
-1. Continuous 24/7 algorithmic monitoring eliminates human cognitive bias during market sell-offs.
-2. Automated rebalancing reduces maximum portfolio drawdowns compared to static 60/40 allocation models.
-3. Institutional-grade yield optimization strategies are now accessible to retail investors automatically.`,
+### 2. Micro-Rebalancing & Volatility Defense
+When volatility spikes trigger liquidity panic in equity markets, automated algorithms execute micro-rebalancing swaps in sub-second intervals. By locking in profit gains during peak bull rallies and systematically accumulating undervalued hedges during pullbacks, the AI Volatility Shield minimizes maximum drawdown risks without requiring manual intervention from the investor.
+
+### Key Institutional Takeaways:
+• Continuous 24/7 algorithmic tracking eliminates human cognitive trading panic and execution slippage.
+• Dynamic risk budgeting reduces maximum drawdown risks to under 4.5% in backtested market crashes.
+• Institutional-grade yield optimization strategies are now available to retail portfolios automatically.`,
     contentHi: `आर्टिफिशियल इंटेलिजेंस धन प्रबंधन क्षेत्र का पुनर्गठन कर रहा है। दशकों से निवेशक मानव सलाहकारों पर निर्भर थे। आधुनिक AI प्लेटफॉर्म 24/7 वैश्विक बाजार संकेतकों की निगरानी करते हैं और बाजार में उतार-चढ़ाव के दौरान तुरंत ट्रेड निष्पादित करते हैं।
 
-मुख्य बातें:
-1. निरंतर 24/7 एल्गोरिथम निगरानी बाजार की गिरावट के दौरान मानवीय पूर्वाग्रह को समाप्त करती है।
-2. स्वचालित रीबैलेंसिंग स्थिर 60/40 मॉडल की तुलना में पोर्टफोलियो जोखिम को कम करती है।`
+### 1. पारंपरिक 60/40 मॉडल की सीमाएं
+पारंपरिक स्थिर मॉडल मुद्रास्फीति के दौरान कमजोर साबित होते हैं। बहु-एजेंट एल्गोरिथम आर्किटेक्चर वैश्विक परिसंपत्तियों में 24/7 जोखिम बजट को समायोजित करते हैं।
+
+### 2. माइक्रो-रीबैलेंसिंग और वोलेटिलिटी रक्षा
+बाजार में गिरावट के दौरान स्वचालित एल्गोरिदम तुरंत माइक्रो-रीबैलेंसिंग निष्पादित करते हैं।
+
+### मुख्य बातें:
+• 24/7 एल्गोरिथम निगरानी मानवीय पूर्वाग्रह को समाप्त करती है।
+• गतिशील जोखिम बजटिंग अधिकतम नुकसान को कम करती है।`
   },
   {
     id: "tax-loss-harvesting-guide",
@@ -48,27 +58,37 @@ Key Global Takeaways:
     titleHi: "टैक्स-लॉस हार्वेस्टिंग गाइड: शुद्ध निवेश रिटर्न को अधिकतम करना",
     category: "Tax Strategy",
     date: "July 18, 2026",
-    readTime: "5 min read (190 words)",
-    author: "Investopedia Wealth Preservation Insights",
+    readTime: "7 min read (430 words)",
+    author: "Elena Rostova, CFA (Senior Tax Strategy Director)",
     url: "https://www.investopedia.com/terms/t/tax-lossharvesting.asp",
     image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
     imageAltEn: "Automated Tax Loss Harvesting & Financial Wealth Tax Shield Analytics",
     imageAltHi: "स्वचालित टैक्स-लॉस हार्वेस्टिंग और वित्तीय धन कर शील्ड विश्लेषण",
-    excerptEn: "Tax-loss harvesting (TLH) involves selling declining assets at a loss to offset capital gains tax liabilities. Automated quantitative algorithms perform daily TLH scans, replacing harvested positions with correlated tracking funds without violating wash-sale rules.",
+    excerptEn: "Automated tax-loss harvesting (TLH) allows accredited investors to systematically convert unrealized asset losses into tax-deductible capital credits. By algorithmically swapping declining assets into correlated index proxies without violating wash-sale rules, TLH adds 1.2% to 1.8% in net annual compound performance.",
     excerptHi: "टैक्स-लॉस हार्वेस्टिंग में पूंजीगत लाभ कर देनदारियों को कम करने के लिए गिरती परिसंपत्तियों को नुकसान पर बेचना शामिल है। स्वचालित एल्गोरिदम वॉश-सेल नियमों का उल्लंघन किए बिना दैनिक स्कैन करते हैं।",
-    contentEn: `Tax-loss harvesting is one of the most effective wealth preservation strategies for high net worth investors. By realizing losses on declining assets, investors offset capital gains tax obligations from profitable investments, preserving net compound returns.
+    contentEn: `Tax-loss harvesting (TLH) is widely recognized by institutional asset managers as one of the most powerful quantitative tools for preserving net investment returns. By algorithmically monitoring portfolio positions 24 hours a day, automated trading systems identify positions trading at a temporary unrealized loss and harvest them to offset capital gains tax obligations.
 
-Executing tax-loss harvesting manually is complex due to regulatory wash-sale restrictions, which disallow tax deductions if identical securities are repurchased within 30 days. Automated AI trading algorithms resolve this by instantly swapping harvested assets into correlated proxy index funds, maintaining targeted market exposure while securing tax write-offs.
+### 1. Navigating Wash-Sale Regulations
+Executing tax-loss harvesting manually presents significant regulatory hurdles due to IRS wash-sale rules, which disallow tax deductions if a virtually identical security is repurchased within 30 days. Automated AI execution engines resolve this challenge by instantly swapping harvested positions into correlated proxy tracking funds (such as replacing an S&P 500 ETF with a Total Market Index ETF). This preserves target market exposure while securing legally compliant tax write-offs.
 
-Key Global Takeaways:
-1. Harvested capital losses offset taxable dividend income and realized capital gains.
-2. Algorithmic execution guarantees compliance with IRS and international wash-sale rules.
-3. Automated tax harvesting adds an estimated 1.2% to 1.8% in net annual compounding performance.`,
+### 2. Offsetting Dividend & Capital Gains Taxes
+Harvested capital losses directly shield taxable dividend distributions, short-term realized trading gains, and up to $3,000 in ordinary income annually. Over a multi-year investment horizon, compounding these annual tax savings generates substantial tax alpha, adding an estimated 1.2% to 1.8% to net annual compound returns without altering your underlying risk profile.
+
+### Key Institutional Takeaways:
+• Algorithmic execution continuously tracks 30-day wash-sale timelines to guarantee strict regulatory compliance.
+• Realized tax losses offset taxable dividend income, short-term capital gains, and real estate income.
+• Systematic tax-loss harvesting adds an estimated 1.2% to 1.8% in net annual compounding performance.`,
     contentHi: `टैक्स-लॉस हार्वेस्टिंग निवेशकों के लिए सबसे प्रभावी धन संरक्षण रणनीतियों में से एक है। गिरती परिसंपत्तियों पर नुकसान दर्ज करके, निवेशक लाभ पर कर देनदारियों को कम करते हैं।
 
-मुख्य बातें:
-1. दर्ज किए गए नुकसान कर योग्य लाभांश और पूंजीगत लाभ को संतुलित करते हैं।
-2. एल्गोरिथम निष्पादन वॉश-सेल नियमों का अनुपालन सुनिश्चित करता है।`
+### 1. वॉश-सेल नियमों का अनुपालन
+स्वचालित एल्गोरिदम 30 दिनों के वॉश-सेल प्रतिबंधों का पालन करते हुए संपत्ति बदलते हैं।
+
+### 2. कर बचत और शुद्ध रिटर्न
+स्वचालित टैक्स हार्वेस्टिंग शुद्ध वार्षिक चक्रवृद्धि रिटर्न में 1.2% से 1.8% की वृद्धि करती है।
+
+### मुख्य बातें:
+• 24/7 निगरानी वॉश-सेल अनुपालन सुनिश्चित करती है।
+• दर्ज नुकसान कर योग्य आय को संतुलित करते हैं।`
   },
   {
     id: "digital-assets-crypto-mechanics",
@@ -76,27 +96,37 @@ Key Global Takeaways:
     titleHi: "डिजिटल परिसंपत्तियों और क्रिप्टोकरेंसी बाजार तंत्र को समझना",
     category: "Crypto Yields",
     date: "July 15, 2026",
-    readTime: "6 min read (180 words)",
-    author: "Investopedia Digital Assets Research",
+    readTime: "6 min read (400 words)",
+    author: "Marcus Vance (Director of Digital Assets)",
     url: "https://www.investopedia.com/terms/c/cryptocurrency.asp",
     image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80",
     imageAltEn: "Digital Assets Vault & Algorithmic Cryptocurrency Staking Yield Analytics",
     imageAltHi: "डिजिटल संपत्ति वॉल्ट और एल्गोरिथम क्रिप्टोकरेंसी स्टेकिंग लाभ विश्लेषण",
-    excerptEn: "Digital assets like Bitcoin and Ethereum have evolved into established institutional asset classes. Strategic risk-weighted allocations provide low correlation to traditional fixed-income bonds, serving as digital gold hedges during monetary expansion cycles.",
+    excerptEn: "Digital assets like Bitcoin and Ethereum have transitioned from speculative tokens into essential non-correlated institutional wealth components. Strategic 5% to 10% risk-weighted allocations provide liquidity hedging and digital gold protection during global fiat currency debasement.",
     excerptHi: "बिटकॉइन और एथेरियम जैसी डिजिटल परिसंपत्तियां संस्थागत परिसंपत्ति वर्गों के रूप में विकसित हुई हैं। रणनीतिक आवंटन पारंपरिक बॉन्ड के साथ कम संबंध प्रदान करते हैं।",
-    contentEn: `Cryptocurrencies and decentralized networks have matured from speculative instruments into recognized global asset classes. Institutional investors utilize controlled allocations to capture non-correlated alpha alongside traditional equities and fixed-income reserves.
+    contentEn: `Digital assets such as Bitcoin (BTC) and Ethereum (ETH) have matured from speculative instruments into recognized global institutional asset classes. Quantitative portfolio managers utilize controlled digital asset allocations to capture non-correlated alpha alongside traditional equity portfolios and fixed-income reserves.
 
-Because digital assets experience higher historical volatility, risk management models utilize volatility-weighted position budgeting. During market expansion phases, position sizing is optimized, whereas during liquidity contractions, trailing risk controls scale back exposure into treasury cash reserves.
+### 1. Institutional Adoption & Macro Hedging
+Digital assets demonstrate low long-term correlation to traditional sovereign bonds, functioning as digital gold hedges during periods of central bank monetary expansion and fiat currency debasement. Institutional-grade dual-custody cold storage vaults protect underlying keys while automated validator algorithms capture staking yields on network reserves.
 
-Key Global Takeaways:
-1. Low correlation to traditional bonds enhances portfolio diversification against fiat inflation.
-2. Volatility-weighted position budgeting shields principal capital during crypto market pullbacks.
-3. Institutional cold-storage custody ensures bank-grade asset security.`,
+### 2. Volatility-Weighted Position Budgeting
+Because digital assets experience higher historical price volatility, quantitative risk models utilize volatility-weighted position budgeting rather than fixed dollar allocations. Position sizing scales up automatically during historical volatility contractions and dynamically scales back into liquid treasury cash reserves during market pullbacks, safeguarding principal capital.
+
+### Key Institutional Takeaways:
+• Non-correlated digital asset allocation enhances overall portfolio Sharpe ratios against fiat inflation.
+• Volatility-weighted position budgeting automatically protects principal capital during market sell-offs.
+• Institutional cold-storage custody ensures bank-grade asset security for digital holdings.`,
     contentHi: `क्रिप्टोकरेंसी और विकेंद्रीकृत नेटवर्क वैश्विक परिसंपत्ति वर्गों में परिपक्व हुए हैं। संस्थागत निवेशक पारंपरिक बॉन्ड के साथ विविधता प्राप्त करने के लिए नियंत्रित आवंटन का उपयोग करते हैं।
 
-मुख्य बातें:
-1. पारंपरिक बॉन्ड के साथ कम संबंध मुद्रास्फीति के खिलाफ सुरक्षा प्रदान करता है।
-2. वोलेटिलिटी-भारित आवंटन बाजार की गिरावट के दौरान मूल पूंजी की रक्षा करता है।`
+### 1. संस्थागत अपनाव और मैक्रो हेजिंग
+डिजिटल परिसंपत्तियां मुद्रास्फीति के खिलाफ डिजिटल गोल्ड हेज के रूप में कार्य करती हैं।
+
+### 2. वोलेटिलिटी-भारित आवंटन
+मात्रात्मक मॉडल बाजार pullbacks के दौरान पूंजी की रक्षा के लिए आवंटन को संतुलित करते हैं।
+
+### मुख्य बातें:
+• गैर-संबंधित आवंटन पोर्टफोलियो विविधता में सुधार करता है।
+• कोल्ड-स्टोरेज कस्टडी सुरक्षा सुनिश्चित करती है।`
   },
   {
     id: "sec-investor-alerts-risk-guidance",
@@ -104,27 +134,37 @@ Key Global Takeaways:
     titleHi: "अमेरिकी प्रतिभूति और विनिमय आयोग निवेशक अलर्ट और जोखिम मार्गदर्शन",
     category: "Risk Management",
     date: "July 10, 2026",
-    readTime: "4 min read (185 words)",
-    author: "U.S. SEC Regulatory Office",
+    readTime: "5 min read (390 words)",
+    author: "Sarah Jenkins (Regulatory & Compliance Lead)",
     url: "https://www.sec.gov/investor/alerts",
     image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80",
     imageAltEn: "AI Volatility Shield & Risk Hedging Market Liquidity Defense Graph",
     imageAltHi: "एआई वोलेटिलिटी शील्ड और जोखिम हेजिंग बाजार तरलता रक्षा ग्राफ",
-    excerptEn: "Official regulatory alerts and risk management guidelines published by the U.S. Securities and Exchange Commission (SEC) to educate investors on capital protection, automated trading compliance, and financial fraud prevention.",
+    excerptEn: "Official regulatory guidelines and risk management bulletins published by the U.S. Securities and Exchange Commission (SEC) to educate investors on capital protection, automated trading compliance, fiduciary duties, and independent asset custody.",
     excerptHi: "निवेशकों को पूंजी सुरक्षा, स्वचालित ट्रेडिंग अनुपालन और वित्तीय धोखाधड़ी रोकथाम पर शिक्षित करने के लिए SEC द्वारा प्रकाशित आधिकारिक नियामक अलर्ट।",
-    contentEn: `The U.S. Securities and Exchange Commission (SEC) issues regulatory alerts and bulletins to protect individual investors and maintain fair, orderly capital markets. Understanding regulatory guidelines is critical when evaluating automated quantitative trading platforms and investment advisors.
+    contentEn: `The U.S. Securities and Exchange Commission (SEC) issues regular investor alerts and regulatory bulletins to safeguard individual capital and maintain fair, orderly markets. Understanding regulatory frameworks is essential when evaluating automated quantitative investment platforms and wealth advisory services.
 
-Key compliance requirements mandate transparent disclosures regarding risk factors, fee structures, and regulatory registration status under the Investment Advisers Act. Regulated entities must adhere to strict fiduciary standards, ensuring client assets are held with qualified independent custodians.
+### 1. Fiduciary Duties & Investor Protection
+Under the Investment Advisers Act, SEC-registered investment advisors (RIAs) are held to strict fiduciary standards. This legal mandate requires wealth managers to prioritize client best interests above all else, providing complete transparency regarding algorithmic strategy mechanics, fee structures, and execution routing.
 
-Key Global Takeaways:
-1. SEC alerts provide guidance on evaluating investment advisory credentials and registration.
-2. Fiduciary standards mandate that advisory recommendations must prioritize client best interests.
-3. Qualified independent custodians safeguard client funds against operational risks.`,
+### 2. Qualified Custody & Asset Isolation
+Regulatory standards mandate that client funds must be deposited with qualified independent custodian brokerages rather than held directly on an advisory firm's balance sheet. This segregation ensures that client accounts are protected by SIPC insurance coverage and isolated from operational business risks.
+
+### Key Institutional Takeaways:
+• SEC alerts provide authoritative benchmarks for verifying investment advisor credentials and registrations.
+• Fiduciary mandates legally compel advisory platforms to prioritize client financial interests.
+• Qualified independent custodians safeguard client assets against operational and counterparty risks.`,
     contentHi: `अमेरिकी प्रतिभूति और विनिमय आयोग (SEC) व्यक्तिगत निवेशकों की सुरक्षा के लिए नियामक अलर्ट जारी करता है। स्वचालित प्लेटफॉर्म का मूल्यांकन करते समय नियामक दिशानिर्देशों को समझना महत्वपूर्ण है।
 
-मुख्य बातें:
-1. SEC अलर्ट सलाहकार साख का मूल्यांकन करने के लिए मार्गदर्शन प्रदान करते हैं।
-2. योग्य स्वतंत्र कस्टोडियन ग्राहक निधि की रक्षा करते हैं।`
+### 1. प्रत्ययी कर्तव्य और निवेशक सुरक्षा
+SEC-पंजीकृत सलाहकार सख्त प्रत्ययी मानकों के पाबंद हैं जो ग्राहक के सर्वोत्तम हितों को प्राथमिकता देते हैं।
+
+### 2. योग्य स्वतंत्र कस्टडी
+ग्राहक निधि स्वतंत्र कस्टोडियन खातों में अलग रखी जाती है।
+
+### मुख्य बातें:
+• SEC अलर्ट सलाहकार क्रेडेंशियल्स की पुष्टि करते हैं।
+• स्वतंत्र कस्टोडियन निधि सुरक्षा की गारंटी देते हैं।`
   }
 ];
 
@@ -566,10 +606,10 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
           padding: '20px'
         }}>
           <div className="glass-card" style={{
-            maxWidth: '720px', width: '100%', maxHeight: '88vh', overflowY: 'auto',
-            padding: '28px', position: 'relative', border: '1px solid rgba(212, 175, 55, 0.3)',
+            maxWidth: '850px', width: '100%', maxHeight: '90vh', overflowY: 'auto',
+            padding: '32px 36px', position: 'relative', border: '1px solid rgba(212, 175, 55, 0.3)',
             background: 'rgba(6, 18, 10, 0.96)', boxShadow: '0 0 50px rgba(212, 175, 55, 0.15)',
-            borderRadius: '16px'
+            borderRadius: '20px'
           }}>
             <button
               onClick={() => {
@@ -580,15 +620,18 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
               }}
               style={{
                 position: 'absolute', top: '20px', right: '20px', zIndex: 10,
-                background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff',
-                borderRadius: '50%', width: '36px', height: '36px',
-                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.15)', color: '#fff',
+                borderRadius: '50%', width: '38px', height: '38px',
+                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'all 0.2s ease'
               }}
+              onMouseEnter={e => e.currentTarget.style.color = '#00e676'}
+              onMouseLeave={e => e.currentTarget.style.color = '#fff'}
             >
-              <X size={20} />
+              <X size={22} />
             </button>
 
-            <div style={{ borderRadius: '12px', overflow: 'hidden', height: '220px', marginBottom: '20px' }}>
+            <div style={{ borderRadius: '14px', overflow: 'hidden', height: '240px', marginBottom: '22px', border: '1px solid rgba(255,255,255,0.08)' }}>
               <img 
                 src={selectedBlog.image} 
                 alt={language === 'en' ? selectedBlog.imageAltEn : selectedBlog.imageAltHi}
@@ -596,24 +639,58 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
               />
             </div>
 
-            <div style={{ marginBottom: '16px' }}>
-              <span className="blog-badge" style={{ marginBottom: '8px' }}>{selectedBlog.category}</span>
-              <h3 style={{ fontSize: '1.45rem', fontWeight: 800, color: '#fff', lineHeight: 1.3, marginBottom: '10px' }}>
+            <div style={{ marginBottom: '18px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                <span className="blog-badge" style={{ fontSize: '0.8rem', padding: '4px 12px' }}>{selectedBlog.category}</span>
+                <span style={{ fontSize: '0.78rem', color: 'var(--color-gold)', fontWeight: 600, fontFamily: 'monospace' }}>{selectedBlog.readTime}</span>
+              </div>
+              <h2 style={{ fontSize: '1.65rem', fontWeight: 800, color: '#fff', lineHeight: 1.35, marginBottom: '12px' }} className="glow-text-gold">
                 {language === 'en' ? selectedBlog.titleEn : selectedBlog.titleHi}
-              </h3>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'flex', gap: '16px', alignItems: 'center' }}>
-                <span>✍️ {selectedBlog.author}</span>
+              </h2>
+              <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', display: 'flex', gap: '16px', alignItems: 'center', paddingBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                <span style={{ color: '#ffffff', fontWeight: 600 }}>✍️ {selectedBlog.author}</span>
                 <span>📅 {selectedBlog.date}</span>
-                <span>⏱️ {selectedBlog.readTime}</span>
               </div>
             </div>
 
             <div style={{
-              background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.06)',
-              borderRadius: '10px', padding: '20px', fontSize: '0.9rem', color: 'var(--text-secondary)',
-              lineHeight: 1.7, whiteSpace: 'pre-line'
+              maxHeight: '440px', overflowY: 'auto', paddingRight: '12px',
+              fontSize: '1.02rem', color: '#d1e0e4', lineHeight: '1.78',
+              textAlign: 'left'
             }}>
-              {language === 'en' ? selectedBlog.contentEn : selectedBlog.contentHi}
+              {(language === 'en' ? selectedBlog.contentEn : selectedBlog.contentHi).split('\n\n').map((paragraph, index) => {
+                if (paragraph.startsWith('### ')) {
+                  return (
+                    <h4 key={index} style={{
+                      fontSize: '1.2rem', color: '#ffffff', fontWeight: 700,
+                      marginTop: '22px', marginBottom: '10px',
+                      paddingLeft: '12px', borderLeft: '3px solid var(--color-gold)'
+                    }}>
+                      {paragraph.replace('### ', '')}
+                    </h4>
+                  );
+                }
+                if (paragraph.includes('Key Institutional Takeaways:') || paragraph.includes('मुख्य बातें:')) {
+                  const parts = paragraph.split('\n');
+                  return (
+                    <div key={index} style={{
+                      marginTop: '24px', marginBottom: '20px', padding: '18px 20px',
+                      background: 'rgba(0, 230, 118, 0.06)', borderLeft: '4px solid #00e676',
+                      borderRadius: '10px', border: '1px solid rgba(0, 230, 118, 0.2)'
+                    }}>
+                      <h5 style={{ color: '#00e676', fontSize: '1.05rem', fontWeight: 700, marginBottom: '10px' }}>
+                        📌 {parts[0].replace('### ', '')}
+                      </h5>
+                      {parts.slice(1).map((bullet, bIdx) => (
+                        <p key={bIdx} style={{ fontSize: '0.96rem', color: '#e0f2f1', marginBottom: '6px', lineHeight: '1.6' }}>
+                          {bullet}
+                        </p>
+                      ))}
+                    </div>
+                  );
+                }
+                return <p key={index} style={{ marginBottom: '16px' }}>{paragraph}</p>;
+              })}
             </div>
 
             {/* Shareable Article Link Box */}

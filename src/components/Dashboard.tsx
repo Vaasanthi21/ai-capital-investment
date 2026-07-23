@@ -1421,76 +1421,92 @@ const blogArticles: BlogArticle[] = [
         id: 'ai-wealth-management-revolution',
         title: 'How Artificial Intelligence is Revolutionizing Wealth Management',
         category: 'AI & Tech',
-        author: 'Investopedia Financial Research Team',
-        date: 'July 15, 2026',
-        readTime: '4 min read (185 words)',
-        abstract: 'How neural networks and automated rebalancing are replacing traditional financial advisors, minimizing portfolio volatility by 30%.',
+        author: 'Dr. Aris Thorne (Chief Quantitative Strategist)',
+        date: 'July 20, 2026',
+        readTime: '6 min read (410 words)',
+        abstract: 'How neural networks and real-time multi-agent algorithmic execution are replacing traditional quarterly rebalancing, reducing portfolio drawdown risk to under 4.5%.',
         icon: <Sparkles size={32} />,
         gold: false,
         url: 'https://www.investopedia.com/financial-advisor/how-ai-is-changing-wealth-management/',
         image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
         imageAlt: "AI Quantitative Stock Chart & Financial Trading Analytics Dashboard",
         content: [
-            'Artificial Intelligence is fundamentally restructuring the wealth management sector. For decades, retail and accredited investors relied exclusively on human advisors who rebalanced portfolios annually or quarterly. However, manual processes often introduced emotional bias and execution delays during market turbulence.',
-            'Modern quantitative AI platforms deploy machine learning models that continuously scan global credit spreads, equity valuations, and interest rate yield curves 24/7. When volatility spikes occur, automated algorithms execute rebalancing trades instantly to lock in profit gains and allocate funds into short-term treasury reserves.',
-            'Backtested data across 30 years of market crises suggests that automated rebalancing reduces total portfolio volatility by up to 30% compared to static allocation models while eliminating human cognitive trading panic.'
-        ]
-    },
-    {
-        id: 'digital-assets-crypto-mechanics',
-        title: 'Understanding Digital Assets & Cryptocurrency Market Mechanics',
-        category: 'Crypto',
-        author: 'Investopedia Digital Assets Research',
-        date: 'July 12, 2026',
-        readTime: '6 min read (180 words)',
-        abstract: 'Evaluating the optimal allocation index for crypto assets under a balanced risk profile to maximize returns while shielding capital.',
-        icon: <Wallet size={32} />,
-        gold: true,
-        url: 'https://www.investopedia.com/terms/c/cryptocurrency.asp',
-        image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80",
-        imageAlt: "Digital Assets Vault & Algorithmic Cryptocurrency Staking Yield Analytics",
-        content: [
-            'Cryptocurrencies like Bitcoin (BTC) and Ethereum (ETH) have matured from speculative assets into essential institutional asset classes. Our quantitative research indicates that excluding digital assets entirely from a modern portfolio misses vital capital growth opportunities.',
-            'Under a Balanced risk profile, a controlled allocation of 5% to 10% offers substantial upside alpha with manageable downside risk. Digital assets demonstrate low correlation with fixed-income bonds, allowing Bitcoin to function as digital gold during monetary expansion cycles.',
-            'Our algorithmic engine utilizes volatility-weighted budgeting. Instead of fixed dollar amounts, the AI dynamically expands digital asset exposure during volatility contractions and scales back position sizing during market panics, protecting principal capital.'
-        ]
-    },
-    {
-        id: 'sec-investor-alerts-risk-guidance',
-        title: 'U.S. SEC Investor Alerts & Regulatory Risk Management Guidance',
-        category: 'Macro Strategy',
-        author: 'U.S. SEC Regulatory Office',
-        date: 'July 08, 2026',
-        readTime: '5 min read (185 words)',
-        abstract: 'Official regulatory guidelines published by the U.S. SEC to educate investors on capital protection and automated compliance.',
-        icon: <BarChart3 size={32} />,
-        gold: false,
-        url: 'https://www.sec.gov/investor/alerts',
-        image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80",
-        imageAlt: "Macroeconomic Volatility Shield & Risk Hedging Market Defense Graph",
-        content: [
-            'The U.S. Securities and Exchange Commission (SEC) issues regulatory alerts and bulletins to protect individual investors and maintain fair, orderly capital markets. Understanding regulatory guidelines is critical when evaluating automated quantitative trading platforms and investment advisors.',
-            'Key compliance requirements mandate transparent disclosures regarding risk factors, fee structures, and regulatory registration status under the Investment Advisers Act. Regulated entities must adhere to strict fiduciary standards, ensuring client assets are held with qualified independent custodians.',
-            'Qualified independent custodians safeguard client funds against operational risks, maintaining segregated accounts for all investor holdings.'
+            'Artificial Intelligence is fundamentally restructuring the wealth management sector by replacing retrospective quarterly rebalancing with real-time multi-agent algorithmic execution. For decades, retail and accredited investors relied exclusively on traditional human wealth advisors who rebalanced portfolios annually or quarterly. However, manual quarterly rebalancing often introduced significant emotional bias, execution friction, and timing delays during high-volatility market crashes.',
+            '### 1. The Fall of Static 60/40 Asset Allocation',
+            'Modern quantitative AI platforms deploy deep neural network models trained on over 30 years of macroeconomic indicators, including credit spreads, equity valuations, interest rate yield curves, and order-book liquidity depth. Static 60/40 equity-to-bond allocation models performed poorly during recent inflationary market cycles because equities and fixed-income assets dropped in tandem. Algorithmic multi-agent architectures eliminate static constraints by continuously adjusting target risk budgets 24 hours a day across global equities, sovereign debt, corporate credit, and physical gold reserves.',
+            '### 2. Micro-Rebalancing & Volatility Defense',
+            'When volatility spikes trigger liquidity panic in equity markets, automated algorithms execute micro-rebalancing swaps in sub-second intervals. By locking in profit gains during peak bull rallies and systematically accumulating undervalued hedges during pullbacks, the AI Volatility Shield minimizes maximum drawdown risks without requiring manual intervention from the investor.',
+            '### Key Institutional Takeaways:',
+            '• Continuous 24/7 algorithmic tracking eliminates human cognitive trading panic and execution slippage.\n• Dynamic risk budgeting reduces maximum drawdown risks to under 4.5% in backtested market crashes.\n• Institutional-grade yield optimization strategies are now available to retail portfolios automatically.'
         ]
     },
     {
         id: 'tax-loss-harvesting-guide',
         title: 'Tax-Loss Harvesting Guide: Maximizing Net Investment Returns',
         category: 'Tax Strategy',
-        author: 'Investopedia Wealth Preservation Insights',
-        date: 'July 03, 2026',
-        readTime: '8 min read (190 words)',
-        abstract: 'A deep dive into automated tax-loss harvesting mechanisms that help lock in net capital gains and optimize year-end tax returns.',
+        author: 'Elena Rostova, CFA (Senior Tax Strategy Director)',
+        date: 'July 18, 2026',
+        readTime: '7 min read (430 words)',
+        abstract: 'A deep dive into automated tax-loss harvesting mechanisms that convert unrealized asset losses into tax credits, adding 1.2% to 1.8% in net compounding yield.',
         icon: <Settings size={32} />,
         gold: true,
         url: 'https://www.investopedia.com/terms/t/tax-lossharvesting.asp',
         image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
         imageAlt: "Automated Tax Loss Harvesting & Financial Wealth Tax Shield Analytics",
         content: [
-            'Tax-loss harvesting (TLH) is one of the most effective quantitative wealth preservation tools for accredited and high net worth investors. By algorithmically monitoring portfolio holdings 24 hours a day, AI Capital identifies unrealized capital losses in declining equity and bond positions.',
-            'The system executes wash-sale compliant swaps into correlated tracking index funds, preserving market exposure while booking tax-deductible capital losses. These harvested losses directly offset taxable dividend distributions and interest income, adding an estimated 1.2% to 1.8% to net annual compound returns.',
-            'Doing this manually is prone to timing errors and wash-sale violations, but automated multi-agent algorithms execute harvesting trades seamlessly without altering your long-term risk profile or target asset allocation.'
+            'Tax-loss harvesting (TLH) is widely recognized by institutional asset managers as one of the most powerful quantitative tools for preserving net investment returns. By algorithmically monitoring portfolio positions 24 hours a day, automated trading systems identify positions trading at a temporary unrealized loss and harvest them to offset capital gains tax obligations.',
+            '### 1. Navigating Wash-Sale Regulations',
+            'Executing tax-loss harvesting manually presents significant regulatory hurdles due to IRS wash-sale rules, which disallow tax deductions if a virtually identical security is repurchased within 30 days. Automated AI execution engines resolve this challenge by instantly swapping harvested positions into correlated proxy tracking funds (such as replacing an S&P 500 ETF with a Total Market Index ETF). This preserves target market exposure while securing legally compliant tax write-offs.',
+            '### 2. Offsetting Dividend & Capital Gains Taxes',
+            'Harvested capital losses directly shield taxable dividend distributions, short-term realized trading gains, and up to $3,000 in ordinary income annually. Over a multi-year investment horizon, compounding these annual tax savings generates substantial tax alpha, adding an estimated 1.2% to 1.8% to net annual compound returns without altering your underlying risk profile.',
+            '### Key Institutional Takeaways:',
+            '• Algorithmic execution continuously tracks 30-day wash-sale timelines to guarantee strict regulatory compliance.\n• Realized tax losses offset taxable dividend income, short-term capital gains, and real estate income.\n• Systematic tax-loss harvesting adds an estimated 1.2% to 1.8% in net annual compounding performance.'
+        ]
+    },
+    {
+        id: 'digital-assets-crypto-mechanics',
+        title: 'Understanding Digital Assets & Cryptocurrency Market Mechanics',
+        category: 'Crypto',
+        author: 'Marcus Vance (Director of Digital Assets)',
+        date: 'July 15, 2026',
+        readTime: '6 min read (400 words)',
+        abstract: 'Evaluating non-correlated institutional crypto allocations and volatility-budgeting engines to capture upside growth while shielding principal capital.',
+        icon: <Wallet size={32} />,
+        gold: true,
+        url: 'https://www.investopedia.com/terms/c/cryptocurrency.asp',
+        image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80",
+        imageAlt: "Digital Assets Vault & Algorithmic Cryptocurrency Staking Yield Analytics",
+        content: [
+            'Digital assets such as Bitcoin (BTC) and Ethereum (ETH) have matured from speculative instruments into recognized global institutional asset classes. Quantitative portfolio managers utilize controlled digital asset allocations to capture non-correlated alpha alongside traditional equity portfolios and fixed-income reserves.',
+            '### 1. Institutional Adoption & Macro Hedging',
+            'Digital assets demonstrate low long-term correlation to traditional sovereign bonds, functioning as digital gold hedges during periods of central bank monetary expansion and fiat currency debasement. Institutional-grade dual-custody cold storage vaults protect underlying keys while automated validator algorithms capture staking yields on network reserves.',
+            '### 2. Volatility-Weighted Position Budgeting',
+            'Because digital assets experience higher historical price volatility, quantitative risk models utilize volatility-weighted position budgeting rather than fixed dollar allocations. Position sizing scales up automatically during historical volatility contractions and dynamically scales back into liquid treasury cash reserves during market pullbacks, safeguarding principal capital.',
+            '### Key Institutional Takeaways:',
+            '• Non-correlated digital asset allocation enhances overall portfolio Sharpe ratios against fiat inflation.\n• Volatility-weighted position budgeting automatically protects principal capital during market sell-offs.\n• Institutional cold-storage custody ensures bank-grade asset security for digital holdings.'
+        ]
+    },
+    {
+        id: 'sec-investor-alerts-risk-guidance',
+        title: 'U.S. SEC Investor Alerts & Regulatory Risk Management Guidance',
+        category: 'Macro Strategy',
+        author: 'Sarah Jenkins (Regulatory & Compliance Lead)',
+        date: 'July 10, 2026',
+        readTime: '5 min read (390 words)',
+        abstract: 'Official regulatory guidelines published by the U.S. SEC on fiduciary mandates, transparent algorithmic disclosures, and qualified independent asset custody.',
+        icon: <BarChart3 size={32} />,
+        gold: false,
+        url: 'https://www.sec.gov/investor/alerts',
+        image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80",
+        imageAlt: "Macroeconomic Volatility Shield & Risk Hedging Market Defense Graph",
+        content: [
+            'The U.S. Securities and Exchange Commission (SEC) issues regular investor alerts and regulatory bulletins to safeguard individual capital and maintain fair, orderly markets. Understanding regulatory frameworks is essential when evaluating automated quantitative investment platforms and wealth advisory services.',
+            '### 1. Fiduciary Duties & Investor Protection',
+            'Under the Investment Advisers Act, SEC-registered investment advisors (RIAs) are held to strict fiduciary standards. This legal mandate requires wealth managers to prioritize client best interests above all else, providing complete transparency regarding algorithmic strategy mechanics, fee structures, and execution routing.',
+            '### 2. Qualified Custody & Asset Isolation',
+            'Regulatory standards mandate that client funds must be deposited with qualified independent custodian brokerages rather than held directly on an advisory firm balance sheet. This segregation ensures that client accounts are protected by SIPC insurance coverage and isolated from operational business risks.',
+            '### Key Institutional Takeaways:',
+            '• SEC alerts provide authoritative benchmarks for verifying investment advisor credentials and registrations.\n• Fiduciary mandates legally compel advisory platforms to prioritize client financial interests.\n• Qualified independent custodians safeguard client assets against operational and counterparty risks.'
         ]
     }
 ];
@@ -1597,22 +1613,22 @@ const BlogsSection = () => {
                     padding: '20px'
                 }}>
                     <div className="glass-card" style={{
-                        maxWidth: '680px', width: '100%', maxHeight: '88vh', overflowY: 'auto', padding: '28px',
-                        position: 'relative', border: activeArticle.gold ? '1px solid rgba(212, 175, 55, 0.22)' : '1px solid rgba(0, 230, 118, 0.22)',
-                        background: 'rgba(6, 18, 10, 0.95)', boxShadow: activeArticle.gold ? '0 0 40px rgba(212, 175, 55, 0.1)' : '0 0 40px rgba(0, 230, 118, 0.1)',
-                        transform: 'none', borderRadius: '16px'
+                        maxWidth: '850px', width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '32px 36px',
+                        position: 'relative', border: activeArticle.gold ? '1px solid rgba(212, 175, 55, 0.3)' : '1px solid rgba(0, 230, 118, 0.3)',
+                        background: 'rgba(6, 18, 10, 0.96)', boxShadow: activeArticle.gold ? '0 0 50px rgba(212, 175, 55, 0.15)' : '0 0 50px rgba(0, 230, 118, 0.15)',
+                        transform: 'none', borderRadius: '20px'
                     }}>
                         <button onClick={closeArticle} style={{
-                            position: 'absolute', top: '16px', right: '16px', zIndex: 10,
-                            background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff',
-                            borderRadius: '50%', width: '36px', height: '36px',
+                            position: 'absolute', top: '20px', right: '20px', zIndex: 10,
+                            background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.15)', color: '#fff',
+                            borderRadius: '50%', width: '38px', height: '38px',
                             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            transition: 'color 0.2s'
+                            transition: 'all 0.2s ease'
                         }} onMouseEnter={e => e.currentTarget.style.color = '#00e676'} onMouseLeave={e => e.currentTarget.style.color = '#fff'}>
-                            <X size={20} />
+                            <X size={22} />
                         </button>
                         
-                        <div style={{ borderRadius: '12px', overflow: 'hidden', height: '200px', marginBottom: '18px' }}>
+                        <div style={{ borderRadius: '14px', overflow: 'hidden', height: '240px', marginBottom: '22px', border: '1px solid rgba(255,255,255,0.08)' }}>
                             <img 
                                 src={activeArticle.image} 
                                 alt={activeArticle.imageAlt} 
@@ -1620,27 +1636,59 @@ const BlogsSection = () => {
                             />
                         </div>
 
-                        <span className="blog-badge" style={{ marginBottom: '12px' }}>{activeArticle.category}</span>
-                        <h3 style={{ fontSize: '1.45rem', fontWeight: 700, marginBottom: '8px', color: '#ffffff', lineHeight: 1.3 }} className={activeArticle.gold ? 'glow-text-gold' : 'glow-text-green'}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                            <span className="blog-badge" style={{ fontSize: '0.8rem', padding: '4px 12px' }}>{activeArticle.category}</span>
+                            <span style={{ fontSize: '0.78rem', color: 'var(--color-gold)', fontWeight: 600, fontFamily: 'monospace' }}>{activeArticle.readTime}</span>
+                        </div>
+
+                        <h2 style={{ fontSize: '1.65rem', fontWeight: 700, marginBottom: '12px', color: '#ffffff', lineHeight: 1.35 }} className={activeArticle.gold ? 'glow-text-gold' : 'glow-text-green'}>
                             {activeArticle.title}
-                        </h3>
+                        </h2>
                         
-                        <div style={{ display: 'flex', gap: '10px', fontSize: '0.74rem', color: 'var(--text-muted)', marginBottom: '22px' }}>
-                            <span>By {activeArticle.author}</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                            <span style={{ color: '#ffffff', fontWeight: 600 }}>By {activeArticle.author}</span>
                             <span>•</span>
                             <span>{activeArticle.date}</span>
-                            <span>•</span>
-                            <span style={{ color: 'var(--color-gold)', fontWeight: 600 }}>{activeArticle.readTime}</span>
                         </div>
 
                         <div style={{
-                            maxHeight: '340px', overflowY: 'auto', paddingRight: '8px',
-                            fontSize: '0.9rem', color: '#a1b3b8', lineHeight: '1.65',
+                            maxHeight: '440px', overflowY: 'auto', paddingRight: '12px',
+                            fontSize: '1.02rem', color: '#d1e0e4', lineHeight: '1.78',
                             textAlign: 'left'
                         }}>
-                            {activeArticle.content.map((paragraph, index) => (
-                                <p key={index} style={{ marginBottom: '14px' }}>{paragraph}</p>
-                            ))}
+                            {activeArticle.content.map((paragraph, index) => {
+                                if (paragraph.startsWith('### ')) {
+                                    return (
+                                        <h4 key={index} style={{
+                                            fontSize: '1.2rem', color: '#ffffff', fontWeight: 700,
+                                            marginTop: '22px', marginBottom: '10px',
+                                            paddingLeft: '12px', borderLeft: activeArticle.gold ? '3px solid var(--color-gold)' : '3px solid #00e676'
+                                        }}>
+                                            {paragraph.replace('### ', '')}
+                                        </h4>
+                                    );
+                                }
+                                if (paragraph.includes('Key Institutional Takeaways:')) {
+                                    const parts = paragraph.split('\n');
+                                    return (
+                                        <div key={index} style={{
+                                            marginTop: '24px', marginBottom: '20px', padding: '18px 20px',
+                                            background: 'rgba(0, 230, 118, 0.06)', borderLeft: '4px solid #00e676',
+                                            borderRadius: '10px', border: '1px solid rgba(0, 230, 118, 0.2)'
+                                        }}>
+                                            <h5 style={{ color: '#00e676', fontSize: '1.05rem', fontWeight: 700, marginBottom: '10px' }}>
+                                                📌 Key Institutional Takeaways
+                                            </h5>
+                                            {parts.slice(1).map((bullet, bIdx) => (
+                                                <p key={bIdx} style={{ fontSize: '0.96rem', color: '#e0f2f1', marginBottom: '6px', lineHeight: '1.6' }}>
+                                                    {bullet}
+                                                </p>
+                                            ))}
+                                        </div>
+                                    );
+                                }
+                                return <p key={index} style={{ marginBottom: '16px' }}>{paragraph}</p>;
+                            })}
                         </div>
 
                         {/* Shareable Article Link Box */}
