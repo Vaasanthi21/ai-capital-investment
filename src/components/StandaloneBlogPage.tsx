@@ -258,6 +258,7 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
   const [copiedArticleUrl, setCopiedArticleUrl] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [language, setLanguage] = useState<'en' | 'hi'>('en');
 
   useEffect(() => {
     const path = window.location.pathname;
@@ -332,9 +333,9 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
         }} 
       />
 
-      {/* ── Standalone Page Header ───────────────────────────────────── */}
+      {/* ── Standalone Page Header (Identical to Main Landing Header) ─────────────── */}
       <header className="lp-header" style={{ position: 'relative', zIndex: 10 }}>
-        <div className="lp-container lp-header-inner" style={{ padding: '12px 16px' }}>
+        <div className="lp-container lp-header-inner">
           <div className="logo" onClick={() => onNavigate('landing')} style={{ cursor: 'pointer' }}>
             <div className="logo-symbol">AI</div>
             <div className="logo-text">AI Capital<span>Investment</span></div>
@@ -351,10 +352,16 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
               <li onClick={() => setMobileMenuOpen(false)}>
                 <a href="/#services" onClick={(e) => { e.preventDefault(); onNavigate('landing'); }}>Services</a>
               </li>
-              <li onClick={() => setMobileMenuOpen(false)} className="active">
-                <a href="/blogs" style={{ color: 'var(--color-gold)', fontWeight: 700 }}>Research & Blogs</a>
+              <li onClick={() => setMobileMenuOpen(false)}>
+                <a href="/#investment" onClick={(e) => { e.preventDefault(); onNavigate('landing'); }}>Investment</a>
               </li>
-              <li className="mobile-only-nav-item" style={{ marginTop: '14px', gap: '10px', width: '100%', justifyContent: 'center' }}>
+              <li onClick={() => setMobileMenuOpen(false)} className="active">
+                <a href="/blogs" onClick={(e) => { e.preventDefault(); onNavigate('blogs'); }} style={{ color: 'var(--color-gold)', fontWeight: 700 }}>Blogs</a>
+              </li>
+              <li onClick={() => setMobileMenuOpen(false)}>
+                <a href="/#faq" onClick={(e) => { e.preventDefault(); onNavigate('landing'); }}>FAQ</a>
+              </li>
+              <li className="mobile-only-nav-item" style={{ marginTop: '10px', gap: '10px', width: '100%', justifyContent: 'center' }}>
                 <button className="btn btn-gold" style={{ padding: '10px 24px', fontSize: '0.85rem', width: '100%' }} onClick={() => { setMobileMenuOpen(false); onNavigate('login'); }}>
                   Launch Web App / Sign In
                 </button>
@@ -362,14 +369,17 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
             </ul>
           </nav>
 
-          <div className="lp-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <button 
-              className="btn btn-green-outline" 
-              style={{ fontSize: '0.78rem', padding: '6px 14px', borderRadius: '20px' }} 
-              onClick={() => onNavigate('login')}
+          <div className="lp-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Language Switcher Pill */}
+            <button
+              onClick={() => setLanguage(l => l === 'en' ? 'hi' : 'en')}
+              className="btn btn-green-outline"
+              style={{ fontSize: '0.72rem', padding: '4px 8px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '3px' }}
             >
-              Sign In / App
+              <Globe size={12} /> {language === 'en' ? 'हिंदी' : 'EN'}
             </button>
+
+            <button className="btn btn-green-outline" onClick={() => onNavigate('login')}>Sign In</button>
 
             {/* Mobile Hamburger Button */}
             <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
