@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import HeroCanvas from './HeroCanvas';
 import ParticleBackground from './ParticleBackground';
+import LeadCaptureForm from './LeadCaptureForm';
 
 type View = 'landing' | 'login' | 'signup' | 'dashboard';
 
@@ -521,6 +522,13 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── Lead Capture / Fiduciary Consultation Section ───────────── */}
+      <section className="lp-section fade-in-section" id="consultation">
+        <div className="lp-container" style={{ maxWidth: '850px' }}>
+          <LeadCaptureForm language={language} />
         </div>
       </section>
 

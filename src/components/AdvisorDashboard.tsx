@@ -66,11 +66,13 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [selectedTab, setSelectedTabState] = useState(getInitialTab);
+    const [leads, setLeads] = useState<any[]>([]);
 
     const setSelectedTab = (tab: string) => {
         setSelectedTabState(tab);
         const pathMap: Record<string, string> = {
             'clients': '/advisor/clients',
+            'leads': '/advisor/leads',
             'proposals': '/advisor/proposals',
             'performance': '/advisor/performance',
             'compliance': '/advisor/compliance',
@@ -357,6 +359,23 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
     }, [activeClient, modalTab]);
 
     useEffect(() => {
+        fetch('/api/leads')
+            .then(res => res.ok ? res.json() : [])
+            .then(data => {
+                if (Array.isArray(data) && data.length > 0) {
+                    setLeads(data);
+                } else {
+                    const local = JSON.parse(localStorage.getItem('ai_capital_leads') || '[]');
+                    setLeads(local);
+                }
+            })
+            .catch(() => {
+                const local = JSON.parse(localStorage.getItem('ai_capital_leads') || '[]');
+                setLeads(local);
+            });
+    }, []);
+
+    useEffect(() => {
         if (activeClient && modalTab === 'deposits') {
             setLoadingClientDeposits(true);
             fetch(`/api/investor/transactions?email=${activeClient.email}`)
@@ -379,6 +398,7 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
                     <ul className="dash-menu">
                         {[
                             { id: 'clients', icon: <Users size={20} />, label: 'My Clients' },
+                            { id: 'leads', icon: <Phone size={20} />, label: 'Captured Leads (CRM)' },
                             { id: 'deposits', icon: <CreditCard size={20} />, label: 'Client Deposits' },
                             { id: 'schedule', icon: <Calendar size={20} />, label: 'Consultations' },
                             { id: 'analytics', icon: <BarChart3 size={20} />, label: 'Benchmark Analytics' },
@@ -594,7 +614,9 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
                                 </div>
                             )}
                         </div>
-                    ) : selectedTab === 'deposits' ? (
+                     ) : selectedTab === 'leads' ? (
+                         <AdvisorLeadsSection leads={leads} />
+                     ) : selectedTab === 'deposits' ? (
                         <AdvisorDepositsSection clients={clients} />
                     ) : selectedTab === 'schedule' ? (
                         <AdvisorConsultationsSection clients={clients} userData={userData} />
@@ -1643,7 +1665,7 @@ const AdvisorTaxOptimizerSection = ({ clients }: { clients: Client[] }) => {
                                                 className="btn btn-gold"
                                                 style={{ fontSize: '0.74rem', padding: '5px 12px', borderRadius: '4px', cursor: 'pointer' }}
                                             >
-                                                Dispatch Tax Harvest
+                                                Dispatch TLH Plan
                                             </button>
                                         )}
                                     </td>
@@ -1653,6 +1675,132 @@ const AdvisorTaxOptimizerSection = ({ clients }: { clients: Client[] }) => {
                     </table>
                 </div>
             </div>
+        </div>
+    );
+};
+
+/* ── Advisor Leads CRM Section ───────────────────────────── */
+const AdvisorLeadsSection = ({ leads }: { leads: any[] }) => {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [statusFilter, setStatusFilter] = useState('All');
+
+    const filteredLeads = leads.filter(l => {
+        const matchesSearch = (l.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                              (l.email || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                              (l.phone || '').includes(searchTerm);
+        const matchesStatus = statusFilter === 'All' || (l.status || 'New Lead') === statusFilter;
+        return matchesSearch && matchesStatus;
+    });
+
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div className="dash-header">
+                <div>
+                    <h2 className="dash-title" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <Phone size={24} style={{ color: 'var(--color-gold)' }} /> Prospect Leads & CRM Inquiries
+                    </h2>
+                    <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
+                        Inquiries submitted via Landing Page and Blog advisory lead capture forms.
+                    </p>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{ background: 'rgba(0,230,118,0.1)', border: '1px solid rgba(0,230,118,0.3)', padding: '6px 14px', borderRadius: '20px', fontSize: '0.8rem', color: 'var(--color-green)', fontWeight: 700 }}>
+                        Total Leads: {leads.length}
+                    </div>
+                </div>
+            </div>
+
+            {/* Filter & Search Bar */}
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
+                <div style={{ position: 'relative', flex: 1, minWidth: '240px' }}>
+                    <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                    <input 
+                        type="text" 
+                        placeholder="Search leads by name, email, or phone..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        style={{
+                            width: '100%', padding: '9px 12px 9px 36px',
+                            background: 'rgba(6, 14, 8, 0.8)', border: '1px solid rgba(255, 255, 255, 0.1)',
+                            borderRadius: '8px', color: '#fff', fontSize: '0.85rem', outline: 'none'
+                        }}
+                    />
+                </div>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                    {['All', 'New Lead', 'Contacted', 'Converted'].map(status => (
+                        <button
+                            key={status}
+                            type="button"
+                            onClick={() => setStatusFilter(status)}
+                            className="btn"
+                            style={{
+                                fontSize: '0.78rem', padding: '6px 14px', borderRadius: '6px',
+                                background: statusFilter === status ? 'var(--color-gold)' : 'rgba(255,255,255,0.04)',
+                                color: statusFilter === status ? '#000' : 'var(--text-secondary)',
+                                fontWeight: statusFilter === status ? 700 : 500, cursor: 'pointer'
+                            }}
+                        >
+                            {status}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Leads Table */}
+            {filteredLeads.length === 0 ? (
+                <div className="glass-card" style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                    <Phone size={40} style={{ margin: '0 auto 12px', color: 'var(--color-gold)', opacity: 0.6 }} />
+                    <h4>No Leads Found</h4>
+                    <p style={{ fontSize: '0.85rem' }}>Lead capture form submissions from the landing page and blogs will appear here automatically.</p>
+                </div>
+            ) : (
+                <div className="glass-card" style={{ overflowX: 'auto', padding: 0 }}>
+                    <table className="clients-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead>
+                            <tr style={{ background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                                <th style={{ textAlign: 'left', padding: '14px 16px' }}>Prospect Info</th>
+                                <th style={{ textAlign: 'left', padding: '14px 16px' }}>Contact Phone</th>
+                                <th style={{ textAlign: 'left', padding: '14px 16px' }}>Capital Budget</th>
+                                <th style={{ textAlign: 'left', padding: '14px 16px' }}>Primary Interest</th>
+                                <th style={{ textAlign: 'left', padding: '14px 16px' }}>Message / Note</th>
+                                <th style={{ textAlign: 'center', padding: '14px 16px' }}>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredLeads.map((lead, idx) => (
+                                <tr key={lead.id || idx} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
+                                    <td style={{ padding: '14px 16px' }}>
+                                        <div style={{ fontWeight: 700, color: '#ffffff', fontSize: '0.9rem' }}>{lead.name}</div>
+                                        <div style={{ fontSize: '0.78rem', color: 'var(--color-gold)' }}>{lead.email}</div>
+                                    </td>
+                                    <td style={{ padding: '14px 16px', color: '#cbd5e1', fontSize: '0.85rem' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                            <Phone size={13} style={{ color: 'var(--color-green)' }} /> {lead.phone}
+                                        </div>
+                                    </td>
+                                    <td style={{ padding: '14px 16px', color: 'var(--color-gold)', fontWeight: 700, fontSize: '0.85rem' }}>
+                                        {lead.budget}
+                                    </td>
+                                    <td style={{ padding: '14px 16px', color: '#cbd5e1', fontSize: '0.82rem' }}>
+                                        {lead.interest}
+                                    </td>
+                                    <td style={{ padding: '14px 16px', color: '#94a3b8', fontSize: '0.8rem', maxWidth: '240px' }}>
+                                        {lead.message || 'No specific note provided.'}
+                                    </td>
+                                    <td style={{ padding: '14px 16px', textAlign: 'center' }}>
+                                        <span style={{
+                                            padding: '4px 10px', borderRadius: '12px', fontSize: '0.72rem', fontWeight: 700,
+                                            background: 'rgba(0, 230, 118, 0.15)', color: '#00e676', border: '1px solid rgba(0, 230, 118, 0.3)'
+                                        }}>
+                                            {lead.status || 'New Lead'}
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
     );
 };

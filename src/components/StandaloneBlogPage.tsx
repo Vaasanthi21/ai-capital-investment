@@ -3,6 +3,7 @@ import {
   Sparkles, Settings, Wallet, BarChart3, Search, ChevronRight, X, ArrowLeft, ArrowUpRight, Globe, Menu, User, Calendar, Tag
 } from 'lucide-react';
 import ParticleBackground from './ParticleBackground';
+import LeadCaptureForm from './LeadCaptureForm';
 
 type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'payment' | 'forgot-password' | 'dashboard' | 'blogs';
 
@@ -901,6 +902,11 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
             </div>
           </>
         )}
+
+        {/* Lead Capture Advisor Consultation Section */}
+        <div style={{ marginTop: '48px' }}>
+          <LeadCaptureForm language={language} />
+        </div>
       </main>
 
       {/* ── Footer ────────────────────────────────────────────────── */}

@@ -856,6 +856,52 @@ app.get('/api/chat/history', (req, res) => {
     }
 });
 
+// Lead Capture API Endpoints for Landing Page & Blogs
+app.post('/api/leads', (req, res) => {
+    try {
+        const { name, email, phone, budget, interest, message } = req.body;
+        if (!name || !email || !phone) {
+            return res.status(400).json({ error: 'Name, email, and phone number are required.' });
+        }
+        const db = loadDB();
+        if (!db.leads) db.leads = [];
+
+        const newLead = {
+            id: `LEAD-${Math.floor(100000 + Math.random() * 900000)}`,
+            name,
+            email,
+            phone,
+            budget: budget || '$25,000 - $100,000',
+            interest: interest || 'AI Wealth Management',
+            message: message || '',
+            status: 'New Lead',
+            created_at: new Date().toISOString()
+        };
+
+        db.leads.unshift(newLead);
+        saveDB(db);
+
+        console.log(`\n======================================================`);
+        console.log(`[NEW LEAD CAPTURED] ${name} | ${email} | ${phone} | Budget: ${newLead.budget}`);
+        console.log(`======================================================\n`);
+
+        res.json({ message: 'Lead captured successfully! A SEBI/SEC advisor will contact you shortly.', lead: newLead });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error capturing lead.' });
+    }
+});
+
+app.get('/api/leads', (req, res) => {
+    try {
+        const db = loadDB();
+        res.json(db.leads || []);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error fetching leads.' });
+    }
+});
+
 if (!process.env.VERCEL) {
     app.listen(PORT, () => {
         console.log(`Backend server running on http://localhost:${PORT}`);
