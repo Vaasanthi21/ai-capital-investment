@@ -237,7 +237,6 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
     }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
     els.forEach(el => {
       obs.observe(el);
-      if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('is-visible');
     });
 
     // Check for blog deep link in URL

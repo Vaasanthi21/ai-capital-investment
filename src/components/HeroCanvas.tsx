@@ -9,12 +9,12 @@ const HeroCanvas = () => {
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        let W = canvas.width = canvas.offsetWidth;
-        let H = canvas.height = canvas.offsetHeight;
+        let W = canvas.width = canvas.clientWidth || 360;
+        let H = canvas.height = canvas.clientHeight || 240;
 
         const resize = () => {
-            W = canvas.width = canvas.offsetWidth;
-            H = canvas.height = canvas.offsetHeight;
+            W = canvas.width = canvas.clientWidth || 360;
+            H = canvas.height = canvas.clientHeight || 240;
         };
         window.addEventListener('resize', resize);
 
