@@ -295,8 +295,8 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
   useEffect(() => {
     const path = window.location.pathname;
     if (path.includes('/blogs/') || path.includes('/blog/')) {
-      const articleId = path.split('/blog/')[1] || path.split('/blogs/')[1];
-      const match = standaloneBlogArticles.find(a => a.id === articleId);
+      const rawSlug = (path.split('/blog/')[1] || path.split('/blogs/')[1] || '').split('?')[0].split('#')[0].replace(/\/$/, '');
+      const match = standaloneBlogArticles.find(a => a.id === rawSlug);
       if (match) setActiveArticle(match);
     }
   }, []);
