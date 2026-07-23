@@ -38,7 +38,7 @@ export const standaloneBlogArticles: BlogArticle[] = [
     icon: <Sparkles size={32} />,
     gold: false,
     url: 'https://www.investopedia.com/financial-advisor/how-ai-is-changing-wealth-management/',
-    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=600&q=75",
     imageAlt: "AI Quantitative Stock Chart & Financial Trading Analytics Dashboard",
     content: [
       'If you are just starting your financial journey, AI-Driven Asset Allocation: Outperforming Inflation & Market Volatility in 2026 may sound advanced or even intimidating. But the idea is actually simple: use smarter technology to build, monitor, and adjust your portfolio so your money has a better chance of keeping up with inflation while reducing the emotional mistakes that often happen during market swings.',
@@ -69,7 +69,7 @@ export const standaloneBlogArticles: BlogArticle[] = [
     icon: <Settings size={32} />,
     gold: true,
     url: 'https://www.investopedia.com/terms/t/tax-lossharvesting.asp',
-    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=75",
     imageAlt: "Automated Tax Loss Harvesting & Financial Wealth Tax Shield Analytics",
     content: [
       'Tax-loss harvesting (TLH) is widely recognized by institutional asset managers and private family offices as one of the most reliable quantitative methods for generating net portfolio tax alpha. By continuously monitoring portfolio positions 24 hours a day, automated trading algorithms identify securities trading at a temporary unrealized loss and systematically harvest those losses to offset realized capital gains obligations.',
@@ -99,7 +99,7 @@ export const standaloneBlogArticles: BlogArticle[] = [
     icon: <Wallet size={32} />,
     gold: true,
     url: 'https://www.investopedia.com/terms/c/cryptocurrency.asp',
-    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=600&q=75",
     imageAlt: "Digital Assets Vault & Algorithmic Cryptocurrency Staking Yield Analytics",
     content: [
       'Digital assets such as Bitcoin (BTC) and Ethereum (ETH) have evolved from niche speculative instruments into recognized global institutional asset classes. Multi-asset quantitative fund managers utilize controlled digital asset allocations to capture non-correlated alpha alongside traditional equity indices, sovereign bonds, and physical commodities.',
@@ -129,7 +129,7 @@ export const standaloneBlogArticles: BlogArticle[] = [
     icon: <BarChart3 size={32} />,
     gold: false,
     url: 'https://www.sec.gov/investor/alerts',
-    image: "https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=600&q=75",
     imageAlt: "SEC Regulatory Compliance & Legal Fiduciary Oversight",
     content: [
       'The U.S. Securities and Exchange Commission (SEC) regularly issues investor alerts, regulatory bulletins, and risk guidance to safeguard retail and accredited investor capital. Navigating regulatory compliance frameworks is paramount when selecting automated quantitative investment platforms and wealth advisory services.',
@@ -158,7 +158,7 @@ export const standaloneBlogArticles: BlogArticle[] = [
     icon: <Sparkles size={32} />,
     gold: true,
     url: 'https://www.investopedia.com/articles/financial-theory/08/quantitative-analysis.asp',
-    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=75",
     imageAlt: "Neural Network Quantitative Trading System Analytics Dashboard",
     content: [
       'Quantitative finance is undergoing a structural paradigm shift as traditional mean-variance optimization gives way to multi-layer Transformer neural network architectures and deep reinforcement learning agents.',
@@ -185,7 +185,7 @@ export const standaloneBlogArticles: BlogArticle[] = [
     icon: <BarChart3 size={32} />,
     gold: false,
     url: 'https://www.investopedia.com/terms/f/federalreservebank.asp',
-    image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=600&q=75",
     imageAlt: "Federal Reserve Interest Rate & Yield Curve Volatility Chart",
     content: [
       'Federal Reserve monetary policy dictates global liquidity conditions, sovereign yield curves, and fixed-income duration strategies for institutional asset managers. Understanding central bank decision mechanics is essential for portfolio risk budgeting.',
@@ -212,7 +212,7 @@ export const standaloneBlogArticles: BlogArticle[] = [
     icon: <Wallet size={32} />,
     gold: true,
     url: 'https://www.investopedia.com/decentralized-finance-defi-4846382',
-    image: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=600&q=75",
     imageAlt: "DeFi Liquidity Vault & Decentralized Staking Tokens",
     content: [
       'Decentralized Finance (DeFi) protocols have created transparent, automated yield opportunities through decentralized liquidity provision, automated market makers (AMMs), and collateralized lending vaults.',
@@ -239,7 +239,7 @@ export const standaloneBlogArticles: BlogArticle[] = [
     icon: <Settings size={32} />,
     gold: false,
     url: 'https://www.investopedia.com/estate-planning-4689720',
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=75",
     imageAlt: "Estate Planning Keys & Family Wealth Transfer",
     content: [
       'Multi-generational wealth preservation requires integrated structural planning that harmonizes federal estate tax exemptions, capital gains step-up rules, and automated trust management algorithms.',
@@ -266,7 +266,7 @@ export const standaloneBlogArticles: BlogArticle[] = [
     icon: <Sparkles size={32} />,
     gold: false,
     url: 'https://www.investopedia.com/terms/r/rebalancing.asp',
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=75",
     imageAlt: "Quantitative Rebalancing Analytics Dashboard",
     content: [
       'Portfolio drift occurs naturally as differential asset class returns cause portfolio weightings to diverge from target allocations. Left unchecked, unmanaged drift introduces uncompensated concentration risk and unintended volatility spikes.',
