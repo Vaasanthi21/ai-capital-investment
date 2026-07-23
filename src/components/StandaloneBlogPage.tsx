@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { 
-  Sparkles, Settings, Wallet, BarChart3, Search, ChevronRight, X, ArrowLeft, ArrowUpRight, Globe, Menu
+  Sparkles, Settings, Wallet, BarChart3, Search, ChevronRight, X, ArrowLeft, ArrowUpRight, Globe, Menu, User, Calendar, Tag
 } from 'lucide-react';
 import ParticleBackground from './ParticleBackground';
 
@@ -270,16 +270,17 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
   }, []);
 
   useEffect(() => {
-    if (mobileMenuOpen || activeArticle) {
+    if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
     return () => { document.body.style.overflow = ''; };
-  }, [mobileMenuOpen, activeArticle]);
+  }, [mobileMenuOpen]);
 
   const openArticle = (article: BlogArticle) => {
     setActiveArticle(article);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     const targetPath = `/blogs/${article.id}`;
     if (window.location.pathname !== targetPath) {
       window.history.pushState({ articleId: article.id }, '', targetPath);
@@ -288,6 +289,7 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
 
   const closeArticle = () => {
     setActiveArticle(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     if (window.location.pathname !== '/blogs') {
       window.history.pushState(null, '', '/blogs');
     }
@@ -400,296 +402,456 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
 
       {/* ── Main Content Area ────────────────────────────────────────── */}
       <main className="lp-container" style={{ position: 'relative', zIndex: 1, paddingTop: '28px', paddingBottom: '60px', minHeight: 'calc(100vh - 200px)' }}>
-        
-        {/* Back Link & Search Controls Row */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
-          <button 
-            type="button"
-            onClick={() => onNavigate('landing')}
-            style={{
-              background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-              color: 'var(--text-secondary)', fontSize: '0.82rem', padding: '7px 16px', borderRadius: '20px',
-              cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', transition: 'all 0.2s ease'
-            }}
-            onMouseEnter={e => e.currentTarget.style.color = 'var(--color-gold)'}
-            onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}
-          >
-            <ArrowLeft size={14} /> Back to Main Site
-          </button>
-
-          <div className="blog-search-wrapper" style={{ maxWidth: '380px', width: '100%' }}>
-            <Search size={16} className="blog-search-icon" />
-            <input 
-              type="text"
-              placeholder="Search research reports, topics, or authors..."
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              className="blog-search-input"
-              style={{ background: 'rgba(0,0,0,0.6)', padding: '9px 14px 9px 38px', fontSize: '0.84rem' }}
-            />
-          </div>
-        </div>
-
-        {/* Filter Category Pills */}
-        <div className="blog-filters" style={{ marginBottom: '24px' }}>
-          {categories.map(cat => (
-            <button
-              key={cat}
-              type="button"
-              className={`blog-filter-btn ${selectedCategory === cat ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(cat)}
-              style={{ padding: '7px 18px', fontSize: '0.82rem' }}
-            >
-              {cat === 'All' ? '✨ All Insights' : cat === 'AI & Tech' ? '🤖 AI & Tech' : cat === 'Crypto' ? '🪙 Crypto' : cat === 'Macro Strategy' ? '📊 Macro Strategy' : '🛡️ Tax Strategy'}
-            </button>
-          ))}
-        </div>
-
-        {/* Blogs Grid & Hero Spotlight */}
-        <div className="blogs-grid">
-          {/* Hero Spotlight Featured Article */}
-          {featuredArticle && (
-            <div 
-              className="blog-featured-spotlight"
-              style={{
-                gridColumn: '1 / -1',
-                display: 'grid',
-                gridTemplateColumns: '1.2fr 1fr',
-                background: 'linear-gradient(135deg, rgba(8, 28, 16, 0.98) 0%, rgba(4, 16, 8, 0.95) 100%)',
-                border: '1px solid rgba(212, 175, 55, 0.35)',
-                borderRadius: '16px',
-                overflow: 'hidden',
-                boxShadow: '0 10px 32px rgba(212, 175, 55, 0.12)',
-                marginBottom: '10px'
-              }}
-            >
-              <div style={{ padding: '26px 30px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                  <span style={{ background: 'rgba(212, 175, 55, 0.18)', color: 'var(--color-gold)', border: '1px solid rgba(212, 175, 55, 0.35)', padding: '3px 10px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.5px' }}>
-                    ⭐ FEATURED REPORT
-                  </span>
-                  <span style={{ fontSize: '0.76rem', color: 'var(--color-gold)', fontFamily: 'monospace', fontWeight: 600 }}>
-                    {featuredArticle.readTime}
-                  </span>
-                </div>
-
-                <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff', marginBottom: '10px', lineHeight: 1.3 }}>
-                  {featuredArticle.title}
-                </h2>
-
-                <p style={{ fontSize: '0.88rem', color: '#c0d0d5', lineHeight: 1.55, marginBottom: '18px', borderLeft: '3px solid var(--color-gold)', paddingLeft: '12px' }}>
-                  {featuredArticle.abstract}
-                </p>
-
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
-                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                    <span style={{ color: '#ffffff', fontWeight: 600 }}>By {featuredArticle.author}</span> • <span style={{ color: 'var(--color-gold)' }}>{featuredArticle.date}</span>
-                  </div>
-                  <button 
-                    type="button" 
-                    className="btn btn-gold"
-                    onClick={() => openArticle(featuredArticle)}
-                    style={{ fontSize: '0.82rem', padding: '8px 20px', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
-                  >
-                    Read Report <ChevronRight size={14} />
-                  </button>
-                </div>
-              </div>
-              <div style={{ height: '100%', minHeight: '220px', overflow: 'hidden' }}>
-                <img 
-                  src={featuredArticle.image} 
-                  alt={featuredArticle.imageAlt} 
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Standard Grid Articles */}
-          {gridArticles.map(article => (
-            <div
-              key={article.id}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                borderRadius: '14px',
-                overflow: 'hidden',
-                background: 'rgba(6, 18, 10, 0.92)',
-                border: article.gold ? '1px solid rgba(212, 175, 55, 0.3)' : '1px solid rgba(0, 230, 118, 0.18)',
-                boxShadow: '0 6px 20px rgba(0,0,0,0.4)',
-                transition: 'all 0.3s ease'
-              }}
-            >
-              <div style={{ position: 'relative', height: '150px', overflow: 'hidden' }}>
-                <img 
-                  src={article.image} 
-                  alt={article.imageAlt} 
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-                <div style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(6px)', padding: '3px 9px', borderRadius: '10px', fontSize: '0.68rem', color: 'var(--color-gold)', fontFamily: 'monospace', fontWeight: 600 }}>
-                  {article.readTime}
-                </div>
-              </div>
-              <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                <span className="blog-badge" style={{ fontSize: '0.65rem', alignSelf: 'flex-start', marginBottom: '8px' }}>{article.category}</span>
-                <h3 style={{ fontSize: '1.02rem', fontWeight: 700, color: '#ffffff', marginBottom: '8px', lineHeight: 1.35 }}>
-                  {article.title}
-                </h3>
-                <p style={{ fontSize: '0.82rem', color: '#a0b0b5', lineHeight: 1.5, marginBottom: '14px', flex: 1 }}>
-                  {article.abstract}
-                </p>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--text-muted)', paddingTop: '10px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                  <span>{article.author.split(' (')[0]}</span>
-                  <button 
-                    type="button"
-                    className="btn btn-green-outline"
-                    onClick={() => openArticle(article)}
-                    style={{ fontSize: '0.72rem', padding: '4px 10px', display: 'inline-flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}
-                  >
-                    Read <ChevronRight size={12} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Detailed Article Reader Overlay */}
-        {activeArticle && (
-          <div style={{
-            position: 'fixed', inset: 0, zIndex: 9999999,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            backgroundColor: 'rgba(2, 6, 3, 0.96)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-            padding: '16px'
-          }}>
-            <div style={{
-              maxWidth: '400px', width: '92%', maxHeight: '85vh', overflowY: 'auto', padding: '18px 20px',
-              position: 'relative', border: activeArticle.gold ? '1px solid rgba(212, 175, 55, 0.4)' : '1px solid rgba(0, 230, 118, 0.4)',
-              background: '#040d07', boxShadow: '0 20px 60px rgba(0, 0, 0, 0.98)',
-              transform: 'none', borderRadius: '16px'
-            }}>
-              <button onClick={closeArticle} style={{
-                position: 'absolute', top: '12px', right: '12px', zIndex: 10,
-                background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.15)', color: '#fff',
-                borderRadius: '50%', width: '28px', height: '28px',
-                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                transition: 'all 0.2s ease'
-              }} onMouseEnter={e => e.currentTarget.style.color = '#00e676'} onMouseLeave={e => e.currentTarget.style.color = '#fff'}>
-                <X size={15} />
+        {activeArticle ? (
+          /* ── FULL STANDALONE BLOG ARTICLE DETAIL PAGE (FLIPCARBON STYLE) ── */
+          <article style={{ maxWidth: '840px', margin: '0 auto', padding: '10px 0 40px' }}>
+            {/* Top Back Controls Bar */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+              <button 
+                type="button"
+                onClick={closeArticle}
+                style={{
+                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)',
+                  color: 'var(--color-gold)', fontSize: '0.85rem', padding: '8px 18px', borderRadius: '24px',
+                  cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '8px', fontWeight: 600,
+                  transition: 'all 0.25s ease'
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = 'rgba(212, 175, 55, 0.12)'}
+                onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
+              >
+                <ArrowLeft size={16} /> Back to All Research Reports & Blogs
               </button>
-              
-              <div style={{ borderRadius: '10px', overflow: 'hidden', height: '110px', marginBottom: '12px', border: '1px solid rgba(255,255,255,0.08)' }}>
-                <img 
-                  src={activeArticle.image} 
-                  alt={activeArticle.imageAlt} 
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-              </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
-                <span className="blog-badge" style={{ fontSize: '0.64rem', padding: '2px 7px' }}>{activeArticle.category}</span>
-                <span style={{ fontSize: '0.68rem', color: 'var(--color-gold)', fontWeight: 600, fontFamily: 'monospace' }}>{activeArticle.readTime}</span>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                <span style={{ color: 'var(--color-gold)', fontWeight: 600, fontFamily: 'monospace' }}>{activeArticle.readTime}</span>
               </div>
+            </div>
 
-              <h2 style={{ fontSize: '1.02rem', fontWeight: 700, marginBottom: '6px', color: '#ffffff', lineHeight: 1.3 }} className={activeArticle.gold ? 'glow-text-gold' : 'glow-text-green'}>
-                {activeArticle.title}
-              </h2>
-              
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '10px', paddingBottom: '6px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-                <span style={{ color: '#ffffff', fontWeight: 600 }}>By {activeArticle.author}</span>
-                <span>•</span>
-                <span>{activeArticle.date}</span>
-              </div>
+            {/* Hero Image Banner */}
+            <div style={{
+              width: '100%', height: '360px', borderRadius: '20px', overflow: 'hidden',
+              marginBottom: '28px', border: activeArticle.gold ? '1px solid rgba(212, 175, 55, 0.35)' : '1px solid rgba(0, 230, 118, 0.25)',
+              boxShadow: '0 12px 40px rgba(0,0,0,0.6)'
+            }}>
+              <img 
+                src={activeArticle.image} 
+                alt={activeArticle.imageAlt} 
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            </div>
 
+            {/* Article H1 Title */}
+            <h1 style={{
+              fontSize: '2.1rem', fontWeight: 800, color: '#ffffff', lineHeight: 1.25,
+              marginBottom: '24px', letterSpacing: '-0.5px'
+            }}>
+              {activeArticle.title}
+            </h1>
+
+            {/* 3 Metadata Info Cards Row (Authored by | Date Released | Categories) */}
+            <div style={{
+              display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px',
+              marginBottom: '32px'
+            }} className="blog-meta-grid">
+              {/* Card 1: Authored by */}
               <div style={{
-                fontSize: '0.85rem', color: '#d1e0e4', lineHeight: '1.55',
-                textAlign: 'left'
+                background: 'rgba(6, 20, 12, 0.85)', border: '1px solid rgba(0, 230, 118, 0.18)',
+                borderRadius: '14px', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '12px'
               }}>
-                {activeArticle.content.map((paragraph, index) => {
-                  if (paragraph.startsWith('### ')) {
-                    return (
-                      <h4 key={index} style={{
-                        fontSize: '0.94rem', color: '#ffffff', fontWeight: 700,
-                        marginTop: '14px', marginBottom: '6px',
-                        paddingLeft: '6px', borderLeft: activeArticle.gold ? '3px solid var(--color-gold)' : '3px solid #00e676'
-                      }}>
-                        {paragraph.replace('### ', '')}
-                      </h4>
-                    );
-                  }
-                  if (paragraph.includes('Key Institutional Takeaways:')) {
-                    const parts = paragraph.split('\n');
-                    return (
-                      <div key={index} style={{
-                        marginTop: '12px', marginBottom: '12px', padding: '10px 12px',
-                        background: 'rgba(0, 230, 118, 0.06)', borderLeft: '3px solid #00e676',
-                        borderRadius: '6px', border: '1px solid rgba(0, 230, 118, 0.2)'
-                      }}>
-                        <h5 style={{ color: '#00e676', fontSize: '0.84rem', fontWeight: 700, marginBottom: '4px' }}>
-                          📌 Key Institutional Takeaways
-                        </h5>
-                        {parts.slice(1).map((bullet, bIdx) => (
-                          <p key={bIdx} style={{ fontSize: '0.78rem', color: '#e0f2f1', marginBottom: '3px', lineHeight: '1.45' }}>
-                            {bullet}
-                          </p>
-                        ))}
-                      </div>
-                    );
-                  }
-                  return <p key={index} style={{ marginBottom: '8px' }}>{paragraph}</p>;
-                })}
-              </div>
-
-              {/* Shareable Article Link Box */}
-              <div style={{
-                marginTop: '10px', padding: '8px 10px', background: 'rgba(0, 230, 118, 0.05)',
-                border: '1px solid rgba(0, 230, 118, 0.2)', borderRadius: '6px',
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '6px'
-              }}>
+                <div style={{
+                  width: '38px', height: '38px', borderRadius: '50%', background: 'rgba(0, 230, 118, 0.15)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#00e676', flexShrink: 0
+                }}>
+                  <User size={18} />
+                </div>
                 <div>
-                  <div style={{ fontSize: '0.62rem', color: '#00e676', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
-                    🔗 Shareable Link
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    Authored by
                   </div>
-                  <div style={{ fontSize: '0.68rem', color: '#ffffff', fontFamily: 'monospace', wordBreak: 'break-all' }}>
-                    {`https://ai-capital-investment.vercel.app/blogs/${activeArticle.id}`}
+                  <div style={{ fontSize: '0.88rem', color: '#ffffff', fontWeight: 700 }}>
+                    {activeArticle.author.split(' (')[0]}
                   </div>
                 </div>
+              </div>
+
+              {/* Card 2: Date Released */}
+              <div style={{
+                background: 'rgba(6, 20, 12, 0.85)', border: '1px solid rgba(0, 230, 118, 0.18)',
+                borderRadius: '14px', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '12px'
+              }}>
+                <div style={{
+                  width: '38px', height: '38px', borderRadius: '50%', background: 'rgba(212, 175, 55, 0.15)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-gold)', flexShrink: 0
+                }}>
+                  <Calendar size={18} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    Date Released
+                  </div>
+                  <div style={{ fontSize: '0.88rem', color: '#ffffff', fontWeight: 700 }}>
+                    {activeArticle.date}
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 3: Categories */}
+              <div style={{
+                background: 'rgba(6, 20, 12, 0.85)', border: '1px solid rgba(0, 230, 118, 0.18)',
+                borderRadius: '14px', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: '12px'
+              }}>
+                <div style={{
+                  width: '38px', height: '38px', borderRadius: '50%', background: 'rgba(0, 230, 118, 0.15)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#00e676', flexShrink: 0
+                }}>
+                  <Tag size={18} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    Categories
+                  </div>
+                  <div style={{ fontSize: '0.88rem', color: 'var(--color-gold)', fontWeight: 700 }}>
+                    {activeArticle.category}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Article Body Content */}
+            <div style={{
+              fontSize: '1rem', color: '#d8e6e8', lineHeight: '1.75',
+              marginBottom: '36px', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '32px'
+            }}>
+              {activeArticle.content.map((paragraph, index) => {
+                if (paragraph.startsWith('### ')) {
+                  return (
+                    <h2 key={index} style={{
+                      fontSize: '1.35rem', color: '#ffffff', fontWeight: 800,
+                      marginTop: '28px', marginBottom: '12px',
+                      paddingLeft: '12px', borderLeft: activeArticle.gold ? '4px solid var(--color-gold)' : '4px solid #00e676'
+                    }}>
+                      {paragraph.replace('### ', '')}
+                    </h2>
+                  );
+                }
+                if (paragraph.includes('Key Institutional Takeaways:')) {
+                  const parts = paragraph.split('\n');
+                  return (
+                    <div key={index} style={{
+                      marginTop: '24px', marginBottom: '24px', padding: '18px 20px',
+                      background: 'rgba(0, 230, 118, 0.06)', borderLeft: '4px solid #00e676',
+                      borderRadius: '12px', border: '1px solid rgba(0, 230, 118, 0.2)'
+                    }}>
+                      <h4 style={{ color: '#00e676', fontSize: '1rem', fontWeight: 800, marginBottom: '8px' }}>
+                        📌 Key Institutional Takeaways
+                      </h4>
+                      {parts.slice(1).map((bullet, bIdx) => (
+                        <p key={bIdx} style={{ fontSize: '0.92rem', color: '#e0f2f1', marginBottom: '6px', lineHeight: '1.55' }}>
+                          {bullet}
+                        </p>
+                      ))}
+                    </div>
+                  );
+                }
+                return <p key={index} style={{ marginBottom: '18px' }}>{paragraph}</p>;
+              })}
+            </div>
+
+            {/* Social Share Row (Share: f | X | in) */}
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '40px',
+              padding: '16px 20px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)',
+              borderRadius: '14px', flexWrap: 'wrap'
+            }}>
+              <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 600 }}>Share:</span>
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <button 
+                  type="button" 
+                  className="lp-social-icon" 
+                  onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank')}
+                  title="Share on Facebook"
+                >
+                  f
+                </button>
+                <button 
+                  type="button" 
+                  className="lp-social-icon" 
+                  onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(activeArticle.title)}`, '_blank')}
+                  title="Share on X"
+                >
+                  𝕏
+                </button>
+                <button 
+                  type="button" 
+                  className="lp-social-icon" 
+                  onClick={() => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`, '_blank')}
+                  title="Share on LinkedIn"
+                >
+                  in
+                </button>
                 <button 
                   type="button"
                   onClick={() => {
-                    const shareUrl = `https://ai-capital-investment.vercel.app/blogs/${activeArticle.id}`;
-                    navigator.clipboard.writeText(shareUrl);
+                    navigator.clipboard.writeText(window.location.href);
                     setCopiedArticleUrl(activeArticle.id);
                     setTimeout(() => setCopiedArticleUrl(null), 2500);
                   }}
                   className="btn btn-green-outline"
-                  style={{ fontSize: '0.68rem', padding: '4px 10px', display: 'inline-flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}
+                  style={{ fontSize: '0.78rem', padding: '6px 14px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
                 >
-                  {copiedArticleUrl === activeArticle.id ? '✓ Copied!' : '📋 Copy Link'}
-                </button>
-              </div>
-
-              {/* YMYL Financial Disclaimer Banner */}
-              <div style={{
-                marginTop: '8px', padding: '6px 8px', background: 'rgba(212, 175, 55, 0.06)',
-                borderLeft: '2px solid var(--color-gold)', borderRadius: '4px', fontSize: '0.64rem',
-                color: 'var(--text-muted)', lineHeight: 1.4
-              }}>
-                <strong>Notice:</strong> Insights provided by AI Capital LLC. Past performance does not guarantee future returns. Educational purposes only.
-              </div>
-              
-              <div style={{ marginTop: '12px', textAlign: 'center' }}>
-                <button 
-                  type="button" 
-                  className="btn btn-green-outline" 
-                  onClick={closeArticle} 
-                  style={{ fontSize: '0.76rem', padding: '5px 18px', borderRadius: '16px', cursor: 'pointer' }}
-                >
-                  Close Article
+                  {copiedArticleUrl === activeArticle.id ? '✓ Link Copied!' : '📋 Copy Share Link'}
                 </button>
               </div>
             </div>
-          </div>
+
+            {/* "Search here" Section Card */}
+            <div style={{
+              background: 'rgba(12, 28, 18, 0.85)', border: '1px solid rgba(0, 230, 118, 0.18)',
+              borderRadius: '16px', padding: '24px', marginBottom: '32px'
+            }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px' }}>
+                Search here
+              </h3>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <input 
+                  type="text"
+                  placeholder="Search research reports, topics, or authors..."
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') {
+                      closeArticle();
+                    }
+                  }}
+                  style={{
+                    flex: 1, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: '10px', padding: '12px 16px', color: '#ffffff', fontSize: '0.9rem', outline: 'none'
+                  }}
+                />
+                <button 
+                  type="button"
+                  onClick={closeArticle}
+                  style={{
+                    background: 'rgba(0, 230, 118, 0.15)', border: '1px solid rgba(0, 230, 118, 0.3)',
+                    borderRadius: '10px', padding: '0 20px', color: '#00e676', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center'
+                  }}
+                >
+                  <Search size={18} />
+                </button>
+              </div>
+            </div>
+
+            {/* "Related post" Section Card */}
+            <div style={{
+              background: 'rgba(12, 28, 18, 0.85)', border: '1px solid rgba(0, 230, 118, 0.18)',
+              borderRadius: '16px', padding: '24px', marginBottom: '32px'
+            }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', marginBottom: '18px' }}>
+                Related post
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {standaloneBlogArticles
+                  .filter(a => a.id !== activeArticle.id)
+                  .slice(0, 3)
+                  .map(rel => (
+                    <div 
+                      key={rel.id}
+                      onClick={() => openArticle(rel)}
+                      style={{
+                        display: 'flex', gap: '16px', alignItems: 'center', cursor: 'pointer',
+                        padding: '12px 14px', borderRadius: '12px', transition: 'all 0.25s ease',
+                        background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)'
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(0, 230, 118, 0.08)'}
+                      onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
+                    >
+                      <img 
+                        src={rel.image} 
+                        alt={rel.imageAlt} 
+                        style={{ width: '92px', height: '64px', objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }}
+                      />
+                      <div>
+                        <h4 style={{ fontSize: '0.94rem', fontWeight: 700, color: '#ffffff', marginBottom: '4px', lineHeight: 1.35 }}>
+                          {rel.title}
+                        </h4>
+                        <div style={{ fontSize: '0.76rem', color: 'var(--color-gold)', fontFamily: 'monospace' }}>
+                          {rel.date}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+
+            {/* Bottom Return Button */}
+            <div style={{ textAlign: 'center', marginTop: '32px' }}>
+              <button 
+                type="button" 
+                className="btn btn-green-outline" 
+                onClick={closeArticle} 
+                style={{ fontSize: '0.85rem', padding: '10px 28px', borderRadius: '24px', cursor: 'pointer' }}
+              >
+                ← Back to Research Directory
+              </button>
+            </div>
+          </article>
+        ) : (
+          /* ── BLOG DIRECTORY GRID VIEW ── */
+          <>
+            {/* Back Link & Search Controls Row */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
+              <button 
+                type="button"
+                onClick={() => onNavigate('landing')}
+                style={{
+                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
+                  color: 'var(--text-secondary)', fontSize: '0.82rem', padding: '7px 16px', borderRadius: '20px',
+                  cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={e => e.currentTarget.style.color = 'var(--color-gold)'}
+                onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}
+              >
+                <ArrowLeft size={14} /> Back to Main Site
+              </button>
+
+              <div className="blog-search-wrapper" style={{ maxWidth: '380px', width: '100%' }}>
+                <Search size={16} className="blog-search-icon" />
+                <input 
+                  type="text"
+                  placeholder="Search research reports, topics, or authors..."
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  className="blog-search-input"
+                  style={{ background: 'rgba(0,0,0,0.6)', padding: '9px 14px 9px 38px', fontSize: '0.84rem' }}
+                />
+              </div>
+            </div>
+
+            {/* Filter Category Pills */}
+            <div className="blog-filters" style={{ marginBottom: '24px' }}>
+              {categories.map(cat => (
+                <button
+                  key={cat}
+                  type="button"
+                  className={`blog-filter-btn ${selectedCategory === cat ? 'active' : ''}`}
+                  onClick={() => setSelectedCategory(cat)}
+                  style={{ padding: '7px 18px', fontSize: '0.82rem' }}
+                >
+                  {cat === 'All' ? '✨ All Insights' : cat === 'AI & Tech' ? '🤖 AI & Tech' : cat === 'Crypto' ? '🪙 Crypto' : cat === 'Macro Strategy' ? '📊 Macro Strategy' : '🛡️ Tax Strategy'}
+                </button>
+              ))}
+            </div>
+
+            {/* Blogs Grid & Hero Spotlight */}
+            <div className="blogs-grid">
+              {/* Hero Spotlight Featured Article */}
+              {featuredArticle && (
+                <div 
+                  className="blog-featured-spotlight"
+                  style={{
+                    gridColumn: '1 / -1',
+                    display: 'grid',
+                    gridTemplateColumns: '1.2fr 1fr',
+                    background: 'linear-gradient(135deg, rgba(8, 28, 16, 0.98) 0%, rgba(4, 16, 8, 0.95) 100%)',
+                    border: '1px solid rgba(212, 175, 55, 0.35)',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    boxShadow: '0 10px 32px rgba(212, 175, 55, 0.12)',
+                    marginBottom: '10px'
+                  }}
+                >
+                  <div style={{ padding: '26px 30px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                      <span style={{ background: 'rgba(212, 175, 55, 0.18)', color: 'var(--color-gold)', border: '1px solid rgba(212, 175, 55, 0.35)', padding: '3px 10px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.5px' }}>
+                        ⭐ FEATURED REPORT
+                      </span>
+                      <span style={{ fontSize: '0.76rem', color: 'var(--color-gold)', fontFamily: 'monospace', fontWeight: 600 }}>
+                        {featuredArticle.readTime}
+                      </span>
+                    </div>
+
+                    <h2 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#ffffff', marginBottom: '10px', lineHeight: 1.3 }}>
+                      {featuredArticle.title}
+                    </h2>
+
+                    <p style={{ fontSize: '0.88rem', color: '#c0d0d5', lineHeight: 1.55, marginBottom: '18px', borderLeft: '3px solid var(--color-gold)', paddingLeft: '12px' }}>
+                      {featuredArticle.abstract}
+                    </p>
+
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+                      <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                        <span style={{ color: '#ffffff', fontWeight: 600 }}>By {featuredArticle.author}</span> • <span style={{ color: 'var(--color-gold)' }}>{featuredArticle.date}</span>
+                      </div>
+                      <button 
+                        type="button" 
+                        className="btn btn-gold"
+                        onClick={() => openArticle(featuredArticle)}
+                        style={{ fontSize: '0.82rem', padding: '8px 20px', display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
+                      >
+                        Read Report <ChevronRight size={14} />
+                      </button>
+                    </div>
+                  </div>
+                  <div style={{ height: '100%', minHeight: '220px', overflow: 'hidden' }}>
+                    <img 
+                      src={featuredArticle.image} 
+                      alt={featuredArticle.imageAlt} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Standard Grid Articles */}
+              {gridArticles.map(article => (
+                <div
+                  key={article.id}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    borderRadius: '14px',
+                    overflow: 'hidden',
+                    background: 'rgba(6, 18, 10, 0.92)',
+                    border: article.gold ? '1px solid rgba(212, 175, 55, 0.3)' : '1px solid rgba(0, 230, 118, 0.18)',
+                    boxShadow: '0 6px 20px rgba(0,0,0,0.4)',
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  <div style={{ position: 'relative', height: '150px', overflow: 'hidden' }}>
+                    <img 
+                      src={article.image} 
+                      alt={article.imageAlt} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                    <div style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(6px)', padding: '3px 9px', borderRadius: '10px', fontSize: '0.68rem', color: 'var(--color-gold)', fontFamily: 'monospace', fontWeight: 600 }}>
+                      {article.readTime}
+                    </div>
+                  </div>
+                  <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                    <span className="blog-badge" style={{ fontSize: '0.65rem', alignSelf: 'flex-start', marginBottom: '8px' }}>{article.category}</span>
+                    <h3 style={{ fontSize: '1.02rem', fontWeight: 700, color: '#ffffff', marginBottom: '8px', lineHeight: 1.35 }}>
+                      {article.title}
+                    </h3>
+                    <p style={{ fontSize: '0.82rem', color: '#a0b0b5', lineHeight: 1.5, marginBottom: '14px', flex: 1 }}>
+                      {article.abstract}
+                    </p>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.72rem', color: 'var(--text-muted)', paddingTop: '10px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                      <span>{article.author.split(' (')[0]}</span>
+                      <button 
+                        type="button"
+                        className="btn btn-green-outline"
+                        onClick={() => openArticle(article)}
+                        style={{ fontSize: '0.72rem', padding: '4px 10px', display: 'inline-flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}
+                      >
+                        Read <ChevronRight size={12} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </main>
 

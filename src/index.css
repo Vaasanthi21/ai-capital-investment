@@ -1168,6 +1168,10 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); backgro
     grid-template-columns: 1fr !important;
   }
 
+  .blog-meta-grid {
+    grid-template-columns: 1fr !important;
+  }
+
   .lp-nav {
     flex-direction: column;
     gap: 18px;
