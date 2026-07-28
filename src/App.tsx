@@ -9,8 +9,9 @@ const OtpVerification = lazy(() => import('./components/OtpVerification'));
 const ForgotPassword = lazy(() => import('./components/ForgotPassword'));
 const PaymentPage = lazy(() => import('./components/PaymentPage'));
 const StandaloneBlogPage = lazy(() => import('./components/StandaloneBlogPage'));
+const StandaloneAccreditationPage = lazy(() => import('./components/StandaloneAccreditationPage'));
 
-type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'payment' | 'forgot-password' | 'dashboard' | 'blogs';
+type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'payment' | 'forgot-password' | 'dashboard' | 'blogs' | 'accreditation';
 
 interface UserProfile {
   name: string;
@@ -30,6 +31,7 @@ function App() {
     if (path.includes('/signup')) return 'signup';
     if (path.includes('/dashboard') || path.includes('/advisor') || path.includes('/app')) return 'dashboard';
     if (path.includes('/blogs') || path.includes('/blog')) return 'blogs';
+    if (path.includes('/accreditation') || path.includes('/certificates')) return 'accreditation';
     return 'landing';
   };
 
@@ -54,7 +56,8 @@ function App() {
       'payment': '/payment',
       'forgot-password': '/forgot-password',
       'dashboard': '/app',
-      'blogs': '/blogs'
+      'blogs': '/blogs',
+      'accreditation': '/accreditation'
     };
     const targetPath = pathMap[newView] || '/';
     if (window.location.pathname !== targetPath) {
@@ -73,11 +76,12 @@ function App() {
 
   return (
     <Suspense fallback={<div style={{ minHeight: '100vh', background: '#060e08' }} />}>
-      {view === 'landing'   && <LandingPage onNavigate={setView} />}
-      {view === 'blogs'     && <StandaloneBlogPage onNavigate={setView} />}
-      {view === 'login'     && <LoginPage onLoginSuccess={(user) => { setUserProfile(user); setView('dashboard'); }} onNavigate={setView} setTempEmail={setTempEmail} />}
-      {view === 'signup'    && <SignupPage onSignupSuccess={(email, role) => { setTempEmail(email); setRegRole(role); setView('otp-verify'); }} onNavigate={setView} />}
-      {view === 'otp-verify' && <OtpVerification email={tempEmail} onVerificationSuccess={() => {
+      {view === 'landing'       && <LandingPage onNavigate={setView} />}
+      {view === 'blogs'         && <StandaloneBlogPage onNavigate={setView} />}
+      {view === 'accreditation' && <StandaloneAccreditationPage onNavigate={setView} />}
+      {view === 'login'         && <LoginPage onLoginSuccess={(user) => { setUserProfile(user); setView('dashboard'); }} onNavigate={setView} setTempEmail={setTempEmail} />}
+      {view === 'signup'        && <SignupPage onSignupSuccess={(email, role) => { setTempEmail(email); setRegRole(role); setView('otp-verify'); }} onNavigate={setView} />}
+      {view === 'otp-verify'    && <OtpVerification email={tempEmail} onVerificationSuccess={() => {
         setView('login');
       }} onNavigate={setView} />}
       {view === 'payment' && <PaymentPage email={tempEmail} onPaymentSuccess={() => setView('login')} />}

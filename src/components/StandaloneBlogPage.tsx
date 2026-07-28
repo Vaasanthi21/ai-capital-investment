@@ -4,6 +4,7 @@ import {
 } from 'lucide-react';
 import ParticleBackground from './ParticleBackground';
 import LeadCaptureForm from './LeadCaptureForm';
+import WealthManagerCertificates from './WealthManagerCertificates';
 
 type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'payment' | 'forgot-password' | 'dashboard' | 'blogs';
 
@@ -398,6 +399,9 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
               </li>
               <li onClick={() => setMobileMenuOpen(false)}>
                 <a href="/#investment" onClick={(e) => { e.preventDefault(); onNavigate('landing'); }}>Investment</a>
+              </li>
+              <li onClick={() => setMobileMenuOpen(false)}>
+                <a href="/accreditation" onClick={(e) => { e.preventDefault(); onNavigate('accreditation'); }}>Accreditation</a>
               </li>
               <li onClick={() => setMobileMenuOpen(false)} className="active">
                 <a href="/blogs" onClick={(e) => { e.preventDefault(); onNavigate('blogs'); }} style={{ color: 'var(--color-gold)', fontWeight: 700 }}>Blogs</a>
@@ -903,8 +907,11 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
           </>
         )}
 
+        {/* Wealth Manager Certificates Section */}
+        <WealthManagerCertificates />
+
         {/* Lead Capture Advisor Consultation Section */}
-        <div style={{ marginTop: '48px' }}>
+        <div style={{ marginTop: '32px' }}>
           <LeadCaptureForm language={language} />
         </div>
       </main>

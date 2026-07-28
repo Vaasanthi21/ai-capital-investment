@@ -7,6 +7,7 @@ import {
 import HeroCanvas from './HeroCanvas';
 import ParticleBackground from './ParticleBackground';
 import LeadCaptureForm from './LeadCaptureForm';
+import WealthManagerCertificates from './WealthManagerCertificates';
 
 type View = 'landing' | 'login' | 'signup' | 'dashboard';
 
@@ -396,6 +397,11 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
               </li>
               <li onClick={() => setMobileMenuOpen(false)}>
                 <a href="#services">{t.nav[2]}</a>
+              </li>
+              <li onClick={() => setMobileMenuOpen(false)}>
+                <a href="/accreditation" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onNavigate('accreditation'); }}>
+                  {language === 'en' ? 'Accreditation' : 'प्रमाणन'}
+                </a>
               </li>
               <li onClick={() => setMobileMenuOpen(false)}>
                 <a href="#investment">{t.nav[3]}</a>
