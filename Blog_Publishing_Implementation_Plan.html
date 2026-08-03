@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Implementation Plan - Creative OS Blog Publishing Sync Engine</title>
+  <style>
+    @media print {
+      body { background: #fff !important; color: #000 !important; font-size: 12pt; }
+      .no-print { display: none; }
+      .page-break { page-break-before: always; }
+      .card { border: 1px solid #ddd !important; box-shadow: none !important; }
+    }
+    
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+      background-color: #060e08;
+      color: #e2e8f0;
+      line-height: 1.6;
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #09170d;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .header {
+      border-b: 2px solid #d4af37;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(0, 230, 118, 0.15);
+      border: 1px solid rgba(0, 230, 118, 0.4);
+      color: #00e676;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      color: #ffffff;
+      font-size: 28px;
+      margin: 0 0 10px 0;
+      letter-spacing: -0.5px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 16px;
+      border-radius: 10px;
+      margin-top: 15px;
+      border-left: 3px solid #d4af37;
+    }
+
+    .meta-item label {
+      display: block;
+      font-size: 11px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .meta-item span {
+      font-size: 14px;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+
+    h2 {
+      color: #d4af37;
+      font-size: 20px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      padding-bottom: 8px;
+      margin-top: 35px;
+    }
+
+    h3 {
+      color: #00e676;
+      font-size: 16px;
+      margin-top: 25px;
+    }
+
+    p, li {
+      color: #cbd5e1;
+      font-size: 14.5px;
+    }
+
+    code, pre {
+      font-family: 'Consolas', 'Courier New', monospace;
+      background: #030a04;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 8px;
+      color: #00e676;
+    }
+
+    pre {
+      padding: 16px;
+      overflow-x: auto;
+      font-size: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    th, td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 13.5px;
+    }
+
+    th {
+      background: rgba(212, 175, 55, 0.1);
+      color: #d4af37;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+
+    .print-btn {
+      background: linear-gradient(135deg, #d4af37, #b89320);
+      color: #040d07;
+      font-weight: 700;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      float: right;
+      transition: all 0.2s ease;
+    }
+
+    .print-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <button onclick="window.print()" class="print-btn no-print">🖨️ Save as PDF / Print</button>
+    
+    <div class="header">
+      <div class="badge">Technical Architecture Plan</div>
+      <h1>Creative OS Blog Publishing & Sync Engine</h1>
+      <p style="margin: 0; color: #94a3b8;">Detailed specification for real-time investor blog creation and synchronization.</p>
+      
+      <div class="meta-grid">
+        <div class="meta-item">
+          <label>Project</label>
+          <span>AI Capital Investment</span>
+        </div>
+        <div class="meta-item">
+          <label>Review Target</label>
+          <span>Technical Lead / Mentor Review</span>
+        </div>
+        <div class="meta-item">
+          <label>Date</label>
+          <span>August 3, 2026</span>
+        </div>
+        <div class="meta-item">
+          <label>Status</label>
+          <span>Ready for Approval</span>
+        </div>
+      </div>
+    </div>
+
+    <h2>1. Executive Summary</h2>
+    <p>This implementation plan defines the architectural blueprint for connecting the <strong>Creative OS Blog Publisher</strong> with the <strong>Standalone Blogs Page (<code>/blogs</code>)</strong> in the AI Capital Investment application.</p>
+    <p>Currently, the Blogs page renders a static set of institutional research articles. This project introduces a dynamic event-driven storage and synchronization layer (<code>blogStorage.ts</code>) that allows logged-in investors to compose and publish custom articles in Creative OS and immediately view them in the <code>/blogs</code> feed across active browser sessions.</p>
+
+    <h2>2. Sequence & Data Flow Architecture</h2>
+    <pre>
+1. Investor (Composer)  ──>  2. Creative OS Editor Form
+                                   │
+                                   ▼
+3. Invokes saveUserBlog() ──>  4. Writes to LocalStorage Engine (blogStorage.ts)
+                                   │
+                                   ├──> Dispatches 'blog-published' & 'storage' Events
+                                   │
+                                   ▼
+5. Redirects to /blogs   ──>  6. StandaloneBlogPage fetches & merges [User Blogs + Static Blogs]
+                                   │
+                                   ▼
+                             7. Live Updated Feed with "Community Published" Badge
+    </pre>
+
+    <h2>3. Data Schema Specification</h2>
+    <pre><code>export interface BlogArticle {
+  id: string;             // Unique ID: `user-blog-${timestamp}`
+  title: string;          // Article Title
+  category: string;       // 'AI & Tech' | 'Tax Strategy' | 'Macro Strategy' | 'Crypto'
+  author: string;         // Logged-in investor's name
+  date: string;           // Formatted publication date
+  readTime: string;       // Estimated read time (e.g. "5 min read")
+  abstract: string;       // Short summary snippet
+  image: string;          // Cover image URL
+  imageAlt: string;       // Accessibility alt text
+  content: string[];      // Paragraph array
+  isUserCreated: boolean; // Flag identifying investor-created articles
+}</code></pre>
+
+    <h2>4. Technical Component Specifications</h2>
+    
+    <h3>Component 1: Storage Layer (<code>src/lib/blogStorage.ts</code>)</h3>
+    <ul>
+      <li><code>getUserBlogs(): BlogArticle[]</code>: Reads and parses investor-published articles from LocalStorage.</li>
+      <li><code>saveUserBlog(blogData): BlogArticle</code>: Appends new article with timestamp, ID, and dispatches real-time window events.</li>
+      <li><code>deleteUserBlog(id: string): void</code>: Option for users to remove their published posts.</li>
+    </ul>
+
+    <h3>Component 2: Creative OS Publisher (<code>src/components/CreativeOSPublisher.tsx</code>)</h3>
+    <ul>
+      <li>Form fields for Title, Category dropdown, Abstract snippet, Content body, and Cover Image URL.</li>
+      <li>Form submission handler that validates required inputs, saves data to storage, and redirects to <code>/blogs</code>.</li>
+    </ul>
+
+    <h3>Component 3: Dynamic Feed Controller (<code>src/components/StandaloneBlogPage.tsx</code>)</h3>
+    <ul>
+      <li>Initializes state with <code>[...getUserBlogs(), ...standaloneBlogArticles]</code>.</li>
+      <li>Subscribes to <code>blog-published</code> and <code>storage</code> events for instant, cross-tab feed synchronization.</li>
+    </ul>
+
+    <h2>5. Implementation Roadmap & Timeline</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>Milestone Task</th>
+          <th>Technical Deliverable</th>
+          <th>Est. Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Phase 1</strong></td>
+          <td>Storage DAO Layer</td>
+          <td>Create <code>src/lib/blogStorage.ts</code> with CRUD & event emitter</td>
+          <td>1.5 hrs</td>
+        </tr>
+        <tr>
+          <td><strong>Phase 2</strong></td>
+          <td>Creative OS Publisher Form</td>
+          <td>Build <code>CreativeOSPublisher</code> editor modal/component</td>
+          <td>2.5 hrs</td>
+        </tr>
+        <tr>
+          <td><strong>Phase 3</strong></td>
+          <td>Feed Integration</td>
+          <td>Update <code>StandaloneBlogPage.tsx</code> to dynamically load user posts</td>
+          <td>2.0 hrs</td>
+        </tr>
+        <tr>
+          <td><strong>Phase 4</strong></td>
+          <td>Real-Time Sync</td>
+          <td>Wire <code>storage</code> & custom event listeners for tab sync</td>
+          <td>1.0 hr</td>
+        </tr>
+        <tr>
+          <td><strong>Phase 5</strong></td>
+          <td>QA & Persistence Testing</td>
+          <td>Verify page reloads, filtering, dark mode styling, and edge cases</td>
+          <td>1.0 hr</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>6. QA & Verification Plan</h2>
+    <ul>
+      <li><strong>Publish Test</strong>: Fill article form in Creative OS ➔ Click Publish ➔ Verify redirection and top position placement on <code>/blogs</code>.</li>
+      <li><strong>Persistence Test</strong>: Reload page (<code>F5</code>) ➔ Verify article persists in state.</li>
+      <li><strong>Filtering & Search Test</strong>: Filter by category / search keywords ➔ Verify user articles filter properly alongside static articles.</li>
+      <li><strong>Reading Mode Test</strong>: Click "Read Full Article" ➔ Verify full text, image, and metadata display in lightbox.</li>
+    </ul>
+
+  </div>
+
+</body>
+</html>
