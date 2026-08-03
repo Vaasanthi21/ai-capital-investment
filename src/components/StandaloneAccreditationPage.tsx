@@ -1,11 +1,7 @@
 import { useState, useEffect } from 'react';
-import { 
-  Award, ShieldCheck, ArrowLeft, Globe, Menu, X, CheckCircle2, 
-  Building2, FileText, ExternalLink, Scale, Lock, BookmarkCheck
-} from 'lucide-react';
+import { Globe, Menu, X } from 'lucide-react';
 import ParticleBackground from './ParticleBackground';
-import WealthManagerCertificates from './WealthManagerCertificates';
-import LeadCaptureForm from './LeadCaptureForm';
+import Accreditation from './accreditation/Accreditation';
 
 type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'payment' | 'forgot-password' | 'dashboard' | 'blogs' | 'accreditation';
 
@@ -19,15 +15,6 @@ const StandaloneAccreditationPage = ({ onNavigate }: StandaloneAccreditationPage
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    const els = document.querySelectorAll('.fade-in-section');
-    els.forEach(el => el.classList.add('is-visible'));
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('is-visible'); }
-      });
-    }, { threshold: 0.05 });
-    els.forEach(el => obs.observe(el));
-    return () => els.forEach(el => obs.unobserve(el));
   }, []);
 
   return (
@@ -72,7 +59,7 @@ const StandaloneAccreditationPage = ({ onNavigate }: StandaloneAccreditationPage
       />
 
       {/* ── Top Header Bar ─────────────────────────────────────────── */}
-      <header className="lp-header">
+      <header className="lp-header" style={{ position: 'sticky', top: 0, zIndex: 100 }}>
         <div className="lp-container lp-header-inner">
           <div className="logo" onClick={() => onNavigate('landing')} style={{ cursor: 'pointer' }}>
             <div className="logo-symbol">AI</div>
@@ -131,79 +118,9 @@ const StandaloneAccreditationPage = ({ onNavigate }: StandaloneAccreditationPage
       </header>
 
       {/* ── Main Content Container ───────────────────────────────────── */}
-      <main style={{ paddingTop: '80px', paddingBottom: '60px' }}>
-        <WealthManagerCertificates />
-
-        {/* Regulatory Governance Framework Section */}
-        <section className="lp-section" style={{ background: 'rgba(0, 0, 0, 0.3)', padding: '60px 0', borderTop: '1px solid rgba(255, 255, 255, 0.06)' }}>
-          <div className="lp-container">
-            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-              <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#ffffff', marginBottom: '10px' }}>
-                Regulatory Compliance & Fiduciary Safeguards
-              </h2>
-              <p style={{ color: '#94a3b8', fontSize: '0.92rem', maxWidth: '650px', margin: '0 auto' }}>
-                How SEBI and international regulatory frameworks protect investor capital, mandate asset segregation, and enforce advisor accountability.
-              </p>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
-              {[
-                {
-                  Icon: Scale,
-                  title: 'Fiduciary Duty & Client Priority',
-                  desc: 'Under SEBI Investment Advisers Regulations and the Investment Advisers Act, accredited advisors are legally obligated to prioritize client financial interests above all firm operations.'
-                },
-                {
-                  Icon: Building2,
-                  title: 'Qualified Independent Custody',
-                  desc: 'Client funds and securities are never held directly on our balance sheet. All assets remain securely deposited with qualified, independent custodian brokerages.'
-                },
-                {
-                  Icon: Lock,
-                  title: '24/7 Algorithmic Disclosures',
-                  desc: 'Quantitative strategy backtests, risk parameters, and fee structures are fully disclosed to clients to ensure total operational transparency.'
-                }
-              ].map(({ Icon, title, desc }, idx) => (
-                <div key={idx} className="glass-card green-border" style={{ padding: '24px', borderRadius: '16px', background: 'rgba(6, 20, 12, 0.7)' }}>
-                  <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(0, 230, 118, 0.12)', border: '1px solid rgba(0, 230, 118, 0.3)', color: '#00e676', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
-                    <Icon size={22} />
-                  </div>
-                  <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', marginBottom: '8px' }}>{title}</h3>
-                  <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: 1.6, margin: 0 }}>{desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Lead Capture Consultation */}
-        <section className="lp-section" style={{ padding: '60px 0' }}>
-          <div className="lp-container" style={{ maxWidth: '850px' }}>
-            <LeadCaptureForm language={language} />
-          </div>
-        </section>
+      <main style={{ position: 'relative', zIndex: 10 }}>
+        <Accreditation />
       </main>
-
-      {/* ── Footer ─────────────────────────────────────────────────── */}
-      <footer style={{ background: '#020804', padding: '40px 0 24px 0', borderTop: '1px solid rgba(255, 255, 255, 0.08)', fontSize: '0.82rem', color: '#64748b' }}>
-        <div className="lp-container" style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center', textAlign: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div className="logo-symbol" style={{ width: '28px', height: '28px', fontSize: '0.75rem' }}>AI</div>
-            <strong style={{ color: '#ffffff', fontSize: '1rem' }}>AI Capital Investment LLC</strong>
-          </div>
-          <p style={{ maxWidth: '750px', margin: 0, lineHeight: 1.6 }}>
-            Official regulatory accreditation page. Certifications issued by the National Institute of Securities Markets (NISM) under Securities and Exchange Board of India (SEBI) Regulations, 2007.
-          </p>
-          <div style={{ display: 'flex', gap: '20px' }}>
-            <a href="/" onClick={(e) => { e.preventDefault(); onNavigate('landing'); }} style={{ color: '#00e676', textDecoration: 'none' }}>Home</a>
-            <a href="/blogs" onClick={(e) => { e.preventDefault(); onNavigate('blogs'); }} style={{ color: '#00e676', textDecoration: 'none' }}>Market Research</a>
-            <a href="/login" onClick={(e) => { e.preventDefault(); onNavigate('login'); }} style={{ color: '#00e676', textDecoration: 'none' }}>Sign In</a>
-          </div>
-          <div style={{ color: '#475569', fontSize: '0.75rem', marginTop: '10px' }}>
-            © {new Date().getFullYear()} AI Capital Investment LLC. All Rights Reserved.
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };

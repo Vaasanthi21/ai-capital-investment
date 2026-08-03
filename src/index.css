@@ -1594,3 +1594,91 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); backgro
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ── Accreditation Specific Styling ─────────────────────────────────────── */
+.accred-bg {
+  background: #060e08;
+}
+.gold-text {
+  background: linear-gradient(135deg, #d4af37 0%, #ffe066 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.green-text {
+  background: linear-gradient(135deg, #00e676 0%, #69f0ae 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.golden-thread {
+  position: absolute;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.3), transparent);
+  pointer-events: none;
+}
+.glass-vault {
+  background: rgba(6, 18, 10, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+}
+.gold-glow-box {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+}
+
+/* Keyframe Animations for Accreditation Hero */
+@keyframes seal-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes seal-spin-rev {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Certificate Card Hover Scan & Font Effects */
+.cert-frame .cert-scan {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.15), transparent);
+  transition: transform 0.8s ease-in-out;
+  pointer-events: none;
+  z-index: 5;
+}
+.cert-frame:hover .cert-scan {
+  transform: translateY(200%);
+}
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Dual Entity Profile Switcher Classes */
+.glass-vault-green {
+  background: rgba(6, 18, 10, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 230, 118, 0.25);
+}
+.green-glow-box {
+  box-shadow: 0 0 20px rgba(0, 230, 118, 0.25);
+}
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0, 230, 118, 0.8), transparent);
+  box-shadow: 0 0 10px rgba(0, 230, 118, 0.8);
+  pointer-events: none;
+  z-index: 10;
+}
+
+
+
+
