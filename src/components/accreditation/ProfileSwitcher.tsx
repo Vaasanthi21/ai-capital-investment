@@ -52,11 +52,8 @@ export default function ProfileSwitcher({ active, setActive }: ProfileSwitcherPr
               >
                 {/* Scan line on active */}
                 {isActive && (
-                  <motion.div
-                    className="scan-line"
-                    initial={{ top: "0%" }}
-                    animate={{ top: "100%" }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  <div
+                    className={`scan-line ${isGold ? "scan-line-gold" : "scan-line-green"}`}
                   />
                 )}
 
