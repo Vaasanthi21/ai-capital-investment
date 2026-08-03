@@ -38,14 +38,19 @@ function LedgerRow({ label, value, isLink, url }: LedgerRowProps) {
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="shrink-0 w-7 h-7 flex items-center justify-center rounded-md border border-[#00e676]/40 hover:bg-[#00e676]/10 transition-colors"
+            className="shrink-0 w-7 h-7 flex items-center justify-center rounded-md border border-[#00e676]/40 hover:bg-[#00e676]/20 transition-all cursor-pointer"
+            style={{ backgroundColor: "transparent", borderColor: "rgba(0,230,118,0.4)" }}
+            title="Verify Online on NISM"
           >
             <ExternalLink className="w-3.5 h-3.5 text-[#00e676]" />
           </a>
         ) : (
           <button
+            type="button"
             onClick={handleCopy}
-            className="shrink-0 w-7 h-7 flex items-center justify-center rounded-md border border-[#d4af37]/40 hover:bg-[#d4af37]/10 transition-colors"
+            className="shrink-0 w-7 h-7 flex items-center justify-center rounded-md border border-[#d4af37]/40 hover:bg-[#d4af37]/20 transition-all cursor-pointer"
+            style={{ backgroundColor: "transparent", borderColor: "rgba(212,175,55,0.4)" }}
+            title="Copy to Clipboard"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-[#00e676]" /> : <Copy className="w-3.5 h-3.5 text-[#d4af37]" />}
           </button>
