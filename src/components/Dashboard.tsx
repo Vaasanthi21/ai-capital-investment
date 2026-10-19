@@ -3,7 +3,8 @@ import {
     LayoutDashboard, Wallet, Sparkles, BarChart3, Settings, LogOut,
     ArrowUpRight, Lightbulb, CheckCircle2, BookOpen, ChevronRight, X,
     CreditCard, History, PlusCircle, ShieldCheck, DollarSign, Search, Download,
-    TrendingUp, ArrowDownRight, Filter
+    TrendingUp, ArrowDownRight, Filter, Sliders, Clock, Bot, Landmark, PieChart,
+    Shield, Lock, Bell, MoreHorizontal, Send, Info, Check, ArrowRight
 } from 'lucide-react';
 import { Line, Doughnut } from 'react-chartjs-2';
 import {
@@ -492,6 +493,8 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                         <div className="logo-text">AI Capital<span>Investment</span></div>
                     </div>
 
+                    <p style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em', color: '#64748b', textTransform: 'uppercase', padding: '0 16px', margin: '14px 0 6px 0' }}>YOUR WORKSPACE</p>
+
                     <ul className="dash-menu">
                         {[
                             { id: 'home', icon: <LayoutDashboard size={20} />, label: 'Overview' },
@@ -509,11 +512,19 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                     </ul>
 
                     <div className="dash-sidebar-footer">
+                        <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '10px', padding: '12px', marginBottom: '12px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.74rem', color: '#cbd5e1', fontWeight: 600, marginBottom: '4px' }}>
+                                <ShieldCheck size={14} style={{ color: '#00e676' }} /> Demo experience
+                            </div>
+                            <p style={{ fontSize: '0.68rem', color: '#64748b', margin: 0, lineHeight: 1.35 }}>
+                                No account connection. Conversations stay in this browser session only.
+                            </p>
+                        </div>
                         <div className="user-profile-badge">
                             <div className="user-avatar">{initials}</div>
                             <div className="user-info">
-                                <p className="user-name">{userData.name}</p>
-                                <p className="user-tier">Premium Account</p>
+                                <p className="user-name">{userData.name || 'Jordan Demo'}</p>
+                                <p className="user-tier">Sample account • Demo only</p>
                             </div>
                         </div>
                         <button className="btn btn-green-outline" style={{ width: '100%', fontSize: '0.85rem', padding: '8px 16px' }} onClick={onLogout}>
@@ -528,8 +539,18 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                 >
                     <header className="dash-header">
                         <div className="dash-header-left">
-                            <h1 className="glow-text-green">Welcome Back, {userData?.name ? userData.name.split(" ")[0] : 'Investor'}!</h1>
-                            <p>Here is your real-time portfolio analysis and AI insights.</p>
+                            {selectedTab === 'advisory' ? (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.86rem' }}>
+                                    <span style={{ color: 'var(--text-muted)' }}>Workspace</span>
+                                    <span style={{ color: 'rgba(255,255,255,0.2)' }}>/</span>
+                                    <span style={{ color: '#ffffff', fontWeight: 600 }}>AI advisory</span>
+                                </div>
+                            ) : (
+                                <>
+                                    <h1 className="glow-text-green">Welcome Back, {userData?.name ? userData.name.split(" ")[0] : 'Investor'}!</h1>
+                                    <p>Here is your real-time portfolio analysis and AI insights.</p>
+                                </>
+                            )}
                         </div>
                         <div className="dash-header-right">
                             <button 
@@ -556,6 +577,23 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                                     </div>
                                 ))}
                             </div>
+                            <button 
+                                type="button" 
+                                style={{ 
+                                    background: 'rgba(255,255,255,0.03)', 
+                                    border: '1px solid rgba(255,255,255,0.08)', 
+                                    borderRadius: '8px', 
+                                    width: '32px', 
+                                    height: '32px', 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'center', 
+                                    color: '#cbd5e1', 
+                                    cursor: 'pointer' 
+                                }}
+                            >
+                                <Bell size={16} />
+                            </button>
                         </div>
                     </header>
 
@@ -2697,10 +2735,24 @@ const AIChatbotSection = ({
     proposalSuccess: boolean; 
     handleExecuteProposal: () => void; 
 }) => {
+    const firstName = userData?.name ? userData.name.split(" ")[0] : 'Jordan';
     const [subTab, setSubTab] = useState<'ai' | 'advisor'>('ai');
-    const [messages, setMessages] = useState([
-        { sender: 'ai', text: `Hello ${userData.name.split(" ")[0]}, I am your AI Capital Advisor. I actively monitor market yields and adjust your portfolio reallocations. How can I assist you today?` },
-        { sender: 'ai', text: `Based on your profile, you are currently on a ${userData.riskTolerance} allocation trajectory with a primary goal of ${userData.goal} Planning.` }
+    const [selectedPlan, setSelectedPlan] = useState('Sample retirement plan');
+    const [showPlanMenu, setShowPlanMenu] = useState(false);
+    const [showSignalsModal, setShowSignalsModal] = useState(false);
+    const [showOptionsPopup, setShowOptionsPopup] = useState(false);
+
+    const [messages, setMessages] = useState<Array<{ sender: 'ai' | 'user'; text: string; time: string }>>([
+        { 
+            sender: 'ai', 
+            text: `Good morning, ${firstName}. Your sample portfolio is holding steady through this week's market swings. Want to take a closer look together?`,
+            time: 'Today • 9:14 AM'
+        },
+        { 
+            sender: 'ai', 
+            text: "Your sample mix is aligned with its retirement goal. Bonds are a little below target, but there's no need to rush a change.",
+            time: 'Today • 9:14 AM'
+        }
     ]);
     const [input, setInput] = useState('');
     const [isTyping, setIsTyping] = useState(false);
@@ -2751,243 +2803,595 @@ const AIChatbotSection = ({
         }
     };
 
-    const handleSend = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!input.trim()) return;
+    const generateAIResponse = (userMsg: string) => {
+        const query = userMsg.toLowerCase();
+        if (query.includes('why is my portfolio down') || query.includes('down') || query.includes('loss')) {
+            return "Even high-grade diversified portfolios experience temporary fluctuations due to broad market interest rate expectations and tech sector rotations. Because your sample plan is configured for a 2042 horizon, short-term dips are historically offset by disciplined compounding. Everything remains well within your risk buffer.";
+        } else if (query.includes('rebalance') || query.includes('should i rebalance')) {
+            return "Your target mix is 55% Equities, 20% Bonds, 10% Cash, 10% Gold, and 5% Digital Assets. Currently, your bond allocation sits at 18.2% (-1.8% from target). We typically recommend rebalancing only when a drift exceeds 5%, so holding your current distribution is mathematically optimal right now.";
+        } else if (query.includes('risk') || query.includes('explain my risk level')) {
+            return `Your profile is set to Moderate / Balanced. This targets an annualized yield of ~9.5% with an expected volatility limit of ~8%. It aims to capture equity upside while using fixed income and gold hedges to cushion against acute market drawdowns.`;
+        } else if (query.includes('fee') || query.includes('fees') || query.includes('cost')) {
+            return "AI Capital Investment charges an ultra-low 0.25% annual advisory fee. There are zero transaction fees for automated AI algorithmic rebalancing.";
+        } else if (query.includes('crypto') || query.includes('btc') || query.includes('bitcoin')) {
+            return "In your balanced allocation trajectory, digital assets are constrained to 5% with strict volatility stop-loss buffers to protect the underlying retirement corpus.";
+        } else if (query.includes('hello') || query.includes('hi')) {
+            return `Hello ${firstName}! I'm tracking your sample portfolio. What part of your investments or market outlook would you like to review?`;
+        } else {
+            return `I've analyzed your question against your portfolio telemetry. Your current asset weighting remains on track for your 2042 retirement target. Let me know if you would like me to detail specific allocations for cash, bonds, or equities.`;
+        }
+    };
 
-        const userMsg = input.trim();
-        setMessages(prev => [...prev, { sender: 'user', text: userMsg }]);
-        setInput('');
+    const sendUserQuery = (textToSend: string) => {
+        if (!textToSend.trim()) return;
+        const now = new Date();
+        const timeStr = `Today • ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+
+        setMessages(prev => [...prev, { sender: 'user', text: textToSend.trim(), time: timeStr }]);
         setIsTyping(true);
 
         setTimeout(() => {
             setIsTyping(false);
-            let reply = '';
-            const query = userMsg.toLowerCase();
+            const reply = generateAIResponse(textToSend);
+            setMessages(prev => [...prev, { sender: 'ai', text: reply, time: timeStr }]);
+        }, 800);
+    };
 
-            if (query.includes('risk') || query.includes('tolerance') || query.includes('profile')) {
-                reply = `Under your current ${userData.riskTolerance} risk profile, we allocate assets to optimize annual yields while keeping volatility around ${userData.riskTolerance === 'Conservative' ? '3%' : userData.riskTolerance === 'Balanced' ? '8%' : '16%'}. You can adjust these tolerances in the Settings tab.`;
-            } else if (query.includes('crypto') || query.includes('btc') || query.includes('bitcoin') || query.includes('eth')) {
-                reply = `For digital assets, your profile target allocation is ${userData.riskTolerance === 'Conservative' ? '10%' : userData.riskTolerance === 'Balanced' ? '5% (BTC/ETH)' : '20% (Emerging Tech)'}. These are volatility-weighted to prevent drawdown cycles.`;
-            } else if (query.includes('fee') || query.includes('fees') || query.includes('withdraw')) {
-                reply = `AI Capital Investment has a 0.25% annual management fee. Withdrawals are processed within 1-2 business days to your funded account.`;
-            } else if (query.includes('hello') || query.includes('hi')) {
-                reply = `Hello! How can I assist you with your asset rebalancing or yield projections today?`;
-            } else {
-                reply = `I have logged your query. Our algorithmic index engines indicate optimal rebalancing efficiency is active. Let me know if you would like me to detail specific allocations for cash, bonds, or equities.`;
-            }
-
-            setMessages(prev => [...prev, { sender: 'ai', text: reply }]);
-        }, 1000);
+    const handleSend = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!input.trim()) return;
+        const text = input;
+        setInput('');
+        sendUserQuery(text);
     };
 
     return (
-        <div className="dash-advisory-container">
-            <div style={{ width: '180px', flexShrink: 0, marginBottom: '10px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
-                {subTab === 'ai' ? (
-                    <CuteRobot isTyping={isTyping} />
-                ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', padding: '20px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '12px', width: '100%' }}>
-                        <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'var(--color-gold)', color: '#03080a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', fontWeight: 'bold', boxShadow: '0 0 15px rgba(212,175,55,0.3)' }}>
-                            JD
-                        </div>
-                        <div style={{ textAlign: 'center' }}>
-                            <h6 style={{ color: '#fff', fontSize: '0.85rem', margin: '0 0 2px 0', fontWeight: 700 }}>John Doe</h6>
-                            <p style={{ color: 'var(--text-muted)', fontSize: '0.7rem', margin: 0 }}>Senior Wealth Manager</p>
-                        </div>
+        <div className="nova-advisor-page">
+            {/* Top Greeting Header */}
+            <div className="nova-header-row">
+                <div className="nova-title-area">
+                    <div className="nova-top-tag">
+                        <span className="tag-dot" />
+                        YOUR PERSONAL INVESTING COMPANION
                     </div>
-                )}
+                    <h2>Good morning, {firstName}.</h2>
+                    <p>A clearer view of your money starts with a good conversation.</p>
+                </div>
+
+                {/* Plan Dropdown */}
+                <div style={{ position: 'relative' }}>
+                    <button 
+                        type="button" 
+                        className="nova-plan-btn"
+                        onClick={() => setShowPlanMenu(prev => !prev)}
+                    >
+                        <Landmark size={15} style={{ color: '#00e676' }} />
+                        <span>{selectedPlan}</span>
+                        <ChevronDown size={14} style={{ color: '#94a3b8' }} />
+                    </button>
+                    {showPlanMenu && (
+                        <div style={{
+                            position: 'absolute', right: 0, top: '100%', marginTop: '6px',
+                            background: '#0a160d', border: '1px solid rgba(0, 230, 118, 0.25)',
+                            borderRadius: '8px', padding: '6px', zIndex: 50, minWidth: '220px',
+                            boxShadow: '0 10px 25px rgba(0,0,0,0.6)'
+                        }}>
+                            {['Sample retirement plan', 'Aggressive Growth 2035', 'Capital Preservation Shield'].map(p => (
+                                <div
+                                    key={p}
+                                    onClick={() => { setSelectedPlan(p); setShowPlanMenu(false); }}
+                                    style={{
+                                        padding: '8px 12px', fontSize: '0.8rem', color: selectedPlan === p ? '#00e676' : '#cbd5e1',
+                                        cursor: 'pointer', borderRadius: '4px', background: selectedPlan === p ? 'rgba(0,230,118,0.1)' : 'transparent',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'space-between'
+                                    }}
+                                >
+                                    {p} {selectedPlan === p && <Check size={14} />}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
 
-            <div className="widget glass-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '540px', padding: '24px', border: '1px solid rgba(0, 230, 118, 0.2)' }}>
-                {/* Header with Sub-Tabs */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '16px', marginBottom: '4px' }}>
-                    <div style={{ display: 'flex', gap: '10px' }}>
-                        <button
-                            type="button"
-                            onClick={() => setSubTab('ai')}
-                            style={{
-                                padding: '6px 12px', fontSize: '0.78rem', borderRadius: '4px',
-                                border: '1px solid ' + (subTab === 'ai' ? 'var(--color-green)' : 'rgba(255,255,255,0.08)'),
-                                background: subTab === 'ai' ? 'rgba(0, 230, 118, 0.08)' : 'transparent',
-                                color: subTab === 'ai' ? 'var(--color-green)' : 'var(--text-secondary)',
-                                cursor: 'pointer', fontWeight: 600
-                            }}
-                        >
-                            🤖 AI Advisor Bot
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setSubTab('advisor')}
-                            style={{
-                                padding: '6px 12px', fontSize: '0.78rem', borderRadius: '4px',
-                                border: '1px solid ' + (subTab === 'advisor' ? 'var(--color-gold)' : 'rgba(255,255,255,0.08)'),
-                                background: subTab === 'advisor' ? 'rgba(212, 175, 55, 0.08)' : 'transparent',
-                                color: subTab === 'advisor' ? 'var(--color-gold)' : 'var(--text-secondary)',
-                                cursor: 'pointer', fontWeight: 600
-                            }}
-                        >
-                            🔒 Secure Advisor Chat
-                        </button>
+            {/* Illustrative Demo Alert */}
+            <div className="nova-demo-alert">
+                <Info size={16} style={{ flexShrink: 0 }} />
+                <span>Demo only — all account, portfolio and market values shown are illustrative, not live financial data.</span>
+            </div>
+
+            {/* 4 Metric Cards */}
+            <div className="nova-metrics-grid">
+                <div className="nova-metric-card">
+                    <div className="nova-metric-label">
+                        <Wallet size={15} style={{ color: '#94a3b8' }} />
+                        <span>Sample portfolio value</span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--color-green)', boxShadow: '0 0 6px var(--color-green)' }} />
-                        <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Online</span>
+                    <div className="nova-metric-val">$248,690.42</div>
+                    <div className="nova-metric-sub up">
+                        <ArrowUpRight size={13} />
+                        <span>$2,184.20 (0.88%) this month • sample</span>
                     </div>
                 </div>
 
-                {subTab === 'ai' ? (
-                    <>
-                        <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '14px', padding: '20px 0', paddingRight: '8px' }}>
-                            {userData.activeProposal && (
-                                <div style={{
-                                    background: 'linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(0,230,118,0.08) 100%)',
-                                    border: '1.2px solid var(--color-gold)',
-                                    borderRadius: '8px',
-                                    padding: '16px',
-                                    marginBottom: '10px',
-                                    boxShadow: '0 0 20px rgba(212,175,55,0.1)'
-                                }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                                        <span style={{ fontSize: '0.8rem', color: 'var(--color-gold)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                            Pending Rebalancing Proposal
-                                        </span>
-                                        <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                                            Deployed by Senior Advisor
-                                        </span>
-                                    </div>
-                                    <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '0 0 12px' }}>
-                                        "{userData.activeProposal.text}"
-                                    </p>
-                                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px', marginBottom: '16px', background: 'rgba(0,0,0,0.2)', padding: '10px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.03)' }}>
-                                        <div style={{ textAlign: 'center' }}>
-                                            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Equities</div>
-                                            <div style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.equities}%</div>
-                                        </div>
-                                        <div style={{ textAlign: 'center' }}>
-                                            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Bonds</div>
-                                            <div style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.bonds}%</div>
-                                        </div>
-                                        <div style={{ textAlign: 'center' }}>
-                                            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Cash</div>
-                                            <div style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.cash}%</div>
-                                        </div>
-                                        <div style={{ textAlign: 'center' }}>
-                                            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Gold</div>
-                                            <div style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.gold}%</div>
-                                        </div>
-                                    </div>
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                        <div>
-                                            {proposalSuccess && (
-                                                <span style={{ color: 'var(--color-green)', fontSize: '0.84rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                                    <CheckCircle2 size={16} /> Rebalanced successfully!
-                                                </span>
-                                            )}
-                                        </div>
-                                        <button 
-                                            type="button" 
-                                            className="btn btn-gold" 
-                                            onClick={handleExecuteProposal} 
-                                            disabled={executingProposal} 
-                                            style={{ padding: '8px 16px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '6px' }}
-                                        >
-                                            {executingProposal ? (
-                                                <span className="auth-spinner" style={{ width: '12px', height: '12px' }} />
-                                            ) : (
-                                                'Approve & Execute Reallocation'
-                                            )}
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-                            {messages.map((m, i) => (
-                                <div key={i} style={{ display: 'flex', justifyContent: m.sender === 'user' ? 'flex-end' : 'flex-start' }}>
-                                    <div style={{
-                                        maxWidth: '75%', padding: '12px 16px', borderRadius: '12px',
-                                        fontSize: '0.86rem', lineHeight: '1.45',
-                                        background: m.sender === 'user' ? 'rgba(0, 230, 118, 0.08)' : 'rgba(255, 255, 255, 0.03)',
-                                        border: m.sender === 'user' ? '1px solid rgba(0, 230, 118, 0.15)' : '1px solid rgba(255, 255, 255, 0.05)',
-                                        color: m.sender === 'user' ? '#fff' : '#a1b3b8',
-                                        borderBottomRightRadius: m.sender === 'user' ? '2px' : '12px',
-                                        borderBottomLeftRadius: m.sender === 'user' ? '12px' : '2px',
-                                        textAlign: 'left'
-                                    }}>
-                                        {m.text}
-                                    </div>
-                                </div>
-                            ))}
-                            {isTyping && (
-                                <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                                    <div style={{ padding: '10px 16px', borderRadius: '12px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}>
-                                        <span className="auth-spinner" style={{ width: '12px', height: '12px', border: '1.5px solid rgba(255,255,255,0.3)', borderTopColor: '#fff' }} />
-                                    </div>
-                                </div>
-                            )}
+                <div className="nova-metric-card">
+                    <div className="nova-metric-label">
+                        <Sliders size={15} style={{ color: '#94a3b8' }} />
+                        <span>Investment mix</span>
+                    </div>
+                    <div className="nova-metric-val">Balanced</div>
+                    <div className="nova-metric-sub">
+                        <span>Illustrative fit for a 2042 goal</span>
+                    </div>
+                </div>
+
+                <div className="nova-metric-card">
+                    <div className="nova-metric-label">
+                        <ShieldCheck size={15} style={{ color: '#94a3b8' }} />
+                        <span>Risk comfort</span>
+                    </div>
+                    <div className="nova-metric-val">Moderate</div>
+                    <div className="nova-metric-sub up">
+                        <Check size={13} />
+                        <span>Sample profile</span>
+                    </div>
+                </div>
+
+                <div className="nova-metric-card">
+                    <div className="nova-metric-label">
+                        <ArrowDownRight size={15} style={{ color: '#94a3b8' }} />
+                        <span>Sample cash available</span>
+                    </div>
+                    <div className="nova-metric-val">$8,420.00</div>
+                    <div className="nova-metric-sub">
+                        <span>Illustrative balance only</span>
+                    </div>
+                </div>
+            </div>
+
+            {/* Two Column Layout */}
+            <div className="nova-content-grid">
+                {/* Left Column: Chat panel */}
+                <div className="nova-chat-panel">
+                    {/* Header with Sub-tabs */}
+                    <div className="nova-chat-header">
+                        <div className="nova-advisor-identity">
+                            <div className="nova-robot-icon">
+                                <Bot size={22} />
+                            </div>
+                            <div className="nova-robot-details">
+                                <h4>Nova · AI advisor</h4>
+                                <p>
+                                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#00e676', display: 'inline-block' }} />
+                                    Demo advisor · no live account access
+                                </p>
+                            </div>
                         </div>
 
-                        <form onSubmit={handleSend} style={{ display: 'flex', gap: '10px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '16px' }}>
-                            <input
-                                type="text"
-                                value={input}
-                                onChange={e => setInput(e.target.value)}
-                                placeholder="Ask about your risk tolerance, rebalancing, crypto, or fees..."
-                                style={{ flex: 1, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 14px', color: '#fff', fontSize: '0.9rem', outline: 'none' }}
-                            />
-                            <button type="submit" className="btn btn-green" style={{ padding: '0 20px', fontSize: '0.84rem' }}>
-                                Send
+                        <div className="nova-tab-pills">
+                            <button
+                                type="button"
+                                className={`nova-tab-pill ${subTab === 'ai' ? 'active' : ''}`}
+                                onClick={() => setSubTab('ai')}
+                            >
+                                <Bot size={14} /> Advisor
                             </button>
-                        </form>
-                    </>
-                ) : (
-                    /* Advisor Secure Chat Tab */
-                    <>
-                        <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '14px', padding: '20px 0', paddingRight: '8px' }}>
-                            {advisorMessages.length === 0 ? (
-                                <div style={{ alignSelf: 'center', margin: 'auto', fontSize: '0.78rem', color: 'var(--text-muted)', textAlign: 'center' }}>
-                                    No advisor messages yet. Send a secure inquiry to initiate correspondence.
+                            <button
+                                type="button"
+                                className={`nova-tab-pill ${subTab === 'advisor' ? 'active' : ''}`}
+                                onClick={() => setSubTab('advisor')}
+                            >
+                                <Lock size={13} /> Secure chat
+                            </button>
+                            <div style={{ position: 'relative' }}>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowOptionsPopup(p => !p)}
+                                    style={{
+                                        background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
+                                        borderRadius: '50%', width: '32px', height: '32px', display: 'flex',
+                                        alignItems: 'center', justifyContent: 'center', color: '#94a3b8', cursor: 'pointer'
+                                    }}
+                                >
+                                    <MoreHorizontal size={15} />
+                                </button>
+                                {showOptionsPopup && (
+                                    <div style={{
+                                        position: 'absolute', right: 0, top: '100%', marginTop: '6px',
+                                        background: '#0a160d', border: '1px solid rgba(0, 230, 118, 0.25)',
+                                        borderRadius: '8px', padding: '6px', zIndex: 40, width: '160px',
+                                        boxShadow: '0 8px 20px rgba(0,0,0,0.5)'
+                                    }}>
+                                        <div
+                                            onClick={() => {
+                                                setMessages([
+                                                    { sender: 'ai', text: `Good morning, ${firstName}. Your sample portfolio is holding steady through this week's market swings. Want to take a closer look together?`, time: 'Today • 9:14 AM' },
+                                                    { sender: 'ai', text: "Your sample mix is aligned with its retirement goal. Bonds are a little below target, but there's no need to rush a change.", time: 'Today • 9:14 AM' }
+                                                ]);
+                                                setShowOptionsPopup(false);
+                                            }}
+                                            style={{ padding: '8px 10px', fontSize: '0.78rem', color: '#cbd5e1', cursor: 'pointer', borderRadius: '4px' }}
+                                        >
+                                            Reset Conversation
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Pending Proposal Banner (if advisor created one) */}
+                    {userData.activeProposal && (
+                        <div style={{
+                            margin: '16px 20px 0',
+                            background: 'linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(0,230,118,0.08) 100%)',
+                            border: '1.2px solid var(--color-gold)',
+                            borderRadius: '10px',
+                            padding: '16px',
+                            boxShadow: '0 0 20px rgba(212,175,55,0.1)'
+                        }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                                <span style={{ fontSize: '0.78rem', color: 'var(--color-gold)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                    Pending Rebalancing Proposal
+                                </span>
+                                <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                                    Deployed by Senior Advisor
+                                </span>
+                            </div>
+                            <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: '0 0 12px' }}>
+                                "{userData.activeProposal.text}"
+                            </p>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px', marginBottom: '14px', background: 'rgba(0,0,0,0.25)', padding: '10px', borderRadius: '6px' }}>
+                                <div style={{ textAlign: 'center' }}>
+                                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Equities</div>
+                                    <div style={{ fontSize: '0.85rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.equities}%</div>
                                 </div>
-                            ) : (
-                                advisorMessages.map((m, i) => {
-                                    const isMe = m.sender === userData.email;
-                                    return (
-                                        <div key={i} style={{ display: 'flex', justifyContent: isMe ? 'flex-end' : 'flex-start' }}>
-                                            <div style={{
-                                                maxWidth: '75%', padding: '12px 16px', borderRadius: '12px',
-                                                fontSize: '0.86rem', lineHeight: '1.45',
-                                                background: isMe ? 'rgba(212, 175, 55, 0.08)' : 'rgba(255, 255, 255, 0.03)',
-                                                border: isMe ? '1px solid rgba(212, 175, 55, 0.15)' : '1px solid rgba(255, 255, 255, 0.05)',
-                                                color: '#fff',
-                                                borderBottomRightRadius: isMe ? '2px' : '12px',
-                                                borderBottomLeftRadius: isMe ? '12px' : '2px',
-                                                textAlign: 'left'
-                                            }}>
-                                                <div style={{ fontSize: '0.64rem', color: isMe ? 'var(--color-gold)' : 'var(--color-green)', fontWeight: 600, marginBottom: '2px' }}>
-                                                    {isMe ? 'You' : 'John Doe (Advisor)'}
-                                                </div>
+                                <div style={{ textAlign: 'center' }}>
+                                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Bonds</div>
+                                    <div style={{ fontSize: '0.85rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.bonds}%</div>
+                                </div>
+                                <div style={{ textAlign: 'center' }}>
+                                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Cash</div>
+                                    <div style={{ fontSize: '0.85rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.cash}%</div>
+                                </div>
+                                <div style={{ textAlign: 'center' }}>
+                                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Gold</div>
+                                    <div style={{ fontSize: '0.85rem', color: '#fff', fontWeight: 700 }}>{userData.activeProposal.gold}%</div>
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <div>
+                                    {proposalSuccess && (
+                                        <span style={{ color: 'var(--color-green)', fontSize: '0.84rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                            <CheckCircle2 size={16} /> Rebalanced successfully!
+                                        </span>
+                                    )}
+                                </div>
+                                <button 
+                                    type="button" 
+                                    className="btn btn-gold" 
+                                    onClick={handleExecuteProposal} 
+                                    disabled={executingProposal} 
+                                    style={{ padding: '8px 16px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                                >
+                                    {executingProposal ? (
+                                        <span className="auth-spinner" style={{ width: '12px', height: '12px' }} />
+                                    ) : (
+                                        'Approve & Execute Reallocation'
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Chat Content Body */}
+                    {subTab === 'ai' ? (
+                        <>
+                            <div className="nova-chat-body">
+                                {messages.map((m, i) => (
+                                    <div key={i} className={`nova-msg-item ${m.sender === 'user' ? 'user' : ''}`}>
+                                        {m.sender === 'ai' && (
+                                            <div className="nova-msg-avatar">
+                                                <Sparkles size={14} />
+                                            </div>
+                                        )}
+                                        <div className="nova-msg-content">
+                                            <div className="nova-msg-bubble">
                                                 {m.text}
                                             </div>
+                                            <div className="nova-msg-time">
+                                                {m.sender === 'ai' && <Sparkles size={11} style={{ color: '#00e676' }} />}
+                                                <span>{m.time}</span>
+                                            </div>
                                         </div>
-                                    );
-                                })
-                            )}
+                                    </div>
+                                ))}
+
+                                {isTyping && (
+                                    <div className="nova-msg-item">
+                                        <div className="nova-msg-avatar">
+                                            <Sparkles size={14} />
+                                        </div>
+                                        <div className="nova-msg-bubble" style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '12px 18px' }}>
+                                            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#00e676', animation: 'pulse 1s infinite' }} />
+                                            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#00e676', animation: 'pulse 1s infinite 0.2s' }} />
+                                            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#00e676', animation: 'pulse 1s infinite 0.4s' }} />
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Chat Footer with Disclaimers, Chips & Input */}
+                            <div className="nova-chat-footer">
+                                <div className="nova-demo-lock">
+                                    <Lock size={12} />
+                                    <span>Demo conversation only. No financial details are sent or shared.</span>
+                                </div>
+
+                                <div className="nova-chips-section">
+                                    <div className="nova-chips-label">A few things we could explore</div>
+                                    <div className="nova-chips-row">
+                                        {[
+                                            'Why is my portfolio down?',
+                                            'Should I rebalance?',
+                                            'Explain my risk level'
+                                        ].map(chip => (
+                                            <button
+                                                key={chip}
+                                                type="button"
+                                                className="nova-chip-btn"
+                                                onClick={() => sendUserQuery(chip)}
+                                            >
+                                                {chip}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <form onSubmit={handleSend} className="nova-input-form">
+                                    <input
+                                        type="text"
+                                        value={input}
+                                        onChange={e => setInput(e.target.value)}
+                                        placeholder="Ask Nova about your portfolio, the market, or your plan..."
+                                        className="nova-input-field"
+                                    />
+                                    <button type="submit" className="nova-send-btn">
+                                        <Send size={15} style={{ marginLeft: '2px' }} />
+                                    </button>
+                                </form>
+                            </div>
+                        </>
+                    ) : (
+                        /* Advisor Secure Chat Tab */
+                        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: '20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: 'rgba(212,175,55,0.06)', borderRadius: '10px', border: '1px solid rgba(212,175,55,0.2)', marginBottom: '16px' }}>
+                                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--color-gold)', color: '#041208', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '1rem' }}>
+                                    JD
+                                </div>
+                                <div>
+                                    <h5 style={{ margin: 0, color: '#fff', fontSize: '0.9rem' }}>John Doe (Senior Wealth Advisor)</h5>
+                                    <p style={{ margin: '2px 0 0 0', fontSize: '0.72rem', color: 'var(--text-muted)' }}>Direct encrypted advisor correspondence channel</p>
+                                </div>
+                            </div>
+
+                            <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '12px', minHeight: '300px', maxHeight: '380px', paddingRight: '6px' }}>
+                                {advisorMessages.length === 0 ? (
+                                    <div style={{ margin: 'auto', textAlign: 'center', color: '#64748b', fontSize: '0.82rem' }}>
+                                        No correspondence history yet. Send a direct inquiry to John Doe below.
+                                    </div>
+                                ) : (
+                                    advisorMessages.map((m, i) => {
+                                        const isMe = m.sender === userData.email;
+                                        return (
+                                            <div key={i} style={{ display: 'flex', justifyContent: isMe ? 'flex-end' : 'flex-start' }}>
+                                                <div style={{
+                                                    maxWidth: '80%', padding: '12px 16px', borderRadius: '12px',
+                                                    fontSize: '0.86rem', lineHeight: '1.45',
+                                                    background: isMe ? 'rgba(212, 175, 55, 0.1)' : 'rgba(255, 255, 255, 0.03)',
+                                                    border: isMe ? '1px solid rgba(212, 175, 55, 0.25)' : '1px solid rgba(255, 255, 255, 0.05)',
+                                                    color: '#fff',
+                                                    borderBottomRightRadius: isMe ? '2px' : '12px',
+                                                    borderBottomLeftRadius: isMe ? '12px' : '2px',
+                                                    textAlign: 'left'
+                                                }}>
+                                                    <div style={{ fontSize: '0.66rem', color: isMe ? 'var(--color-gold)' : '#00e676', fontWeight: 600, marginBottom: '2px' }}>
+                                                        {isMe ? 'You' : 'John Doe (Advisor)'}
+                                                    </div>
+                                                    {m.text}
+                                                </div>
+                                            </div>
+                                        );
+                                    })
+                                )}
+                            </div>
+
+                            <form onSubmit={handleSendToAdvisor} style={{ display: 'flex', gap: '10px', marginTop: '16px' }}>
+                                <input
+                                    type="text"
+                                    value={advisorInput}
+                                    onChange={e => setAdvisorInput(e.target.value)}
+                                    placeholder="Type secure message to John Doe..."
+                                    style={{ flex: 1, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 14px', color: '#fff', fontSize: '0.9rem', outline: 'none' }}
+                                />
+                                <button type="submit" className="btn btn-gold" style={{ padding: '0 20px', fontSize: '0.84rem' }}>
+                                    Send
+                                </button>
+                            </form>
+                        </div>
+                    )}
+                </div>
+
+                {/* Right Column: 3 Status & Radar Cards */}
+                <div className="nova-sidebar-col">
+                    {/* Card 1: Meet Your Advisor */}
+                    <div className="nova-card nova-meet-card">
+                        <div className="nova-meet-left">
+                            <div className="nova-meet-tag">
+                                ✨ MEET YOUR ADVISOR
+                            </div>
+                            <h3 className="nova-meet-title">Hey, I'm Nova.</h3>
+                            <p className="nova-meet-desc">
+                                Markets can feel noisy. I'm here to make the important parts feel simple.
+                            </p>
+                            <div className="nova-meet-footer">
+                                <Clock size={12} />
+                                <span>Ask me anything, big or small</span>
+                            </div>
+                        </div>
+                        <div className="nova-meet-img-wrap">
+                            <img src="/nova_cyborg.jpg" alt="Nova Cyborg Advisor" />
+                        </div>
+                    </div>
+
+                    {/* Card 2: Plan Check-in with Score 72 */}
+                    <div className="nova-card nova-checkin-card">
+                        <div className="nova-checkin-header">
+                            <span>Your sample plan check-in</span>
+                            <ArrowUpRight size={16} style={{ color: '#94a3b8' }} />
                         </div>
 
-                        <form onSubmit={handleSendToAdvisor} style={{ display: 'flex', gap: '10px', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '16px' }}>
-                            <input
-                                type="text"
-                                value={advisorInput}
-                                onChange={e => setAdvisorInput(e.target.value)}
-                                placeholder="Type secure message to John Doe..."
-                                style={{ flex: 1, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 14px', color: '#fff', fontSize: '0.9rem', outline: 'none' }}
-                            />
-                            <button type="submit" className="btn btn-gold" style={{ padding: '0 20px', fontSize: '0.84rem' }}>
-                                Send
-                            </button>
-                        </form>
-                    </>
-                )}
+                        <div className="nova-checkin-content">
+                            <div className="nova-score-ring">
+                                <svg viewBox="0 0 70 70">
+                                    <circle
+                                        cx="35" cy="35" r="28"
+                                        fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="6"
+                                    />
+                                    <circle
+                                        cx="35" cy="35" r="28"
+                                        fill="none" stroke="#00e676" strokeWidth="6"
+                                        strokeDasharray="175.9"
+                                        strokeDashoffset="49.25"
+                                        strokeLinecap="round"
+                                    />
+                                </svg>
+                                <span className="nova-score-val">72</span>
+                            </div>
+
+                            <div className="nova-checkin-info">
+                                <h5>Looking steady</h5>
+                                <p>Three illustrative signals say this sample plan is on track.</p>
+                            </div>
+                        </div>
+
+                        <div 
+                            className="nova-checkin-link"
+                            onClick={() => setShowSignalsModal(true)}
+                        >
+                            <span>See what's working</span>
+                            <ArrowRight size={14} />
+                        </div>
+                    </div>
+
+                    {/* Card 3: On your radar */}
+                    <div className="nova-card nova-radar-card">
+                        <div className="nova-radar-header">
+                            <span className="nova-radar-title">On your radar</span>
+                            <span className="nova-radar-count">2 sample assets +</span>
+                        </div>
+
+                        <div className="nova-radar-list">
+                            <div className="nova-radar-item">
+                                <div className="nova-radar-item-left">
+                                    <div className="nova-radar-avatar vanguard">V</div>
+                                    <span className="nova-radar-name">Vanguard S&P 500</span>
+                                </div>
+                                <div className="nova-radar-item-right">
+                                    <div className="nova-radar-price">$534.87</div>
+                                    <div className="nova-radar-change">+0.42% • sample</div>
+                                </div>
+                            </div>
+
+                            <div className="nova-radar-item">
+                                <div className="nova-radar-item-left">
+                                    <div className="nova-radar-avatar treasury">B</div>
+                                    <span className="nova-radar-name">US Treasury bonds</span>
+                                </div>
+                                <div className="nova-radar-item-right">
+                                    <div className="nova-radar-price">$102.14</div>
+                                    <div className="nova-radar-change">+0.05% • sample</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            {/* Bottom Disclaimer Footer */}
+            <div className="nova-footer-bar">
+                <Shield size={14} style={{ color: '#00e676' }} />
+                <span>DEMO EXPERIENCE</span>
+                <span>|</span>
+                <span>ILLUSTRATIVE VALUES ONLY</span>
+                <span>|</span>
+                <span>NOT FINANCIAL ADVICE</span>
+            </div>
+
+            {/* Interactive Signals Modal */}
+            {showSignalsModal && (
+                <div style={{
+                    position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)',
+                    backdropFilter: 'blur(8px)', zIndex: 100, display: 'flex',
+                    alignItems: 'center', justifyContent: 'center', padding: '20px'
+                }}>
+                    <div style={{
+                        background: '#07180d', border: '1px solid rgba(0,230,118,0.3)',
+                        borderRadius: '16px', maxWidth: '480px', width: '100%', padding: '24px',
+                        boxShadow: '0 20px 50px rgba(0,0,0,0.8)'
+                    }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <Sparkles size={18} style={{ color: '#00e676' }} />
+                                <h4 style={{ margin: 0, color: '#fff', fontSize: '1.1rem' }}>Plan Check-in Signals (Score 72)</h4>
+                            </div>
+                            <button
+                                onClick={() => setShowSignalsModal(false)}
+                                style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer' }}
+                            >
+                                <X size={20} />
+                            </button>
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '20px' }}>
+                            <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '10px', padding: '12px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#00e676', fontWeight: 600, fontSize: '0.85rem', marginBottom: '4px' }}>
+                                    <Check size={14} /> 1. Target Allocation Drift: 1.1%
+                                </div>
+                                <p style={{ fontSize: '0.78rem', color: '#94a3b8', margin: 0 }}>
+                                    Your portfolio is holding within 1.1% of its target asset distribution. Automated rebalancing is on standby until drift exceeds 5%.
+                                </p>
+                            </div>
+
+                            <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '10px', padding: '12px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#00e676', fontWeight: 600, fontSize: '0.85rem', marginBottom: '4px' }}>
+                                    <Check size={14} /> 2. Reinvestment Efficiency: 98.4%
+                                </div>
+                                <p style={{ fontSize: '0.78rem', color: '#94a3b8', margin: 0 }}>
+                                    Quarterly dividends and bond coupons are automatically swept into liquid yield generators without cash drag.
+                                </p>
+                            </div>
+
+                            <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '10px', padding: '12px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#00e676', fontWeight: 600, fontSize: '0.85rem', marginBottom: '4px' }}>
+                                    <Check size={14} /> 3. Volatility Absorption: Stable
+                                </div>
+                                <p style={{ fontSize: '0.78rem', color: '#94a3b8', margin: 0 }}>
+                                    Portfolio Beta is calculated at 0.82 relative to the S&P 500, dampening drawdowns during sharp equity pullbacks.
+                                </p>
+                            </div>
+                        </div>
+
+                        <button 
+                            className="btn btn-green"
+                            style={{ width: '100%', padding: '10px', fontSize: '0.85rem' }}
+                            onClick={() => setShowSignalsModal(false)}
+                        >
+                            Close Check-in Details
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -1,9 +1,16 @@
 import { execSync } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Remove temp scripts
+['copy_mockup.js', 'copy_cyborg.js', 'check_dim.js'].forEach(file => {
+  const p = path.join(__dirname, file);
+  if (fs.existsSync(p)) fs.unlinkSync(p);
+});
 
 try {
   console.log('Staging files...');
@@ -11,7 +18,7 @@ try {
   
   console.log('Committing changes...');
   try {
-    execSync('git commit -m "feat: update Accreditation page with interactive components, lightboxes, and ledger"', { cwd: __dirname, stdio: 'inherit' });
+    execSync('git commit -m "feat: redesign AI Advisory tab to match Nova companion reference UI with 4 metric cards, plan check-in gauge, and asset radar"', { cwd: __dirname, stdio: 'inherit' });
   } catch (err) {
     console.log('Commit note: Nothing new to commit or already committed.');
   }
