@@ -124,7 +124,7 @@ const quizQuestions = [
 ];
 
 const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
-    const [sliderAmount, setSliderAmount] = useState(userData.investmentAmount || 10000);
+    const [sliderAmount, setSliderAmount] = useState(userData?.investmentAmount || 10000);
     const [sliderYears, setSliderYears] = useState(10);
     const [executingProposal, setExecutingProposal] = useState(false);
     const [proposalSuccess, setProposalSuccess] = useState(false);
@@ -197,7 +197,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
     };
 
     const handleExecuteProposal = async () => {
-        if (!userData.activeProposal) return;
+        if (!userData?.activeProposal || !userData?.email) return;
         setExecutingProposal(true);
         try {
             const res = await fetch('/api/investor/execute-proposal', {
@@ -476,7 +476,8 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
 
     const symbols = ["CASH", "BOND", "EQUITY", "GOLD", "CRYPTO"];
     const colors = ["#00e676", "#d4af37", "#0288d1", "#ffb300", "#8e24aa"];
-    const initials = userData.name.split(" ").map((n: string) => n[0]).join("").substring(0, 2).toUpperCase();
+    const safeName = userData?.name || 'Jordan Demo';
+    const initials = safeName.split(" ").map((n: string) => n[0]).join("").substring(0, 2).toUpperCase();
 
     const showStats     = selectedTab === 'home' || selectedTab === 'analytics';
     const showSimulator = selectedTab === 'home';
@@ -523,7 +524,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                         <div className="user-profile-badge">
                             <div className="user-avatar">{initials}</div>
                             <div className="user-info">
-                                <p className="user-name">{userData.name || 'Jordan Demo'}</p>
+                                <p className="user-name">{safeName}</p>
                                 <p className="user-tier">Sample account • Demo only</p>
                             </div>
                         </div>
@@ -1086,7 +1087,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                                             <div className={`ai-message-bubble ${aiBubbleFade ? 'fade-out' : ''}`}>
                                                 {aiBubbleText}
                                             </div>
-                                            {userData.advisorMessage && (
+                                            {userData?.advisorMessage && (
                                                 <div style={{ marginTop: '16px', padding: '12px', background: 'rgba(212, 175, 55, 0.08)', border: '1px solid rgba(212, 175, 55, 0.2)', borderRadius: '8px' }}>
                                                     <h6 style={{ color: 'var(--color-gold)', fontSize: '0.8rem', fontWeight: 600, margin: '0 0 6px 0', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Personal Advisor Recommendation</h6>
                                                     <p style={{ color: '#fff', fontSize: '0.82rem', margin: 0, lineHeight: 1.4 }}>"{userData.advisorMessage}"</p>
@@ -1894,11 +1895,11 @@ const BlogsSection = () => {
 };
 
 const SettingsSection = ({ userData, onLogout }: { userData: UserData; onLogout?: () => void }) => {
-    const [name, setName] = useState(userData.name);
-    const [email, setEmail] = useState(userData.email);
-    const [phone, setPhone] = useState('(555) 019-2834');
-    const [risk, setRisk] = useState(userData.riskTolerance || 'Balanced');
-    const [goal, setGoal] = useState(userData.goal || 'Growth');
+    const [name, setName] = useState(userData?.name || 'Jordan Demo');
+    const [email, setEmail] = useState(userData?.email || 'demo@aicapitalinvestment.com');
+    const [phone, setPhone] = useState(userData?.phone || '(555) 019-2834');
+    const [risk, setRisk] = useState(userData?.riskTolerance || 'Balanced');
+    const [goal, setGoal] = useState(userData?.goal || 'Growth');
     const [emailReports, setEmailReports] = useState(true);
     const [aiAlerts, setAiAlerts] = useState(true);
     const [twoFactor, setTwoFactor] = useState(false);
@@ -2134,8 +2135,9 @@ const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpda
     ];
 
     const fetchRecentTxns = async () => {
+        if (!userData?.email) return;
         try {
-            const res = await fetch(`/api/investor/transactions?email=${userData.email}`);
+            const res = await fetch(`/api/investor/transactions?email=${encodeURIComponent(userData.email)}`);
             if (res.ok) {
                 const data = await res.json();
                 setRecentTxns(data);
@@ -2147,7 +2149,7 @@ const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpda
 
     useEffect(() => {
         fetchRecentTxns();
-    }, [userData.email]);
+    }, [userData?.email]);
 
     const handleDeposit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -2177,7 +2179,7 @@ const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpda
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    email: userData.email,
+                    email: userData?.email || 'demo@aicapitalinvestment.com',
                     amount: finalAmount,
                     tier: tierName,
                     cardLast4: last4
@@ -2346,7 +2348,7 @@ const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpda
                     <div className="widget glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                         <span style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Current Active Capital</span>
                         <h2 className="glow-text-gold" style={{ fontSize: '2.2rem', fontWeight: 800, margin: 0 }}>
-                            ${userData.investmentAmount.toLocaleString()}
+                            ${(userData?.investmentAmount || 25000).toLocaleString()}
                         </h2>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--color-green)', fontSize: '0.8rem' }}>
                             <ArrowUpRight size={16} /> Fully Allocated Across Active Holdings
@@ -2367,7 +2369,7 @@ const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpda
                     <div className="widget glass-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Total Capital Deposited:</span>
-                            <span style={{ fontSize: '0.95rem', fontWeight: 800, color: '#fff' }}>${(totalDeposited || userData.investmentAmount).toLocaleString()}</span>
+                            <span style={{ fontSize: '0.95rem', fontWeight: 800, color: '#fff' }}>${(totalDeposited || userData?.investmentAmount || 25000).toLocaleString()}</span>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Yield & Dividend Credits:</span>
@@ -2761,8 +2763,9 @@ const AIChatbotSection = ({
     const [advisorInput, setAdvisorInput] = useState('');
 
     const fetchAdvisorMessages = async () => {
+        const clientEmail = userData?.email || 'john@example.com';
         try {
-            const res = await fetch(`/api/chat/history?user1=${userData.email}&user2=johndoe@gmail.com`);
+            const res = await fetch(`/api/chat/history?user1=${encodeURIComponent(clientEmail)}&user2=johndoe@gmail.com`);
             if (res.ok) {
                 const data = await res.json();
                 setAdvisorMessages(data);
@@ -2778,7 +2781,7 @@ const AIChatbotSection = ({
             const interval = setInterval(fetchAdvisorMessages, 3000);
             return () => clearInterval(interval);
         }
-    }, [subTab]);
+    }, [subTab, userData?.email]);
 
     const handleSendToAdvisor = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -2790,7 +2793,7 @@ const AIChatbotSection = ({
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    sender: userData.email,
+                    sender: userData?.email || 'john@example.com',
                     receiver: 'johndoe@gmail.com',
                     text
                 })
@@ -3182,7 +3185,7 @@ const AIChatbotSection = ({
                                     </div>
                                 ) : (
                                     advisorMessages.map((m, i) => {
-                                        const isMe = m.sender === userData.email;
+                                        const isMe = m.sender === (userData?.email || 'john@example.com');
                                         return (
                                             <div key={i} style={{ display: 'flex', justifyContent: isMe ? 'flex-end' : 'flex-start' }}>
                                                 <div style={{

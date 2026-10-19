@@ -103,7 +103,7 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
     const [bulkDispatching, setBulkDispatching] = useState(false);
     const [bulkSuccess, setBulkSuccess] = useState(false);
 
-    const initials = userData.name.split(" ").map((n: string) => n[0]).join("").substring(0, 2).toUpperCase();
+    const initials = (userData?.name || 'Advisor').split(" ").map((n: string) => n[0]).join("").substring(0, 2).toUpperCase();
 
     const fetchClients = async () => {
         setLoading(true);
@@ -449,7 +449,7 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
 
                     <header className="dash-header">
                         <div className="dash-header-left">
-                            <h1 className="glow-text-gold">Welcome Back, {userData.name.split(" ")[0]}!</h1>
+                            <h1 className="glow-text-gold">Welcome Back, {(userData?.name || 'Advisor').split(" ")[0]}!</h1>
                             <p>Here is your client index. Oversee allocations, analyze risk thresholds, and deploy advice.</p>
                         </div>
                         <div className="dash-header-right">
