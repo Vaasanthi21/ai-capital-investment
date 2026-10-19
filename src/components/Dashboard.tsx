@@ -4,7 +4,7 @@ import {
     ArrowUpRight, Lightbulb, CheckCircle2, BookOpen, ChevronRight, X,
     CreditCard, History, PlusCircle, ShieldCheck, DollarSign, Search, Download,
     TrendingUp, ArrowDownRight, Filter, Sliders, Clock, Bot, Landmark, PieChart,
-    Shield, Lock, Bell, MoreHorizontal, Send, Info, Check, ArrowRight
+    Shield, Lock, Bell, MoreHorizontal, Send, Info, Check, ArrowRight, ChevronDown
 } from 'lucide-react';
 import { Line, Doughnut } from 'react-chartjs-2';
 import {
@@ -346,7 +346,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
     }, [riskTolerance]);
 
     const getDynamicConfig = () => {
-        const base = assetDataConfig[riskTolerance];
+        const base = assetDataConfig[riskTolerance] || assetDataConfig.Balanced;
         if (!simulatedCrisis) return base;
 
         if (riskTolerance === 'Conservative') {
@@ -367,10 +367,10 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
         }
     };
 
-    const currentConfig = getDynamicConfig();
+    const currentConfig = getDynamicConfig() || assetDataConfig.Balanced;
 
     const calculateProjections = () => {
-        const config = assetDataConfig[riskTolerance];
+        const config = assetDataConfig[riskTolerance] || assetDataConfig.Balanced;
         const labels: string[] = [];
         const aiValues: number[] = [];
         const tradValues: number[] = [];
@@ -761,8 +761,8 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                                                 <tbody>
                                                     {currentConfig.allocation.map((percent, index) => {
                                                         const assetValue = finalAiVal * (percent / 100);
-                                                        const dayReturn = (Math.sin(index + 3) * 1.5 + 0.2).toFixed(2);
-                                                        const targetPercent = assetDataConfig[riskTolerance].allocation[index] || percent;
+                                                        const targetConfig = assetDataConfig[riskTolerance] || assetDataConfig.Balanced;
+                                                        const targetPercent = targetConfig.allocation[index] || percent;
                                                         const drift = percent - targetPercent;
                                                         return (
                                                             <tr key={index}>
@@ -3024,7 +3024,7 @@ const AIChatbotSection = ({
                     </div>
 
                     {/* Pending Proposal Banner (if advisor created one) */}
-                    {userData.activeProposal && (
+                    {userData?.activeProposal && (
                         <div style={{
                             margin: '16px 20px 0',
                             background: 'linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(0,230,118,0.08) 100%)',

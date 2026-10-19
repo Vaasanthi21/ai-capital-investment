@@ -17,6 +17,7 @@ interface ErrorBoundaryProps {
 
 interface ErrorBoundaryState {
   hasError: boolean;
+  error?: Error;
 }
 
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
@@ -25,8 +26,8 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(): ErrorBoundaryState {
-    return { hasError: true };
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
@@ -38,9 +39,14 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       return (
         <div style={{ minHeight: '100vh', background: '#03080a', color: '#fff', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', textAlign: 'center', fontFamily: 'system-ui, sans-serif' }}>
           <h2 style={{ color: '#00e676', marginBottom: '8px', fontSize: '1.5rem' }}>AI Capital Investment</h2>
-          <p style={{ color: '#94a3b8', maxWidth: '480px', marginBottom: '24px', fontSize: '0.9rem' }}>
+          <p style={{ color: '#94a3b8', maxWidth: '480px', marginBottom: '16px', fontSize: '0.9rem' }}>
             We encountered a minor display issue loading this section. Click below to continue.
           </p>
+          {this.state.error && (
+            <div style={{ color: '#ef4444', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.25)', padding: '10px 16px', borderRadius: '8px', fontSize: '0.8rem', marginBottom: '20px', maxWidth: '90vw', overflowX: 'auto', textAlign: 'left', fontFamily: 'monospace' }}>
+              {this.state.error.name}: {this.state.error.message}
+            </div>
+          )}
           <div style={{ display: 'flex', gap: '12px' }}>
             <button onClick={() => window.location.href = '/dashboard/overview'} style={{ background: '#00e676', color: '#000', fontWeight: 700, padding: '10px 22px', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>
               Go to Overview
