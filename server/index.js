@@ -902,6 +902,16 @@ app.get('/api/leads', (req, res) => {
     }
 });
 
+// Serve static frontend assets if built (for Dokploy / VPS / Docker)
+const distPath = path.join(process.cwd(), 'dist');
+if (fs.existsSync(distPath)) {
+    app.use(express.static(distPath));
+    app.get('*', (req, res, next) => {
+        if (req.path.startsWith('/api')) return next();
+        res.sendFile(path.join(distPath, 'index.html'));
+    });
+}
+
 if (!process.env.VERCEL) {
     app.listen(PORT, () => {
         console.log(`Backend server running on http://localhost:${PORT}`);
