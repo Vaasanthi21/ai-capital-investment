@@ -764,6 +764,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                                                         const targetConfig = assetDataConfig[riskTolerance] || assetDataConfig.Balanced;
                                                         const targetPercent = targetConfig.allocation[index] || percent;
                                                         const drift = percent - targetPercent;
+                                                        const dayReturn = ((index % 2 === 0 ? 0.42 : -0.18) + (index * 0.15)).toFixed(2);
                                                         return (
                                                             <tr key={index}>
                                                                 <td>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { 
   Cpu, ShieldCheck, TrendingUp, UserCheck, Wallet, Users, Percent, 
   PieChart, Briefcase, Award, Globe, BookOpen, Clock, ArrowRight, X, Menu,
-  HelpCircle, ChevronDown, ChevronUp, RefreshCw
+  RefreshCw
 } from 'lucide-react';
 import HeroCanvas from './HeroCanvas';
 import ParticleBackground from './ParticleBackground';
@@ -191,44 +191,10 @@ SEC-पंजीकृत सलाहकार सख्त प्रत्य�
   }
 ];
 
-const faqData = [
-  {
-    qEn: "How does the AI Volatility Shield protect my capital during market crashes?",
-    qHi: "बाजार में गिरावट के दौरान AI वोलेटिलिटी शील्ड मेरी पूंजी की रक्षा कैसे करता है?",
-    aEn: "Our proprietary Volatility Shield continuously monitors global macroeconomic indicators, order book depth, and credit spreads. When black swan risks or extreme market volatility are detected, the system automatically rotates a portion of your equity assets into short-term treasury reserves, high-yield corporate bonds, and physical gold hedges before retail panic occurs.",
-    aHi: "हमारा पेटेंट वोलेटिलिटी शील्ड लगातार वैश्विक मैक्रोइकोनॉमिक संकेतकों और क्रेडिट स्प्रेड की निगरानी करता है। अत्यधिक बाजार अस्थिरता का पता चलने पर, प्रणाली खुदरा घबराहट से पहले आपके इक्विटी परिसंपत्तियों को अल्पकालिक खजाना भंडार और भौतिक स्वर्ण हेज में स्वचालित रूप से स्थानांतरित कर देती है।"
-  },
-  {
-    qEn: "Are client funds securely held with SEBI-registered custodians?",
-    qHi: "क्या ग्राहक फंड सेबी-पंजीकृत कस्टोडियन के पास सुरक्षित हैं?",
-    aEn: "Yes. All client investments and portfolio assets are held through SEBI-registered qualified custodians (CDSL / NSDL) and scheduled commercial institutional partner banks. Securities and mutual fund folios remain directly in the investor's name with institutional segregation, ensuring maximum statutory safety.",
-    aHi: "हां। सभी ग्राहक फंड और निवेश पोर्टफोलियो सेबी-पंजीकृत कस्टोडियन (CDSL / NSDL) और अनुसूचित वाणिज्यिक बैंकों के माध्यम से सुरक्षित रखे जाते हैं। प्रतिभूतियां और म्यूचुअल फंड फोलियो सीधे ग्राहक के नाम पर रहते हैं, जिससे पूर्ण सुरक्षा सुनिश्चित होती है।"
-  },
-  {
-    qEn: "How does automated Tax-Loss Harvesting (TLH) increase net yields?",
-    qHi: "स्वचालित टैक्स-लॉस हार्वेस्टिंग (TLH) शुद्ध लाभ को कैसे बढ़ाता है?",
-    aEn: "Tax-loss harvesting identifies unrealized capital losses across your holding positions and executes wash-sale compliant swaps into correlated tracking index funds. The harvested losses directly offset taxable dividend distributions and interest income, adding an estimated 1.2% to 1.8% in annual net compound returns.",
-    aHi: "टैक्स-लॉस हार्वेस्टिंग आपकी होल्डिंग्स में अवास्तविक पूंजीगत नुकसान की पहचान करता है और इंडेक्स फंड में स्वैप निष्पादित करता है। यह नुकसान सीधे कर योग्य लाभांश और ब्याज आय को संतुलित करता है, जिससे वार्षिक शुद्ध रिटर्न में 1.2% से 1.8% की वृद्धि होती है।"
-  },
-  {
-    qEn: "What are the investment thresholds across Mutual Funds, PMS, and AIF?",
-    qHi: "म्यूचुअल फंड, पीएमएस और एआईएफ में निवेश सीमाएं क्या हैं?",
-    aEn: "You can start your Mutual Fund and SIP journey with as little as ₹25,000. For specialized PMS mandates, AIF & SIF institutional access, and dedicated senior portfolio management, minimum investment thresholds follow regulatory SEBI guidelines (₹50 Lakhs for PMS and ₹1 Crore for AIF).",
-    aHi: "आप अपने म्यूचुअल फंड और एसआईपी की शुरुआत मात्र ₹25,000 से कर सकते हैं। विशिष्ट पीएमएस (PMS), एआईएफ (AIF) और एसआईएफ (SIF) रणनीतियों के लिए न्यूनतम निवेश सेबी के विनियामक दिशानिर्देशों (पीएमएस के लिए ₹50 लाख और एआईएफ के लिए ₹1 करोड़) का पालन करता है।"
-  },
-  {
-    qEn: "Can I consult directly with a human Senior Advisor?",
-    qHi: "क्या मैं सीधे मानव वरिष्ठ सलाहकार से परामर्श कर सकता हूं?",
-    aEn: "Absolutely. While our AI multi-agent algorithms manage day-to-day asset allocation and rebalancing 24/7, all account holders have 1-on-1 access to human Senior Advisors via private advisory chat and scheduled video calls within the platform.",
-    aHi: "बिल्कुल। हालांकि हमारे एआई एल्गोरिदम दैनिक संपत्ति आवंटन को 24/7 प्रबंधित करते हैं, सभी खाताधारकों को प्लेटफॉर्म के भीतर निजी सलाहकार चैट और निर्धारित वीडियो कॉल के माध्यम से मानव वरिष्ठ सलाहकारों तक 1-ऑन-1 पहुंच प्राप्त है।"
-  }
-];
-
 const LandingPage = ({ onNavigate }: LandingPageProps) => {
   const [language, setLanguage] = useState<'en' | 'hi'>('en');
   const [blogCategory, setBlogCategory] = useState<string>('All');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   useEffect(() => {
     const els = document.querySelectorAll('.fade-in-section');
@@ -254,7 +220,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
 
   const t = {
     en: {
-      nav: ['Home', 'About', 'Services', 'Investment', 'Blogs', 'FAQ'],
+      nav: ['Home', 'About', 'What We Offer', 'Investment', 'Blogs'],
       heroTitle: "Intelligent Wealth Management for the Modern Investor",
       heroSub: "Harness AI-driven algorithms, real-time market insights, and personalized strategies to grow your portfolio with confidence.",
       getStarted: "Get Started",
@@ -326,13 +292,11 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
       ],
       blogsTitle: "Market Research & AI Wealth Blogs",
       blogsSub: "Stay informed with institutional market insights, tax optimization strategies, and algorithmic wealth research.",
-      faqTitle: "Frequently Asked Questions",
-      faqSub: "Find clear answers regarding institutional AI safety, regulatory compliance, tax-loss harvesting, and dedicated advisor consultations.",
       footerSub: "Next-generation financial solutions leveraging intelligent systems to grow your wealth.",
       copyright: "© 2026 AI Capital Investment. All rights reserved."
     },
     hi: {
-      nav: ['मुख्य पृष्ठ', 'हमारे बारे में', 'सेवाएं', 'निवेश', 'ब्लॉग व लेख', 'सामान्य प्रश्न'],
+      nav: ['मुख्य पृष्ठ', 'हमारे बारे में', 'उत्पाद व सेवाएं', 'निवेश', 'ब्लॉग व लेख'],
       heroTitle: "आधुनिक निवेशकों के लिए एआई-संचालित बुद्धिमान धन प्रबंधन",
       heroSub: "विश्वास के साथ अपने पोर्टफोलियो को बढ़ाने के लिए AI-संचालित एल्गोरिदम, वास्तविक समय बाजार अंतर्दृष्टि और व्यक्तिगत रणनीतियों का उपयोग करें।",
       getStarted: "शुरू करें",
@@ -404,8 +368,6 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
       ],
       blogsTitle: "बाजार अनुसंधान एवं एआई वेल्थ लेख",
       blogsSub: "संस्थागत बाजार अंतर्दृष्टि, कर अनुकूलन रणनीतियों और एल्गोरिदम अनुसंधान से सूचित रहें।",
-      faqTitle: "अक्सर पूछे जाने वाले प्रश्न (FAQ)",
-      faqSub: "संस्थागत एआई सुरक्षा, नियामक अनुपालन, कर-हानि कटाई और समर्पित सलाहकार परामर्श के संबंध में स्पष्ट उत्तर पाएं।",
       footerSub: "आपकी संपत्ति को बढ़ाने के लिए बुद्धिमान प्रणालियों का लाभ उठाने वाले अगली पीढ़ी के वित्तीय समाधान।",
       copyright: "© 2026 एआई कैपिटल इन्वेस्टमेंट। सर्वाधिकार सुरक्षित।"
     }
@@ -414,25 +376,6 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
   return (
     <div className="lp-wrapper">
       <ParticleBackground />
-
-      {/* Schema.org FAQPage JSON-LD Structured Data for AEO */}
-      <script 
-        type="application/ld+json" 
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": faqData.map(item => ({
-              "@type": "Question",
-              "name": language === 'en' ? item.qEn : item.qHi,
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": language === 'en' ? item.aEn : item.aHi
-              }
-            }))
-          })
-        }} 
-      />
 
       {/* Schema.org BlogPosting JSON-LD Structured Data for AEO */}
       <script 
@@ -496,9 +439,6 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
               </li>
               <li onClick={() => setMobileMenuOpen(false)}>
                 <a href="/blogs" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onNavigate('blogs'); }}>{t.nav[4]}</a>
-              </li>
-              <li onClick={() => setMobileMenuOpen(false)}>
-                <a href="#faq">{t.nav[5]}</a>
               </li>
               <li className="mobile-only-nav-item" style={{ marginTop: '10px', gap: '10px', width: '100%', justifyContent: 'center' }}>
                 <button className="btn btn-gold" style={{ padding: '10px 24px', fontSize: '0.85rem', width: '100%' }} onClick={() => { setMobileMenuOpen(false); onNavigate('login'); }}>
@@ -711,41 +651,6 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             >
               📖 Explore All Research Reports & Blogs <ArrowRight size={16} />
             </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Frequently Asked Questions (FAQ) Section ─────────────── */}
-      <section className="lp-section fade-in-section" id="faq">
-        <div className="lp-container">
-          <div style={{ textAlign: 'center', marginBottom: '36px' }}>
-            <h2 className="lp-section-title">{t.faqTitle}</h2>
-            <p className="lp-section-sub" style={{ maxWidth: '650px', margin: '0 auto' }}>{t.faqSub}</p>
-          </div>
-
-          <div className="faq-accordion-container">
-            {faqData.map((item, idx) => {
-              const isOpen = openFaqIndex === idx;
-              return (
-                <div key={idx} className={`faq-item ${isOpen ? 'open' : ''}`}>
-                  <button 
-                    type="button"
-                    className="faq-question-btn"
-                    onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                    aria-expanded={isOpen}
-                    aria-label={`Toggle FAQ: ${language === 'en' ? item.qEn : item.qHi}`}
-                  >
-                    <span>{language === 'en' ? item.qEn : item.qHi}</span>
-                    {isOpen ? <ChevronUp size={18} style={{ color: 'var(--color-gold)' }} /> : <ChevronDown size={18} style={{ color: 'var(--text-muted)' }} />}
-                  </button>
-                  {isOpen && (
-                    <div className="faq-answer-panel">
-                      <p>{language === 'en' ? item.aEn : item.aHi}</p>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
           </div>
         </div>
       </section>
