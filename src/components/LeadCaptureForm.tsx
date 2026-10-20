@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Send, CheckCircle2, User, Mail, Phone, DollarSign, Target, MessageSquare } from 'lucide-react';
+import { ShieldCheck, Send, CheckCircle2, User, Mail, Phone, IndianRupee, Target, MessageSquare } from 'lucide-react';
 
 interface LeadCaptureFormProps {
   language?: 'en' | 'hi';
@@ -18,8 +18,8 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
     name: '',
     email: '',
     phone: '',
-    budget: '$25,000 - $100,000',
-    interest: 'AI Wealth Management',
+    budget: '₹25 Lakhs - ₹50 Lakhs',
+    interest: 'Mutual Funds',
     message: ''
   });
 
@@ -212,10 +212,10 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
             {/* Investment Capital */}
             <div>
               <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: '#cbd5e1', marginBottom: '6px' }}>
-                {language === 'en' ? 'Investment Capital Budget' : 'अनुमानित निवेश पूंजी'}
+                {language === 'en' ? 'Investment Capital Budget (₹ INR)' : 'अनुमानित निवेश पूंजी (₹ रुपये)'}
               </label>
               <div style={{ position: 'relative' }}>
-                <DollarSign size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }} />
+                <IndianRupee size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }} />
                 <select 
                   value={formData.budget}
                   onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
@@ -226,10 +226,11 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                     boxSizing: 'border-box', cursor: 'pointer'
                   }}
                 >
-                  <option value="Under $25,000">Under $25,000 / ₹20 Lakhs</option>
-                  <option value="$25,000 - $100,000">$25,000 - $100,000 / ₹20L - ₹80L</option>
-                  <option value="$100,000 - $500,000">$100,000 - $500,000 / ₹80L - ₹4 Cr</option>
-                  <option value="$500,000+">$500,000+ / ₹4 Crore+</option>
+                  <option value="Under ₹25 Lakhs">Under ₹25 Lakhs</option>
+                  <option value="₹25 Lakhs - ₹50 Lakhs">₹25 Lakhs - ₹50 Lakhs</option>
+                  <option value="₹50 Lakhs - ₹1 Crore">₹50 Lakhs - ₹1 Crore (PMS Mandate)</option>
+                  <option value="₹1 Crore - ₹5 Crore">₹1 Crore - ₹5 Crore (AIF / SIF Mandate)</option>
+                  <option value="₹5 Crore+">₹5 Crore+ (Institutional / Family Office)</option>
                 </select>
               </div>
             </div>
@@ -240,7 +241,7 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
               {/* Interest Service */}
               <div>
                 <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 600, color: '#cbd5e1', marginBottom: '6px' }}>
-                  {language === 'en' ? 'Primary Interest Area' : 'प्राथमिक रुचि का क्षेत्र'}
+                  {language === 'en' ? 'Primary Offering Interest' : 'प्राथमिक उत्पाद रुचि'}
                 </label>
                 <div style={{ position: 'relative' }}>
                   <Target size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }} />
@@ -254,10 +255,12 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                       boxSizing: 'border-box', cursor: 'pointer'
                     }}
                   >
-                    <option value="AI Wealth Management">AI Algorithmic Wealth Management</option>
-                    <option value="Tax-Loss Harvesting">Automated Tax-Loss Harvesting</option>
-                    <option value="Quantitative Trading">Quantitative Stock & Crypto Analytics</option>
-                    <option value="Fiduciary Advisory">SEBI / SEC Fiduciary Advisory Consultation</option>
+                    <option value="Mutual Funds">Mutual Funds (Direct Equity & Debt Alpha)</option>
+                    <option value="Portfolio Management Services (PMS)">Portfolio Management Services (PMS - ₹50L+)</option>
+                    <option value="Alternative Investment Funds (AIF)">Alternative Investment Funds (AIF Category I, II & III)</option>
+                    <option value="Specialized Investment Funds (SIF)">Specialized Investment Funds (SIF Structured)</option>
+                    <option value="Mutual Fund Portfolio Rebalancing">Mutual Fund Portfolio Rebalancing (Algorithmic)</option>
+                    <option value="Wealth Management">Comprehensive Wealth Management & Family Office</option>
                   </select>
                 </div>
               </div>

@@ -79,7 +79,7 @@ export const accreditationData: Record<string, Profile> = {
       { label: "Experience", value: "8+ Years" },
       { label: "NISM Exams", value: "3 Series" },
       { label: "Mandate", value: "PMS & Research" },
-      { label: "AUM Monitored", value: "$50M+" }
+      { label: "AUM Monitored", value: "₹500 Cr+" }
     ],
     certificates: [
       {
@@ -200,7 +200,7 @@ export const accreditationData: Record<string, Profile> = {
       { label: "Experience", value: "6+ Years" },
       { label: "NISM Exams", value: "2 Series" },
       { label: "Mandate", value: "Derivatives & Yield" },
-      { label: "Hedging Volume", value: "$30M+" }
+      { label: "Hedging Volume", value: "₹300 Cr+" }
     ],
     certificates: [
       {

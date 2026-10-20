@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ShieldCheck, CreditCard, User, Calendar, Lock, CheckCircle2, TrendingUp, Zap, HelpCircle } from 'lucide-react';
+import { ShieldCheck, CreditCard, User, Calendar, Lock, CheckCircle2, TrendingUp, Zap, HelpCircle, IndianRupee } from 'lucide-react';
 import ParticleBackground from './ParticleBackground';
 
 interface PaymentPageProps {
@@ -8,7 +8,7 @@ interface PaymentPageProps {
 }
 
 const PaymentPage = ({ email, onPaymentSuccess }: PaymentPageProps) => {
-  const [tier, setTier] = useState<'starter' | 'growth' | 'elite'>('growth');
+  const [tier, setTier] = useState<'starter' | 'growth' | 'elite'>('starter');
   const [nameOnCard, setNameOnCard] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [expiry, setExpiry] = useState('');
@@ -20,9 +20,9 @@ const PaymentPage = ({ email, onPaymentSuccess }: PaymentPageProps) => {
 
   const handleTierSelect = (selectedTier: 'starter' | 'growth' | 'elite') => {
     setTier(selectedTier);
-    if (selectedTier === 'starter') setAmount('10000');
-    else if (selectedTier === 'growth') setAmount('25000');
-    else setAmount('100000');
+    if (selectedTier === 'starter') setAmount('25000');
+    else if (selectedTier === 'growth') setAmount('500000');
+    else setAmount('5000000');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -67,9 +67,9 @@ const PaymentPage = ({ email, onPaymentSuccess }: PaymentPageProps) => {
 
             <div className="auth-perks" style={{ gap: '14px' }}>
               {[
-                { Icon: ShieldCheck, title: 'Starter Tier ($1k+)', desc: 'Basic AI rebalancing & assets tracker.' },
-                { Icon: Zap, title: 'Growth Tier ($25k+)', desc: 'Automated 24/7 rebalancing + AI Chatbot Advisor.' },
-                { Icon: TrendingUp, title: 'Elite Tier ($100k+)', desc: 'Advisor priority reallocations & advisory support.' }
+                { Icon: ShieldCheck, title: 'Starter Tier (₹25,000+)', desc: 'Direct Mutual Funds & algorithmic rebalancing tracker.' },
+                { Icon: Zap, title: 'Growth Tier (₹5 Lakhs+)', desc: 'Multi-asset quant models + Nova AI Chatbot Advisor.' },
+                { Icon: TrendingUp, title: 'Elite Tier (₹50 Lakhs+)', desc: 'Dedicated PMS / AIF portfolios & family office advisory.' }
               ].map((perk, i) => (
                 <div key={i} className="auth-perk-item" style={{ alignItems: 'flex-start' }}>
                   <div className="auth-perk-icon" style={{ marginTop: '2px' }}><perk.Icon size={16} /></div>
@@ -99,7 +99,7 @@ const PaymentPage = ({ email, onPaymentSuccess }: PaymentPageProps) => {
                 </div>
                 <h2 style={{ fontSize: '1.4rem', color: '#fff', marginBottom: '8px' }}>Capital Allocated!</h2>
                 <p style={{ fontSize: '0.86rem', color: 'var(--text-secondary)', marginBottom: '0' }}>
-                  Your deposit of <strong>{"$" + parseFloat(amount).toLocaleString()}</strong> was verified. Redirecting to login portal...
+                  Your deposit of <strong>{"₹" + parseFloat(amount).toLocaleString('en-IN')}</strong> was verified. Redirecting to login portal...
                 </p>
               </div>
             ) : (
@@ -125,12 +125,12 @@ const PaymentPage = ({ email, onPaymentSuccess }: PaymentPageProps) => {
 
                 {/* Amount to Deposit */}
                 <div className="auth-input-group">
-                  <label>Deposit &amp; Fund Amount ($)</label>
+                  <label>Deposit &amp; Fund Amount (₹ INR)</label>
                   <div className="auth-input-wrap">
-                    <DollarSign size={16} className="auth-input-icon" />
+                    <IndianRupee size={16} className="auth-input-icon" />
                     <input 
                       type="number" 
-                      min="1000" 
+                      min="500" 
                       required 
                       value={amount} 
                       onChange={e => setAmount(e.target.value)} 
@@ -139,7 +139,7 @@ const PaymentPage = ({ email, onPaymentSuccess }: PaymentPageProps) => {
                     />
                   </div>
                   <p style={{ fontSize: '0.74rem', color: 'var(--text-muted)', margin: '4px 0 0 2px' }}>
-                    Minimum deposit is $1,000. Starter (up to $25k), Growth (up to $100k), Elite ($100k+).
+                    Minimum deposit is ₹25,000. Starter (₹25k - ₹5L), Growth (₹5L - ₹50L), Elite (₹50L+ PMS/AIF).
                   </p>
                 </div>
 
@@ -226,7 +226,7 @@ const PaymentPage = ({ email, onPaymentSuccess }: PaymentPageProps) => {
                   {loading ? (
                     <span className="auth-spinner" />
                   ) : (
-                    <>Deploy capital of {"$" + parseFloat(amount || '0').toLocaleString()}</>
+                    <>Deploy capital of {"₹" + parseFloat(amount || '0').toLocaleString('en-IN')}</>
                   )}
                 </button>
 
@@ -243,10 +243,5 @@ const PaymentPage = ({ email, onPaymentSuccess }: PaymentPageProps) => {
     </div>
   );
 };
-
-// Re-use DollarSign icon since it's not imported directly from lucide-react in App
-const DollarSign = ({ size, className }: { size: number; className?: string }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-);
 
 export default PaymentPage;

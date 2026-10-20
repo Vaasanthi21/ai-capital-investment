@@ -80,14 +80,14 @@ export const standaloneBlogArticles: BlogArticle[] = [
       'Automated AI execution engines resolve this hurdle by executing instant, wash-sale-compliant swaps into correlated proxy tracking funds (such as substituting an S&P 500 ETF with a Total US Stock Market Index ETF). This maintains target equity market exposure while securing legally compliant tax write-offs.',
       '### 2. Offsetting Realized Gains, Dividends & Ordinary Income',
       'Harvested capital losses can be used to directly offset short-term capital gains (taxed at higher ordinary income rates), long-term capital gains, and taxable dividend distributions.',
-      'Furthermore, up to $3,000 in excess harvested net losses can be deducted against ordinary salary income each tax year, with remaining unused losses carried forward indefinitely into future tax years. Over a 10-year compounding horizon, continuous tax harvesting adds an estimated 1.2% to 1.8% in net annual compound return.',
+      'Furthermore, up to ₹1,50,000 in excess harvested net losses can be deducted against ordinary taxable capital gains each financial year, with remaining unused losses carried forward up to 8 assessment years into future tax cycles. Over a 10-year compounding horizon, continuous tax harvesting adds an estimated 1.2% to 1.8% in net annual compound return.',
       '### 3. Continuous Year-Round Harvesting vs. Year-End Execution',
       'Traditional wealth management firms typically conduct tax-loss harvesting once a year in December. However, market pullbacks and intraday volatility occur continuously across all twelve months.',
       'Algorithmic tax engines scan portfolio holdings daily, locking in tax credits during temporary market pullbacks in April, August, or October. Empirical backtesting demonstrates that daily automated scanning captures up to 3x more tax credits than annual year-end sweeps.',
       '### 4. Direct Indexing & Tax-Optimized Asset Location',
       'Direct indexing allows investors to own individual underlying benchmark equities rather than pre-packaged index funds. This creates hundreds of micro-harvesting opportunities within single stock components even during overall bull markets.',
       '### Key Institutional Takeaways:',
-      '• Algorithmic execution continuously tracks 60-day wash-sale windows to guarantee strict IRS regulatory compliance.\n• Realized tax losses offset short-term gains, dividend income, and up to $3,000 in ordinary annual income.\n• Systematic year-round tax-loss harvesting adds an estimated 1.2% to 1.8% in net annual compounding performance.\n• Daily automated intraday scans capture up to 3x more tax-loss credits than traditional year-end rebalancing.'
+      '• Algorithmic execution continuously tracks wash-sale windows to guarantee strict regulatory compliance.\n• Realized tax losses offset short-term gains, dividend income, and up to ₹1,50,000 in taxable capital gains.\n• Systematic year-round tax-loss harvesting adds an estimated 1.2% to 1.8% in net annual compounding performance.\n• Daily automated intraday scans capture up to 3x more tax-loss credits than traditional year-end rebalancing.'
     ]
   },
   {
@@ -140,7 +140,7 @@ export const standaloneBlogArticles: BlogArticle[] = [
       'Fiduciaries must provide complete transparency regarding algorithmic decision rules, fee schedules, and execution routing.',
       '### 2. Independent Qualified Custody & Client Asset Isolation',
       'SEC Rule 206(4)-2 (the Custody Rule) requires that client investment funds and securities must be maintained with independent qualified custodians—such as SEC-registered broker-dealers or FDIC-insured banks—rather than held directly on an advisory firm balance sheet.',
-      'Qualified custody ensures client funds remain segregated, covered by SIPC insurance up to $500,000, and protected from corporate operational risks.',
+      'Qualified custody ensures client funds remain segregated, covered by depository and investor protection funds up to ₹50 Lakhs, and protected from corporate operational risks.',
       '### 3. Algorithmic Transparency & Model Backtest Disclosures',
       'Regulatory guidance emphasizes that AI-driven quantitative investment platforms must provide clear disclosures regarding model backtesting methodologies, execution slippage estimates, and historical drawdown metrics.',
       '### 4. Verifying Advisor Credentials & CRD Registrations',

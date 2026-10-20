@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { User, Mail, Phone, DollarSign, Lock, X, TrendingUp, ShieldCheck, Zap } from 'lucide-react';
+import { User, Mail, Phone, IndianRupee, Lock, X, TrendingUp, ShieldCheck, Zap } from 'lucide-react';
 import ParticleBackground from './ParticleBackground';
 
 type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'forgot-password' | 'dashboard';
@@ -187,15 +187,15 @@ const SignupPage = ({ onSignupSuccess, onNavigate }: SignupPageProps) => {
                   <label>Phone Number</label>
                   <div className="auth-input-wrap">
                     <Phone size={16} className="auth-input-icon" />
-                    <input type="tel" placeholder="+1 (555) 000-0000" required value={phone} onChange={e => setPhone(e.target.value)} className="auth-input" />
+                    <input type="tel" placeholder="+91 98765 43210" required value={phone} onChange={e => setPhone(e.target.value)} className="auth-input" />
                   </div>
                 </div>
                 {role === 'investor' && (
                   <div className="auth-input-group">
-                    <label>Investment Amount ($)</label>
+                    <label>Investment Amount (₹)</label>
                     <div className="auth-input-wrap">
-                      <DollarSign size={16} className="auth-input-icon" />
-                      <input type="number" placeholder="10,000" min="1000" required={role === 'investor'} value={amount} onChange={e => setAmount(e.target.value)} className="auth-input" />
+                      <IndianRupee size={16} className="auth-input-icon" />
+                      <input type="number" placeholder="25,000" min="500" required={role === 'investor'} value={amount} onChange={e => setAmount(e.target.value)} className="auth-input" />
                     </div>
                   </div>
                 )}

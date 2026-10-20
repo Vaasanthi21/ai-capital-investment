@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
     LayoutDashboard, Wallet, Sparkles, BarChart3, Settings, LogOut,
     ArrowUpRight, Lightbulb, CheckCircle2, BookOpen, ChevronRight, X,
-    CreditCard, History, PlusCircle, ShieldCheck, DollarSign, Search, Download,
+    CreditCard, History, PlusCircle, ShieldCheck, IndianRupee, Search, Download,
     TrendingUp, ArrowDownRight, Filter, Sliders, Clock, Bot, Landmark, PieChart,
     Shield, Lock, Bell, MoreHorizontal, Send, Info, Check, ArrowRight, ChevronDown
 } from 'lucide-react';
@@ -61,7 +61,7 @@ const AnimatedValue = ({ value }: { value: number }) => {
         return () => window.cancelAnimationFrame(frameId);
     }, [value]);
 
-    return <span>{"$" + Math.round(displayVal).toLocaleString()}</span>;
+    return <span>{"₹" + Math.round(displayVal).toLocaleString('en-IN')}</span>;
 };
 
 const assetDataConfig: Record<string, {
@@ -146,9 +146,9 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
     const [taxLossHarvestingActive, setTaxLossHarvestingActive] = useState(false);
     const [taxLossSavings, setTaxLossSavings] = useState(1820);
     const [taxLossLogs, setTaxLossLogs] = useState([
-        `[${new Date().toLocaleDateString()}] SWAP: Harvested $1,200 loss in Growth Equities (SPY), rotated into Large Cap Core ETF to maintain market correlation. Locked in $360 tax credit.`,
-        `[2026-06-15] SWAP: Harvested $850 loss in Digital Assets (ETH), rotated into Staked ETH Trust. Locked in $255 tax credit.`,
-        `[2026-05-22] SWAP: Harvested $1,500 loss in high-beta tech holdings. Swapped into NASDAQ 100 Equal Weight. Locked in $450 tax credit.`
+        `[${new Date().toLocaleDateString()}] SWAP: Harvested ₹1,20,000 loss in Growth Equities (NIFTY 50), rotated into Large Cap Core ETF to maintain market correlation. Locked in ₹36,000 tax credit.`,
+        `[2026-06-15] SWAP: Harvested ₹85,000 loss in High-Beta Index, rotated into Low-Volatility Index ETF. Locked in ₹25,500 tax credit.`,
+        `[2026-05-22] SWAP: Harvested ₹1,50,000 loss in IT tech holdings. Swapped into NIFTY IT Equal Weight. Locked in ₹45,000 tax credit.`
     ]);
 
     const [backtestStartYear, setBacktestStartYear] = useState(2018);
@@ -451,7 +451,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
             x: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#a1b3b8', font: { family: 'Outfit' } } },
             y: {
                 grid: { color: 'rgba(255,255,255,0.03)' },
-                ticks: { color: '#a1b3b8', font: { family: 'Outfit' }, callback: function(value: any) { return '$' + value.toLocaleString(); } }
+                ticks: { color: '#a1b3b8', font: { family: 'Outfit' }, callback: function(value: any) { return '₹' + value.toLocaleString('en-IN'); } }
             }
         }
     };
@@ -567,7 +567,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                                     <div key={key} className={`ticker-item ${asset.flash}`}>
                                         <span className="ticker-name">{key.toUpperCase()}</span>
                                         <span className="ticker-value">
-                                            {"$" + asset.price.toLocaleString(undefined, {
+                                            {"₹" + asset.price.toLocaleString('en-IN', {
                                                 minimumFractionDigits: key !== 'btc' ? 2 : 0,
                                                 maximumFractionDigits: key !== 'btc' ? 2 : 0
                                             })}
@@ -622,7 +622,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                                             <div className="summary-card">
                                                 <p className="summary-label">Total Portfolio Value</p>
                                                 <p className="summary-val glow-text-gold"><AnimatedValue value={finalAiVal} /></p>
-                                                <p className="summary-change up"><ArrowUpRight size={14} /> +$120.45 Today</p>
+                                                <p className="summary-change up"><ArrowUpRight size={14} /> +₹12,450 Today</p>
                                             </div>
                                             <div className="summary-card">
                                                 <p className="summary-label">AI Generated Profit</p>
@@ -786,7 +786,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                                                                         </span>
                                                                     )}
                                                                 </td>
-                                                                <td>{"$" + Math.round(assetValue).toLocaleString()}</td>
+                                                                <td>{"₹" + Math.round(assetValue).toLocaleString('en-IN')}</td>
                                                                 <td style={{ color: parseFloat(dayReturn) >= 0 ? 'var(--color-green)' : '#ff5252', fontWeight: 600 }}>
                                                                     {parseFloat(dayReturn) >= 0 ? '+' : ''}{dayReturn}%
                                                                 </td>
@@ -1009,19 +1009,19 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                                             </label>
                                         </div>
                                         <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>
-                                            Monitors YTD investment lots to automatically capture capital losses, offsetting up to $3,000 in ordinary income taxes annually.
+                                            Monitors YTD investment lots to automatically capture capital losses, offsetting up to ₹1,50,000 in capital gains taxes annually.
                                         </p>
 
                                         <div style={{ display: 'flex', gap: '14px', background: 'rgba(255,255,255,0.02)', padding: '12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.04)' }}>
                                             <div>
                                                 <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--text-muted)' }}>Estimated Tax Savings</span>
                                                 <span style={{ display: 'block', fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-green)', marginTop: '2px' }}>
-                                                    ${taxLossHarvestingActive ? (taxLossSavings + 150).toLocaleString() : taxLossSavings.toLocaleString()}
+                                                    ₹{taxLossHarvestingActive ? (145000 + 12000).toLocaleString('en-IN') : (145000).toLocaleString('en-IN')}
                                                 </span>
                                             </div>
                                             <div style={{ borderLeft: '1px solid rgba(255,255,255,0.08)', paddingLeft: '14px' }}>
                                                 <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--text-muted)' }}>YTD Losses Harvested</span>
-                                                <span style={{ display: 'block', fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-gold)', marginTop: '2px' }}>$5,300</span>
+                                                <span style={{ display: 'block', fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-gold)', marginTop: '2px' }}>₹4,25,000</span>
                                             </div>
                                         </div>
 
@@ -1049,7 +1049,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                                             <div className="slider-group">
                                                 <div className="slider-header">
                                                     <span className="slider-label">Investment Amount</span>
-                                                    <span className="slider-val">{"$" + sliderAmount.toLocaleString()}</span>
+                                                    <span className="slider-val">{"₹" + sliderAmount.toLocaleString('en-IN')}</span>
                                                 </div>
                                                 <input type="range" min="1000" max="100000" step="1000" value={sliderAmount} onChange={(e) => setSliderAmount(parseFloat(e.target.value))} />
                                             </div>
@@ -1122,17 +1122,17 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                     gap: '12px'
                 }}>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', opacity: 0.8 }}>
-                        <span>SIPC MEMBER</span>
+                        <span>SEBI REGISTERED INTERMEDIARY</span>
                         <span>•</span>
-                        <span>FDIC INSURED PARTNER BANKS</span>
+                        <span>CDSL / NSDL QUALIFIED DEPOSITORIES</span>
                         <span>•</span>
-                        <span>SEC REGISTERED ADVISER</span>
+                        <span>RBI SCHEDULED PARTNER BANKS</span>
                     </div>
                     <p style={{ margin: 0, maxWidth: '900px', alignSelf: 'center' }}>
-                        AI Capital Investment is an SEC-registered investment adviser. Brokerage services are provided by Apex Clearing Corporation, member FINRA/SIPC.
-                        FDIC insurance is provided through partner banks up to $250,000 per depositor. 
+                        AI Capital Investment is a SEBI registered investment intermediary and portfolio advisory platform. Demat securities custody is held directly via CDSL/NSDL qualified depositories.
+                        Investor capital is segregated and protected under investor protection fund (IPF) guidelines.
                         Past performance is no guarantee of future results. All yield estimates, target projections, and historical stress-test scenarios are simulated returns for illustrative purposes and do not represent actual performance.
-                        Please read our full Form CRS and Risk Disclosures before executing investment reallocations.
+                        Please read all scheme-related offer documents and risk disclosures carefully before investing.
                     </p>
                     <p style={{ margin: 0, fontSize: '0.68rem', opacity: 0.6 }}>
                         © 2026 AI Capital Investment LLC. All rights reserved.
@@ -1383,7 +1383,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                         </div>
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                            <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Target Amount ($)</label>
+                            <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Target Amount (₹)</label>
                             <input 
                                 type="number" placeholder="e.g., 25000" required
                                 value={newGoalTarget} onChange={e => setNewGoalTarget(e.target.value)}
@@ -1507,14 +1507,14 @@ const blogArticles: BlogArticle[] = [
             'Automated AI execution engines resolve this hurdle by executing instant, wash-sale-compliant swaps into correlated proxy tracking funds (such as substituting an S&P 500 ETF with a Total US Stock Market Index ETF). This maintains target equity market exposure while securing legally compliant tax write-offs.',
             '### 2. Offsetting Realized Gains, Dividends & Ordinary Income',
             'Harvested capital losses can be used to directly offset short-term capital gains (taxed at higher ordinary income rates), long-term capital gains, and taxable dividend distributions.',
-            'Furthermore, up to $3,000 in excess harvested net losses can be deducted against ordinary salary income each tax year, with remaining unused losses carried forward indefinitely into future tax years. Over a 10-year compounding horizon, continuous tax harvesting adds an estimated 1.2% to 1.8% in net annual compound return.',
+            'Furthermore, up to ₹1,50,000 in excess harvested net losses can be deducted against taxable capital gains each financial year, with remaining unused losses carried forward up to 8 assessment years into future tax cycles. Over a 10-year compounding horizon, continuous tax harvesting adds an estimated 1.2% to 1.8% in net annual compound return.',
             '### 3. Continuous Year-Round Harvesting vs. Year-End Execution',
             'Traditional wealth management firms typically conduct tax-loss harvesting once a year in December. However, market pullbacks and intraday volatility occur continuously across all twelve months.',
             'Algorithmic tax engines scan portfolio holdings daily, locking in tax credits during temporary market pullbacks in April, August, or October. Empirical backtesting demonstrates that daily automated scanning captures up to 3x more tax credits than annual year-end sweeps.',
             '### 4. Direct Indexing & Tax-Optimized Asset Location',
             'Direct indexing allows investors to own individual underlying benchmark equities rather than pre-packaged index funds. This creates hundreds of micro-harvesting opportunities within single stock components even during overall bull markets.',
             '### Key Institutional Takeaways:',
-            '• Algorithmic execution continuously tracks 60-day wash-sale windows to guarantee strict IRS regulatory compliance.\n• Realized tax losses offset short-term gains, dividend income, and up to $3,000 in ordinary annual income.\n• Systematic year-round tax-loss harvesting adds an estimated 1.2% to 1.8% in net annual compounding performance.\n• Daily automated intraday scans capture up to 3x more tax-loss credits than traditional year-end rebalancing.'
+            '• Algorithmic execution continuously tracks wash-sale windows to guarantee strict regulatory compliance.\n• Realized tax losses offset short-term gains, dividend income, and up to ₹1,50,000 in taxable capital gains.\n• Systematic year-round tax-loss harvesting adds an estimated 1.2% to 1.8% in net annual compounding performance.\n• Daily automated intraday scans capture up to 3x more tax-loss credits than traditional year-end rebalancing.'
         ]
     },
     {
@@ -1536,7 +1536,7 @@ const blogArticles: BlogArticle[] = [
             'Sovereign debt expansion, global central bank balance sheet growth, and monetary inflation have highlighted the strategic utility of scarce digital assets. Bitcoin operates with a hard-capped supply of 21 million units, offering programmatic scarcity that exhibits low long-term correlation to traditional sovereign credit markets.',
             'Integrating a 3% to 5% allocation into a diversified portfolio improves overall portfolio Sharpe ratios and tail-risk resilience.',
             '### 2. Volatility-Weighted Position Budgeting',
-            'Because digital assets exhibit higher historical price volatility than traditional equities, quantitative portfolio models deploy dynamic volatility-weighted position budgeting rather than static dollar allocations.',
+            'Because digital assets exhibit higher historical price volatility than traditional equities, quantitative portfolio models deploy dynamic volatility-weighted position budgeting rather than static fixed allocations.',
             'When digital asset volatility spikes above predefined risk thresholds, automated algorithms rebalance surplus gains into liquid short-term treasury reserves. Conversely, during market consolidation phases, the system systematically re-accumulates target positions.',
             '### 3. Proof-of-Stake Yield Accumulation & Validator Staking',
             'Beyond capital appreciation, proof-of-stake blockchain protocols enable institutional holders to generate native validator staking yields (typically 4% to 6% APY) on underlying Ethereum reserves.',
@@ -1567,7 +1567,7 @@ const blogArticles: BlogArticle[] = [
             'Fiduciaries must provide complete transparency regarding algorithmic decision rules, fee schedules, and execution routing.',
             '### 2. Independent Qualified Custody & Client Asset Isolation',
             'SEC Rule 206(4)-2 (the Custody Rule) requires that client investment funds and securities must be maintained with independent qualified custodians—such as SEC-registered broker-dealers or FDIC-insured banks—rather than held directly on an advisory firm balance sheet.',
-            'Qualified custody ensures client funds remain segregated, covered by SIPC insurance up to $500,000, and protected from corporate operational risks.',
+            'Qualified custody ensures client funds remain segregated, covered by depository and investor protection funds up to ₹50 Lakhs, and protected from corporate operational risks.',
             '### 3. Algorithmic Transparency & Model Backtest Disclosures',
             'Regulatory guidance emphasizes that AI-driven quantitative investment platforms must provide clear disclosures regarding model backtesting methodologies, execution slippage estimates, and historical drawdown metrics.',
             '### 4. Verifying Advisor Credentials & CRD Registrations',
@@ -2295,11 +2295,11 @@ const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpda
 
                         {selectedTier === 'custom' && (
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                                <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 600 }}>Custom Amount ($)</label>
+                                <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 600 }}>Custom Amount (₹)</label>
                                 <input
                                     type="number"
-                                    min="100"
-                                    step="100"
+                                    min="500"
+                                    step="500"
                                     value={customAmount}
                                     onChange={e => setCustomAmount(e.target.value)}
                                     required
@@ -2348,7 +2348,7 @@ const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpda
                     <div className="widget glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                         <span style={{ fontSize: '0.76rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Current Active Capital</span>
                         <h2 className="glow-text-gold" style={{ fontSize: '2.2rem', fontWeight: 800, margin: 0 }}>
-                            ${(userData?.investmentAmount || 25000).toLocaleString()}
+                            ₹{(userData?.investmentAmount || 25000).toLocaleString('en-IN')}
                         </h2>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--color-green)', fontSize: '0.8rem' }}>
                             <ArrowUpRight size={16} /> Fully Allocated Across Active Holdings
@@ -2361,7 +2361,7 @@ const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpda
                             <span style={{ fontSize: '0.9rem', fontWeight: 700 }}>Institutional Banking Protection</span>
                         </div>
                         <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
-                            All cash deposits are swept into FDIC-insured partner banks protected up to $250,000 per depositor. Brokerage assets are secured via Apex Clearing Corp (SIPC member).
+                            All cash deposits are held in RBI-scheduled commercial partner banks. Securities and mutual fund holdings are maintained in demat accounts through CDSL/NSDL qualified depositories under SEBI regulatory oversight.
                         </p>
                     </div>
 
@@ -2369,7 +2369,7 @@ const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpda
                     <div className="widget glass-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Total Capital Deposited:</span>
-                            <span style={{ fontSize: '0.95rem', fontWeight: 800, color: '#fff' }}>${(totalDeposited || userData?.investmentAmount || 25000).toLocaleString()}</span>
+                            <span style={{ fontSize: '0.95rem', fontWeight: 800, color: '#fff' }}>₹{(totalDeposited || userData?.investmentAmount || 25000).toLocaleString('en-IN')}</span>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Yield & Dividend Credits:</span>
@@ -2910,10 +2910,10 @@ const AIChatbotSection = ({
                         <Wallet size={15} style={{ color: '#94a3b8' }} />
                         <span>Sample portfolio value</span>
                     </div>
-                    <div className="nova-metric-val">$248,690.42</div>
+                    <div className="nova-metric-val">₹24,86,900.00</div>
                     <div className="nova-metric-sub up">
                         <ArrowUpRight size={13} />
-                        <span>$2,184.20 (0.88%) this month • sample</span>
+                        <span>+₹21,840.00 (0.88%) this month • sample</span>
                     </div>
                 </div>
 
@@ -2945,7 +2945,7 @@ const AIChatbotSection = ({
                         <ArrowDownRight size={15} style={{ color: '#94a3b8' }} />
                         <span>Sample cash available</span>
                     </div>
-                    <div className="nova-metric-val">$8,420.00</div>
+                    <div className="nova-metric-val">₹84,200.00</div>
                     <div className="nova-metric-sub">
                         <span>Illustrative balance only</span>
                     </div>
@@ -3297,22 +3297,22 @@ const AIChatbotSection = ({
                         <div className="nova-radar-list">
                             <div className="nova-radar-item">
                                 <div className="nova-radar-item-left">
-                                    <div className="nova-radar-avatar vanguard">V</div>
-                                    <span className="nova-radar-name">Vanguard S&P 500</span>
+                                    <div className="nova-radar-avatar vanguard">H</div>
+                                    <span className="nova-radar-name">HDFC Top 100 Index Fund</span>
                                 </div>
                                 <div className="nova-radar-item-right">
-                                    <div className="nova-radar-price">$534.87</div>
+                                    <div className="nova-radar-price">₹934.80</div>
                                     <div className="nova-radar-change">+0.42% • sample</div>
                                 </div>
                             </div>
 
                             <div className="nova-radar-item">
                                 <div className="nova-radar-item-left">
-                                    <div className="nova-radar-avatar treasury">B</div>
-                                    <span className="nova-radar-name">US Treasury bonds</span>
+                                    <div className="nova-radar-avatar treasury">N</div>
+                                    <span className="nova-radar-name">Nippon India Liquid G-Sec Fund</span>
                                 </div>
                                 <div className="nova-radar-item-right">
-                                    <div className="nova-radar-price">$102.14</div>
+                                    <div className="nova-radar-price">₹1,102.50</div>
                                     <div className="nova-radar-change">+0.05% • sample</div>
                                 </div>
                             </div>

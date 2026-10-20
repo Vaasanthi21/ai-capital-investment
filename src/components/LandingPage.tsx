@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { 
   Cpu, ShieldCheck, TrendingUp, UserCheck, Wallet, Users, Percent, 
   PieChart, Briefcase, Award, Globe, BookOpen, Clock, ArrowRight, X, Menu,
-  HelpCircle, ChevronDown, ChevronUp
+  HelpCircle, ChevronDown, ChevronUp, RefreshCw
 } from 'lucide-react';
 import HeroCanvas from './HeroCanvas';
 import ParticleBackground from './ParticleBackground';
@@ -83,7 +83,7 @@ A Volatility Shield monitors market stress, correlation changes, and sudden draw
 Executing tax-loss harvesting manually presents significant regulatory hurdles due to IRS wash-sale rules, which disallow tax deductions if a virtually identical security is repurchased within 30 days. Automated AI execution engines resolve this challenge by instantly swapping harvested positions into correlated proxy tracking funds (such as replacing an S&P 500 ETF with a Total Market Index ETF). This preserves target market exposure while securing legally compliant tax write-offs.
 
 ### 2. Offsetting Dividend & Capital Gains Taxes
-Harvested capital losses directly shield taxable dividend distributions, short-term realized trading gains, and up to $3,000 in ordinary income annually. Over a multi-year investment horizon, compounding these annual tax savings generates substantial tax alpha, adding an estimated 1.2% to 1.8% to net annual compound returns without altering your underlying risk profile.
+Harvested capital losses directly shield taxable dividend distributions, short-term realized capital gains (STCG), and optimize income tax liabilities under Indian tax provisions (Section 54/80C/112A). Over a multi-year investment horizon, compounding these annual tax savings generates substantial tax alpha, adding an estimated 1.2% to 1.8% to net annual compound returns without altering your underlying risk profile.
 
 ### 3. Continuous Year-Round Harvesting vs. Year-End Execution
 Traditional wealth management firms typically execute tax-loss harvesting exclusively in December. However, market pullbacks occur continuously throughout the year. Algorithmic tax engines scan holdings daily, booking temporary market losses during intraday dips in April, August, or October, capturing up to 3x more harvested tax credits than annual year-end sweeps.
@@ -125,7 +125,7 @@ Traditional wealth management firms typically execute tax-loss harvesting exclus
 Digital assets demonstrate low long-term correlation to traditional sovereign bonds, functioning as digital gold hedges during periods of central bank monetary expansion and fiat currency debasement. Institutional-grade dual-custody cold storage vaults protect underlying keys while automated validator algorithms capture staking yields on network reserves.
 
 ### 2. Volatility-Weighted Position Budgeting
-Because digital assets experience higher historical price volatility, quantitative risk models utilize volatility-weighted position budgeting rather than fixed dollar allocations. Position sizing scales up automatically during historical volatility contractions and dynamically scales back into liquid treasury cash reserves during market pullbacks, safeguarding principal capital.
+Because digital assets experience higher historical price volatility, quantitative risk models utilize volatility-weighted position budgeting rather than fixed static allocations. Position sizing scales up automatically during historical volatility contractions and dynamically scales back into liquid treasury cash reserves during market pullbacks, safeguarding principal capital.
 
 ### 3. Proof-of-Stake Yield Accumulation
 Beyond capital appreciation, liquid staking mechanisms allow institutional holders to earn native staking yields (4% - 6% APY) directly on underlying Ethereum reserves. Algorithmic smart vaults route staking rewards back into principal compound balances while maintaining instant liquidity options.
@@ -199,10 +199,10 @@ const faqData = [
     aHi: "हमारा पेटेंट वोलेटिलिटी शील्ड लगातार वैश्विक मैक्रोइकोनॉमिक संकेतकों और क्रेडिट स्प्रेड की निगरानी करता है। अत्यधिक बाजार अस्थिरता का पता चलने पर, प्रणाली खुदरा घबराहट से पहले आपके इक्विटी परिसंपत्तियों को अल्पकालिक खजाना भंडार और भौतिक स्वर्ण हेज में स्वचालित रूप से स्थानांतरित कर देती है।"
   },
   {
-    qEn: "Are client funds FDIC-insured and SEC-regulated?",
-    qHi: "क्या ग्राहक फंड एफडीआईसी-बीमित और एसईसी-नियमित हैं?",
-    aEn: "Yes. All cash balances deposited on the platform are swept into FDIC-insured partner banks, protecting cash reserves up to $2,500,000 per depositor. Investment portfolios are held with SEC-registered custodian brokerages and protected by SIPC insurance up to $500,000.",
-    aHi: "हां। प्लेटफॉर्म पर जमा सभी नकद राशि एफडीआईसी-बीमित भागीदार बैंकों में रखी जाती है, जो प्रति जमाकर्ता $2,500,000 तक नकद भंडार की रक्षा करती है। निवेश पोर्टफोलियो एसईसी-पंजीकृत कस्टोडियन ब्रोकरेज के साथ रखे जाते हैं और $500,000 तक एसआईपीसी बीमा द्वारा संरक्षित होते हैं।"
+    qEn: "Are client funds securely held with SEBI-registered custodians?",
+    qHi: "क्या ग्राहक फंड सेबी-पंजीकृत कस्टोडियन के पास सुरक्षित हैं?",
+    aEn: "Yes. All client investments and portfolio assets are held through SEBI-registered qualified custodians (CDSL / NSDL) and scheduled commercial institutional partner banks. Securities and mutual fund folios remain directly in the investor's name with institutional segregation, ensuring maximum statutory safety.",
+    aHi: "हां। सभी ग्राहक फंड और निवेश पोर्टफोलियो सेबी-पंजीकृत कस्टोडियन (CDSL / NSDL) और अनुसूचित वाणिज्यिक बैंकों के माध्यम से सुरक्षित रखे जाते हैं। प्रतिभूतियां और म्यूचुअल फंड फोलियो सीधे ग्राहक के नाम पर रहते हैं, जिससे पूर्ण सुरक्षा सुनिश्चित होती है।"
   },
   {
     qEn: "How does automated Tax-Loss Harvesting (TLH) increase net yields?",
@@ -211,10 +211,10 @@ const faqData = [
     aHi: "टैक्स-लॉस हार्वेस्टिंग आपकी होल्डिंग्स में अवास्तविक पूंजीगत नुकसान की पहचान करता है और इंडेक्स फंड में स्वैप निष्पादित करता है। यह नुकसान सीधे कर योग्य लाभांश और ब्याज आय को संतुलित करता है, जिससे वार्षिक शुद्ध रिटर्न में 1.2% से 1.8% की वृद्धि होती है।"
   },
   {
-    qEn: "What are the minimum deposit thresholds to start investing?",
-    qHi: "निवेश शुरू करने के लिए न्यूनतम जमा राशि क्या है?",
-    aEn: "You can start investing with as little as $1,000 on the Starter Plan. For specialized AI quantitative vaults, dedicated senior advisor access, and tailored private wealth strategies, our Growth and Elite Vault plans require $10,000 and $50,000 respectively.",
-    aHi: "आप स्टार्टर प्लान पर $1,000 की कम राशि से निवेश शुरू कर सकते हैं। विशेष एआई क्वांटिटेटिव वॉल्ट, समर्पित वरिष्ठ सलाहकार पहुंच और निजी धन रणनीतियों के लिए, हमारे ग्रोथ और एलीट वॉल्ट प्लान में क्रमशः $10,000 और $50,000 की आवश्यकता होती है।"
+    qEn: "What are the investment thresholds across Mutual Funds, PMS, and AIF?",
+    qHi: "म्यूचुअल फंड, पीएमएस और एआईएफ में निवेश सीमाएं क्या हैं?",
+    aEn: "You can start your Mutual Fund and SIP journey with as little as ₹25,000. For specialized PMS mandates, AIF & SIF institutional access, and dedicated senior portfolio management, minimum investment thresholds follow regulatory SEBI guidelines (₹50 Lakhs for PMS and ₹1 Crore for AIF).",
+    aHi: "आप अपने म्यूचुअल फंड और एसआईपी की शुरुआत मात्र ₹25,000 से कर सकते हैं। विशिष्ट पीएमएस (PMS), एआईएफ (AIF) और एसआईएफ (SIF) रणनीतियों के लिए न्यूनतम निवेश सेबी के विनियामक दिशानिर्देशों (पीएमएस के लिए ₹50 लाख और एआईएफ के लिए ₹1 करोड़) का पालन करता है।"
   },
   {
     qEn: "Can I consult directly with a human Senior Advisor?",
@@ -272,14 +272,58 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
       metrics1: "Assets Managed",
       metrics2: "Active Investors",
       metrics3: "Average Returns",
-      svcTitle: "Our Services",
-      svcSub: "Comprehensive Wealth Solutions",
-      svc1Title: "Wealth Management",
-      svc1Desc: "Holistic portfolio management to grow and preserve your wealth for generations.",
-      svc2Title: "Investment Advisory",
-      svc2Desc: "Expert AI-guided advisory services tailored to your unique investment profile.",
-      svc3Title: "Retirement Planning",
-      svc3Desc: "Secure your retirement lifestyle with intelligent, AI-powered long-term strategies.",
+      svcTitle: "What We Offer",
+      svcSub: "Comprehensive Solutions: Mutual Funds, PMS, AIF, SIF & Portfolio Rebalancing",
+      servicesList: [
+        {
+          id: 'mf',
+          title: "Mutual Funds",
+          badge: "SEBI Registered Distribution",
+          desc: "Curated direct equity, debt, and balanced mutual fund portfolios. Rigorously vetted through quantitative risk-adjusted performance models, alpha generation metrics, and institutional fund screening.",
+          Icon: PieChart,
+          gold: true
+        },
+        {
+          id: 'pms',
+          title: "Portfolio Management Services (PMS)",
+          badge: "Bespoke HNI Mandates",
+          desc: "Tailored, high-conviction discretionary and non-discretionary equity strategies designed for High-Net-Worth Individuals (HNIs) and family offices seeking focused market alpha.",
+          Icon: Briefcase,
+          gold: false
+        },
+        {
+          id: 'aif',
+          title: "Alternative Investment Funds (AIF)",
+          badge: "Category I, II & III",
+          desc: "Exclusive access to institutional private equity, structured debt, pre-IPO venture funds, and market-neutral long-short quantitative strategies for sophisticated investors.",
+          Icon: TrendingUp,
+          gold: true
+        },
+        {
+          id: 'sif',
+          title: "Specialized Investment Funds (SIF)",
+          badge: "Structured Wealth",
+          desc: "Niche, structured debt and market-linked debentures engineered to deliver steady non-linear returns with robust downside capital protection buffers.",
+          Icon: Cpu,
+          gold: false
+        },
+        {
+          id: 'rebalance',
+          title: "Mutual Fund Portfolio Rebalancing",
+          badge: "Automated & Algorithmic",
+          desc: "Continuous algorithmic health monitoring of your mutual fund holdings. Automatically trims asset drift, phases out persistent underperformers, and reallocates capital to optimal funds.",
+          Icon: RefreshCw,
+          gold: true
+        },
+        {
+          id: 'wealth',
+          title: "Wealth Management",
+          badge: "Family Office Grade",
+          desc: "Holistic multi-generational asset allocation, tax-harvesting strategies, risk hedging, and wealth preservation tailored to your long-term compounding objectives.",
+          Icon: ShieldCheck,
+          gold: false
+        }
+      ],
       blogsTitle: "Market Research & AI Wealth Blogs",
       blogsSub: "Stay informed with institutional market insights, tax optimization strategies, and algorithmic wealth research.",
       faqTitle: "Frequently Asked Questions",
@@ -306,14 +350,58 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
       metrics1: "प्रबंधित संपत्तियां",
       metrics2: "सक्रिय निवेशक",
       metrics3: "औसत लाभ",
-      svcTitle: "हमारी सेवाएं",
-      svcSub: "व्यापक धन समाधान",
-      svc1Title: "धन प्रबंधन",
-      svc1Desc: "पीढ़ियों के लिए आपकी संपत्ति को बढ़ाने और संरक्षित करने के लिए समग्र पोर्टफोलियो प्रबंधन।",
-      svc2Title: "निवेश सलाहकार सेवाएं",
-      svc2Desc: "आपकी अनूठी निवेश प्रोफ़ाइल के अनुसार विशेषज्ञ एआई-निर्देशित सलाहकार सेवाएं।",
-      svc3Title: "सेवानिवृत्ति योजना",
-      svc3Desc: "बुद्धिमान, एआई-संचालित दीर्घकालिक रणनीतियों के साथ अपनी सेवानिवृत्ति जीवन शैली को सुरक्षित करें।",
+      svcTitle: "हमारी सेवाएं व उत्पाद (What We Offer)",
+      svcSub: "म्यूचुअल फंड, पीएमएस, एआईएफ, एसआईएफ एवं पोर्टफोलियो रीबैलेंसिंग",
+      servicesList: [
+        {
+          id: 'mf',
+          title: "म्यूचुअल फंड्स (Mutual Funds)",
+          badge: "सेबी पंजीकृत वितरण",
+          desc: "इक्विटी, डेट और हाइब्रिड म्यूचुअल फंड्स का विशेषज्ञ चयन। मात्रात्मक जोखिम मूल्यांकन और उच्च अल्फा जनरेशन के आधार पर संरचित पोर्टफोलियो।",
+          Icon: PieChart,
+          gold: true
+        },
+        {
+          id: 'pms',
+          title: "पोर्टफोलियो मैनेजमेंट सर्विसेज (PMS)",
+          badge: "एचएनआई केंद्रित",
+          desc: "उच्च-निवल-मूल्य वाले निवेशकों (HNIs) और पारिवारिक कार्यालयों के लिए विशेष रूप से तैयार की गई विवेकाधीन और गैर-विवेकाधीन पोर्टफोलियो प्रबंधन सेवाएं।",
+          Icon: Briefcase,
+          gold: false
+        },
+        {
+          id: 'aif',
+          title: "अल्टरनेटिव इन्वेस्टमेंट फंड्स (AIF)",
+          badge: "कैटेगरी I, II & III",
+          desc: "प्राइवेट इक्विटी, संरचित ऋण, प्री-आईपीओ और लॉन्ग-शॉर्ट रणनीतियों में संस्थागत स्तर के निवेश के विशेष अवसर।",
+          Icon: TrendingUp,
+          gold: true
+        },
+        {
+          id: 'sif',
+          title: "स्पेशलाइज्ड इन्वेस्टमेंट फंड्स (SIF)",
+          badge: "स्ट्रक्चर्ड वेल्थ",
+          desc: "बाजार-लिंक्ड डिबेंचर और संरचित निवेश समाधान जो पूंजी सुरक्षा के साथ बेहतर रिटर्न प्रदान करने के लिए तैयार किए गए हैं।",
+          Icon: Cpu,
+          gold: false
+        },
+        {
+          id: 'rebalance',
+          title: "म्यूचुअल फंड पोर्टफोलियो रीबैलेंसिंग",
+          badge: "एआई व एल्गोरिदम आधारित",
+          desc: "आपके मौजूदा म्यूचुअल फंड पोर्टफोलियो का निरंतर विश्लेषण। कमजोर प्रदर्शन वाले फंडों को हटाना और लक्षित आवंटन बनाए रखने के लिए स्वचालित रीबैलेंसिंग।",
+          Icon: RefreshCw,
+          gold: true
+        },
+        {
+          id: 'wealth',
+          title: "वेल्थ मैनेजमेंट (Wealth Management)",
+          badge: "समग्र वित्तीय प्रबंधन",
+          desc: "पीढ़ियों के लिए आपकी संपत्ति को सुरक्षित रखने और बढ़ाने के लिए समग्र परिसंपत्ति आवंटन, कर अनुकूलन और दीर्घकालिक रणनीतियां।",
+          Icon: ShieldCheck,
+          gold: false
+        }
+      ],
       blogsTitle: "बाजार अनुसंधान एवं एआई वेल्थ लेख",
       blogsSub: "संस्थागत बाजार अंतर्दृष्टि, कर अनुकूलन रणनीतियों और एल्गोरिदम अनुसंधान से सूचित रहें।",
       faqTitle: "अक्सर पूछे जाने वाले प्रश्न (FAQ)",
@@ -495,7 +583,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
       <section className="lp-metrics fade-in-section">
         <div className="lp-container lp-metrics-inner">
           {[
-            { Icon: Wallet,  val: '$2.5B+', label: t.metrics1, gold: true  },
+            { Icon: Wallet,  val: '₹2,500 Cr+', label: t.metrics1, gold: true  },
             { Icon: Users,   val: '50K+',   label: t.metrics2, gold: false },
             { Icon: Percent, val: '18.4%',  label: t.metrics3, gold: true  },
           ].map(({ Icon, val, label, gold }) => (
@@ -510,21 +598,20 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
         </div>
       </section>
 
-      {/* ── Services ──────────────────────────────────────────────── */}
+      {/* ── Services / What We Offer ──────────────────────────────── */}
       <section className="lp-section fade-in-section" id="services">
         <div className="lp-container">
           <h2 className="lp-section-title">{t.svcTitle}</h2>
           <p className="lp-section-sub">{t.svcSub}</p>
           <div className="lp-services-grid">
-            {[
-              { Icon: PieChart,   label: t.svc1Title, desc: t.svc1Desc, gold: true  },
-              { Icon: Briefcase,  label: t.svc2Title, desc: t.svc2Desc, gold: false },
-              { Icon: Award,      label: t.svc3Title, desc: t.svc3Desc, gold: false },
-            ].map(({ Icon, label, desc, gold }) => (
-              <div key={label} className={`glass-card lp-service-card ${gold ? 'gold-border' : 'green-border'}`}>
-                <div className={`lp-svc-icon ${gold ? 'gold' : 'green'}`}><Icon size={22} /></div>
-                <h3>{label}</h3>
-                <p>{desc}</p>
+            {t.servicesList.map(({ id, title, badge, desc, Icon, gold }) => (
+              <div key={id} className={`glass-card lp-service-card ${gold ? 'gold-border' : 'green-border'}`} style={{ display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
+                  <div className={`lp-svc-icon ${gold ? 'gold' : 'green'}`} style={{ marginBottom: 0 }}><Icon size={22} /></div>
+                  <span className={`lp-service-badge ${gold ? 'gold' : 'green'}`}>{badge}</span>
+                </div>
+                <h3 style={{ fontSize: '1.15rem', marginBottom: '10px', color: '#ffffff' }}>{title}</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.55', flex: 1 }}>{desc}</p>
               </div>
             ))}
           </div>
@@ -683,20 +770,23 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             </ul>
           </div>
           <div>
-            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Services</div>
+            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>What We Offer</div>
             <ul className="lp-footer-links">
-              <li>{t.svc1Title}</li>
-              <li>{t.svc2Title}</li>
-              <li>{t.svc3Title}</li>
+              <li>Mutual Funds</li>
+              <li>Portfolio Management Services (PMS)</li>
+              <li>Alternative Investment Funds (AIF)</li>
+              <li>Specialized Investment Funds (SIF)</li>
+              <li>Mutual Fund Portfolio Rebalancing</li>
+              <li>Wealth Management</li>
             </ul>
           </div>
           <div>
             <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Contact & Regulatory</div>
             <ul className="lp-footer-links">
               <li>SEBI Reg: INA000098765</li>
-              <li>SEC RIA #801-123456</li>
-              <li>info@aicapital.com</li>
-              <li>+1 (555) 123-4567</li>
+              <li>NSE / BSE Intermediary</li>
+              <li>CDSL / NSDL Qualified Custody</li>
+              <li>compliance@aicapitalinvestment.com</li>
             </ul>
           </div>
           <div>
@@ -710,7 +800,7 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
         {/* Global YMYL Disclaimer */}
         <div className="lp-container" style={{ paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.05)', marginTop: '20px' }}>
           <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', lineHeight: 1.5, textAlign: 'center' }}>
-            <strong>YMYL Investment Compliance Disclosure:</strong> AI Capital Investment LLC is a Registered Investment Advisor (RIA) with the US SEC and SEBI (India). Algorithmic trading involves market risk including potential loss of principal. Securities offered through SIPC member custodian brokerages. FDIC sweep insurance applies exclusively to uninvested cash deposits at partner banks up to $2,500,000 per depositor.
+            <strong>YMYL Investment Compliance Disclosure:</strong> AI Capital Investment is an institutional wealth management and algorithmic advisory intermediary. Mutual funds, PMS, AIF, and SIF securities investments are subject to market risks. Read all scheme and offer-related documents carefully before investing. Client assets are held in segregated investor demat accounts at SEBI/RBI qualified depositories (CDSL/NSDL) and scheduled commercial custodian partner banks. Past performance does not guarantee future results.
           </p>
         </div>
 

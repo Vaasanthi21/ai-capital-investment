@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { 
     LayoutDashboard, Users, Sparkles, LogOut, Send, 
-    CheckCircle2, AlertCircle, RefreshCw, Phone, Mail, DollarSign,
+    CheckCircle2, AlertCircle, RefreshCw, Phone, Mail, IndianRupee,
     CreditCard, History, PlusCircle, Search, Download, ShieldCheck, X, Filter,
     Calendar, Video, TrendingUp, BarChart3, PieChart, ShieldAlert, FileCheck, Scissors, Activity, Award, CheckSquare
 } from 'lucide-react';
@@ -500,7 +500,7 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
                                                 <div style={{ textAlign: 'right' }}>
                                                     <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>Assigned Assets</span>
                                                     <h4 className="glow-text-gold" style={{ fontSize: '1.25rem', fontWeight: 700, margin: '2px 0 0' }}>
-                                                        {"$" + client.investmentAmount.toLocaleString()}
+                                                        {"₹" + client.investmentAmount.toLocaleString('en-IN')}
                                                     </h4>
                                                 </div>
                                             </div>
@@ -515,7 +515,7 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
                                                     <span>{client.phone}</span>
                                                 </div>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                    <DollarSign size={14} style={{ color: 'var(--color-gold)' }} />
+                                                    <IndianRupee size={14} style={{ color: 'var(--color-gold)' }} />
                                                     <span>Goal: <strong>{client.goal} Planning</strong></span>
                                                 </div>
                                             </div>
@@ -876,7 +876,7 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
                                 <div style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)', padding: '12px 14px', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Total Active Capital</span>
                                     <span className="glow-text-gold" style={{ fontSize: '1.2rem', fontWeight: 800 }}>
-                                        ${(activeClient ? activeClient.investmentAmount : 0).toLocaleString()}
+                                        ₹{(activeClient ? activeClient.investmentAmount : 0).toLocaleString('en-IN')}
                                     </span>
                                 </div>
 
@@ -905,7 +905,7 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
                                                         <td style={{ fontFamily: 'monospace', color: 'var(--color-gold)', fontWeight: 600 }}>{txn.id}</td>
                                                         <td style={{ color: 'var(--text-secondary)' }}>{new Date(txn.date).toLocaleDateString()}</td>
                                                         <td style={{ fontWeight: 600, color: '#fff' }}>{txn.tier}</td>
-                                                        <td style={{ color: 'var(--color-green)', fontWeight: 700 }}>+${(txn.amount || 0).toLocaleString()}</td>
+                                                        <td style={{ color: 'var(--color-green)', fontWeight: 700 }}>+₹{(txn.amount || 0).toLocaleString('en-IN')}</td>
                                                     </tr>
                                                 ))}
                                             </tbody>
@@ -1040,7 +1040,7 @@ const AdvisorDepositsSection = ({ clients }: { clients: Client[] }) => {
                 <div className="widget glass-card" style={{ padding: '20px' }}>
                     <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Client AUM Deposited</span>
                     <h3 className="glow-text-gold" style={{ fontSize: '1.6rem', fontWeight: 800, margin: '6px 0 2px' }}>
-                        ${totalAumDeposited.toLocaleString()}
+                        ₹{totalAumDeposited.toLocaleString('en-IN')}
                     </h3>
                     <span style={{ fontSize: '0.72rem', color: 'var(--color-green)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                         <CheckCircle2 size={12} /> Verified Clearing Deposits
@@ -1066,7 +1066,7 @@ const AdvisorDepositsSection = ({ clients }: { clients: Client[] }) => {
                 <div className="widget glass-card" style={{ padding: '20px' }}>
                     <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Average Deposit / Client</span>
                     <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-green)', margin: '6px 0 2px' }}>
-                        ${avgDeposit.toLocaleString()}
+                        ₹{avgDeposit.toLocaleString('en-IN')}
                     </h3>
                     <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Mean Inflow Volume</span>
                 </div>
@@ -1144,7 +1144,7 @@ const AdvisorDepositsSection = ({ clients }: { clients: Client[] }) => {
                                             </td>
                                             <td style={{ fontWeight: 600, color: '#fff' }}>{txn.tier}</td>
                                             <td style={{ color: isCredit ? 'var(--color-gold)' : 'var(--color-green)', fontWeight: 800, fontSize: '0.88rem' }}>
-                                                +${(txn.amount || 0).toLocaleString()}
+                                                +₹{(txn.amount || 0).toLocaleString('en-IN')}
                                             </td>
                                             <td style={{ color: 'var(--text-secondary)' }}>
                                                 {new Date(txn.date).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
@@ -1230,7 +1230,7 @@ const AdvisorDepositsSection = ({ clients }: { clients: Client[] }) => {
                             </div>
                             <div style={{ borderTop: '1px dashed rgba(255,255,255,0.1)', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <span style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 700 }}>Amount Deposited</span>
-                                <span style={{ fontSize: '1.3rem', color: 'var(--color-green)', fontWeight: 800 }}>+${(selectedReceipt.amount || 0).toLocaleString()}</span>
+                                <span style={{ fontSize: '1.3rem', color: 'var(--color-green)', fontWeight: 800 }}>+₹{(selectedReceipt.amount || 0).toLocaleString('en-IN')}</span>
                             </div>
                         </div>
 
@@ -1606,7 +1606,7 @@ const AdvisorTaxOptimizerSection = ({ clients }: { clients: Client[] }) => {
                 <div className="widget glass-card" style={{ padding: '20px' }}>
                     <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Harvestable Loss Identified</span>
                     <h3 className="glow-text-gold" style={{ fontSize: '1.6rem', fontWeight: 800, margin: '6px 0 2px' }}>
-                        $3,850.00
+                        ₹3,85,000.00
                     </h3>
                     <span style={{ fontSize: '0.72rem', color: 'var(--color-green)' }}>Unrealized Capital Loss</span>
                 </div>
@@ -1614,7 +1614,7 @@ const AdvisorTaxOptimizerSection = ({ clients }: { clients: Client[] }) => {
                 <div className="widget glass-card" style={{ padding: '20px' }}>
                     <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Estimated Tax Shield Value</span>
                     <h3 style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-green)', margin: '6px 0 2px' }}>
-                        $1,450.00
+                        ₹1,45,000.00
                     </h3>
                     <span style={{ fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Offset Taxable Dividends</span>
                 </div>
@@ -1651,10 +1651,10 @@ const AdvisorTaxOptimizerSection = ({ clients }: { clients: Client[] }) => {
                                         <div style={{ fontWeight: 600, color: '#fff' }}>{client.name}</div>
                                         <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{client.email}</div>
                                     </td>
-                                    <td style={{ color: 'var(--color-gold)', fontWeight: 600 }}>US TECH-BOND-2026</td>
-                                    <td style={{ color: '#ff5252', fontWeight: 700 }}>-$3,850.00</td>
-                                    <td style={{ color: 'var(--color-green)', fontWeight: 700 }}>+$1,770.50</td>
-                                    <td style={{ color: 'var(--color-green)', fontWeight: 800, fontSize: '0.9rem' }}>$1,450.00 Shield</td>
+                                    <td style={{ color: 'var(--color-gold)', fontWeight: 600 }}>NIFTY-ALPHA-50-ETF</td>
+                                    <td style={{ color: '#ff5252', fontWeight: 700 }}>-₹3,85,000.00</td>
+                                    <td style={{ color: 'var(--color-green)', fontWeight: 700 }}>+₹1,77,050.00</td>
+                                    <td style={{ color: 'var(--color-green)', fontWeight: 800, fontSize: '0.9rem' }}>₹1,45,000.00 Shield</td>
                                     <td style={{ textAlign: 'right' }}>
                                         {dispatched[client.email] ? (
                                             <span style={{ color: 'var(--color-green)', fontSize: '0.76rem', fontWeight: 600 }}>✓ Proposal Sent!</span>
