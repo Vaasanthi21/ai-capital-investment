@@ -36,7 +36,15 @@ export default function MutualFundRebalancingPage({ onNavigate }: MutualFundReba
   });
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const hash = window.location.hash;
+    if (hash) {
+      setTimeout(() => {
+        const el = document.querySelector(hash);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 150);
+    } else {
+      window.scrollTo(0, 0);
+    }
   }, []);
 
   const handleSimulate = () => {
@@ -195,15 +203,23 @@ export default function MutualFundRebalancingPage({ onNavigate }: MutualFundReba
             <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
               <a 
                 href="#audit-form"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('audit-form')?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="btn btn-gold"
-                style={{ padding: '12px 28px', fontSize: '0.95rem', borderRadius: '24px', display: 'inline-flex', alignItems: 'center', gap: '8px', fontWeight: 700 }}
+                style={{ padding: '12px 28px', fontSize: '0.95rem', borderRadius: '24px', display: 'inline-flex', alignItems: 'center', gap: '8px', fontWeight: 700, cursor: 'pointer' }}
               >
                 <FileText size={16} /> {language === 'en' ? 'Get Free CAS Portfolio Audit' : 'मुफ्त पोर्टफोलियो ऑडिट प्राप्त करें'}
               </a>
               <a 
                 href="#simulator"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('simulator')?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="btn btn-green-outline"
-                style={{ padding: '12px 26px', fontSize: '0.95rem', borderRadius: '24px', display: 'inline-flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}
+                style={{ padding: '12px 26px', fontSize: '0.95rem', borderRadius: '24px', display: 'inline-flex', alignItems: 'center', gap: '8px', fontWeight: 600, cursor: 'pointer' }}
               >
                 <Sliders size={16} /> {language === 'en' ? 'Simulate Rebalance Impact' : 'रीबैलेंस सिमुलेटर चलाएं'}
               </a>
@@ -225,7 +241,7 @@ export default function MutualFundRebalancingPage({ onNavigate }: MutualFundReba
         </section>
 
         {/* ── Interactive Rebalancing Simulator ────────────────────── */}
-        <section className="lp-section fade-in-section" id="simulator" style={{ paddingTop: '20px' }}>
+        <section className="lp-section" id="simulator" style={{ paddingTop: '20px' }}>
           <div className="lp-container" style={{ maxWidth: '960px' }}>
             <div className="glass-card gold-border" style={{ padding: '36px', borderRadius: '20px', background: 'radial-gradient(circle at top right, rgba(212,175,55,0.08), rgba(6,14,8,0.95))' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
@@ -369,7 +385,7 @@ export default function MutualFundRebalancingPage({ onNavigate }: MutualFundReba
         </section>
 
         {/* ── 4 Pillars of Algorithmic Rebalancing ─────────────────── */}
-        <section className="lp-section fade-in-section" id="pillars">
+        <section className="lp-section" id="pillars">
           <div className="lp-container">
             <div style={{ textAlign: 'center', marginBottom: '40px' }}>
               <h2 className="lp-section-title">
@@ -417,7 +433,7 @@ export default function MutualFundRebalancingPage({ onNavigate }: MutualFundReba
         </section>
 
         {/* ── How It Works Process ──────────────────────────────────── */}
-        <section className="lp-section fade-in-section" style={{ background: 'rgba(0,0,0,0.2)' }}>
+        <section className="lp-section" style={{ background: 'rgba(0,0,0,0.2)' }}>
           <div className="lp-container">
             <div style={{ textAlign: 'center', marginBottom: '40px' }}>
               <h2 className="lp-section-title">
@@ -446,7 +462,7 @@ export default function MutualFundRebalancingPage({ onNavigate }: MutualFundReba
         </section>
 
         {/* ── Free CAS Portfolio Audit Lead Capture Form ────────────── */}
-        <section className="lp-section fade-in-section" id="audit-form">
+        <section className="lp-section" id="audit-form">
           <div className="lp-container" style={{ maxWidth: '780px' }}>
             <div className="glass-card gold-border" style={{ padding: '40px 32px', borderRadius: '20px' }}>
               <div style={{ textAlign: 'center', marginBottom: '28px' }}>
@@ -564,7 +580,7 @@ export default function MutualFundRebalancingPage({ onNavigate }: MutualFundReba
         </section>
 
         {/* ── Rebalancing FAQ Section ──────────────────────────────── */}
-        <section className="lp-section fade-in-section" id="rebalance-faq">
+        <section className="lp-section" id="rebalance-faq">
           <div className="lp-container" style={{ maxWidth: '820px' }}>
             <div style={{ textAlign: 'center', marginBottom: '32px' }}>
               <h2 className="lp-section-title">Rebalancing FAQs</h2>
