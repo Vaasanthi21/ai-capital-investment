@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { 
   Cpu, ShieldCheck, TrendingUp, UserCheck, Wallet, Users, Percent, 
   PieChart, Briefcase, Award, Globe, BookOpen, Clock, ArrowRight, X, Menu,
-  RefreshCw, ChevronDown, ChevronUp
+  RefreshCw, ChevronDown, ChevronUp, Calculator, Calendar, Landmark, Heart, Activity,
+  Lock, BarChart3, Target, Phone, MessageCircle, CheckCircle2, GraduationCap, Sun, FileText, Sparkles
 } from 'lucide-react';
 import HeroCanvas from './HeroCanvas';
 import ParticleBackground from './ParticleBackground';
 import LeadCaptureForm from './LeadCaptureForm';
 import WealthManagerCertificates from './WealthManagerCertificates';
+import SipCalculator from './SipCalculator';
 
 type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'payment' | 'forgot-password' | 'dashboard' | 'blogs' | 'accreditation' | 'rebalancing';
 
@@ -18,215 +20,58 @@ interface LandingPageProps {
 const blogsData = [
   {
     id: "ai-wealth-management-revolution",
-    titleEn: "AI-Driven Asset Allocation: Outperforming Inflation & Market Volatility in 2026",
-    titleHi: "AI-संचालित परिसंपत्ति आवंटन: 2026 में मुद्रास्फीति और बाजार की अस्थिरता से आगे निकलना",
-    category: "AI Wealth",
+    titleEn: "Goal-Based Wealth Planning: Outperforming Inflation & Market Volatility in 2026",
+    titleHi: "लक्ष्य-आधारित धन योजना: 2026 में मुद्रास्फीति और बाजार की अस्थिरता से आगे निकलना",
+    category: "Mutual Funds",
     date: "July 20, 2026",
     readTime: "6 min read (460 words)",
-    author: "Dr. Aris Thorne (Chief Quantitative Strategist)",
+    author: "Ankush Jain (Mutual Fund Distributor)",
     url: "https://www.investopedia.com/financial-advisor/how-ai-is-changing-wealth-management/",
     image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=600&q=75",
-    imageAltEn: "AI Quantitative Stock Chart & Financial Trading Analytics Dashboard",
-    imageAltHi: "एआई मात्रात्मक स्टॉक चार्ट और वित्तीय व्यापार विश्लेषण डैशबोर्ड",
-    excerptEn: "If you are just starting your financial journey, AI-Driven Asset Allocation in 2026 helps build, monitor, and adjust your portfolio so your money keeps up with inflation while reducing emotional trading mistakes during market volatility.",
-    excerptHi: "यदि आप अपनी वित्तीय यात्रा शुरू कर रहे हैं, तो 2026 में AI-संचालित परिसंपत्ति आवंटन आपकी परिसंपत्तियों को मुद्रास्फीति और बाजार में उतार-चढ़ाव से बचाने में मदद करता है।",
-    contentEn: `If you are just starting your financial journey, AI-Driven Asset Allocation: Outperforming Inflation & Market Volatility in 2026 may sound advanced or even intimidating. But the idea is actually simple: use smarter technology to build, monitor, and adjust your portfolio so your money has a better chance of keeping up with inflation while reducing the emotional mistakes that often happen during market swings.
-
-For graduates and first-time investors, that matters a lot. You are balancing career decisions, rising living costs, and uncertainty about what the market will do next. The good news is that AI investing tools are becoming more practical, more accessible, and easier to understand.
-
-### Why 2026 Feels Challenging for Beginner Investors
-Inflation has changed how people think about savings. Leaving money idle can feel safe in the short term, but over time, inflation can quietly reduce purchasing power. At the same time, market volatility can make investing feel risky, especially when headlines shift daily. That is exactly why AI-Driven Asset Allocation is gaining attention. Instead of relying only on static portfolios or emotional decision-making, AI-powered systems can respond faster to changing conditions.
-
-### What AI-Driven Asset Allocation Actually Means
-At its core, AI-Driven Asset Allocation in 2026 means using machine learning and automated decision systems to decide how much of your portfolio should be in different asset classes, such as equities, bonds, cash alternatives, or inflation-sensitive investments. Think of it like having a smart co-pilot—it does not just set a portfolio once and forget it. It keeps watching the road.
-
-### Multi-Agent Neural Networks & 24/7 Rebalancing
-Instead of one model doing everything, multiple AI agents specialize in different tasks: monitoring macroeconomic signals, tracking market volatility, identifying portfolio drift, spotting tax-saving opportunities, and stress-testing risk scenarios. Automated 24/7 rebalancing maintains target allocations automatically, trimming overperforming assets and redirecting capital into underweighted hedges.
-
-### Volatility Shield Risk Controls & Step-by-Step Guide
-A Volatility Shield monitors market stress, correlation changes, and sudden drawdown risk to keep your portfolio aligned with your long-term comfort level. Step 1: Start with your life goals. Step 2: Define your risk level honestly. Step 3: Use automation for consistency. Step 4: Review periodically without obsessing over daily market charts.
-
-### Key Institutional Takeaways:
-• AI asset allocation replaces static models with 24/7 continuous market monitoring and risk-adjusted rebalancing.
-• Multi-agent neural networks specialize in tracking volatility, tax-loss harvesting, and macroeconomic signals.
-• Automated Volatility Shields help protect capital during market drawdowns while keeping up with inflation.
-• Ideal for graduates and beginner investors seeking disciplined, low-friction, long-term wealth building.`,
-    contentHi: `आर्टिफिशियल इंटेलिजेंस धन प्रबंधन क्षेत्र का पुनर्गठन कर रहा है। दशकों से निवेशक मानव सलाहकारों पर निर्भर थे। आधुनिक AI प्लेटफॉर्म 24/7 वैश्विक बाजार संकेतकों की निगरानी करते हैं और बाजार में उतार-चढ़ाव के दौरान तुरंत ट्रेड निष्पादित करते हैं।
-
-### 1. पारंपरिक 60/40 मॉडल की सीमाएं
-पारंपरिक स्थिर मॉडल मुद्रास्फीति के दौरान कमजोर साबित होते हैं। बहु-एजेंट एल्गोरिथम आर्किटेक्चर वैश्विक परिसंपत्तियों में 24/7 जोखिम बजट को समायोजित करते हैं।
-
-### 2. माइक्रो-रीबैलेंसिंग और वोलेटिलिटी रक्षा
-बाजार में गिरावट के दौरान स्वचालित एल्गोरिदम तुरंत माइक्रो-रीबैलेंसिंग निष्पादित करते हैं।
-
-### मुख्य बातें:
-• 24/7 एल्गोरिथम निगरानी मानवीय पूर्वाग्रह को समाप्त करती है।
-• गतिशील जोखिम बजटिंग अधिकतम नुकसान को कम करती है।`
-  },
-  {
-    id: "tax-loss-harvesting-guide",
-    titleEn: "Tax-Loss Harvesting Guide: Maximizing Net Investment Returns",
-    titleHi: "टैक्स-लॉस हार्वेस्टिंग गाइड: शुद्ध निवेश रिटर्न को अधिकतम करना",
-    category: "Tax Strategy",
-    date: "July 18, 2026",
-    readTime: "9 min read (540 words)",
-    author: "Elena Rostova, CFA (Senior Tax Strategy Director)",
-    url: "https://www.investopedia.com/terms/t/tax-lossharvesting.asp",
-    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=600&q=75",
-    imageAltEn: "Automated Tax Loss Harvesting & Financial Wealth Tax Shield Analytics",
-    imageAltHi: "स्वचालित टैक्स-लॉस हार्वेस्टिंग और वित्तीय धन कर शील्ड विश्लेषण",
-    excerptEn: "Automated tax-loss harvesting (TLH) allows accredited investors to systematically convert unrealized asset losses into tax-deductible capital credits. By algorithmically swapping declining assets into correlated index proxies without violating wash-sale rules, TLH adds 1.2% to 1.8% in net annual compound performance.",
-    excerptHi: "टैक्स-लॉस हार्वेस्टिंग में पूंजीगत लाभ कर देनदारियों को कम करने के लिए गिरती परिसंपत्तियों को नुकसान पर बेचना शामिल है। स्वचालित एल्गोरिदम वॉश-सेल नियमों का उल्लंघन किए बिना दैनिक स्कैन करते हैं।",
-    contentEn: `Tax-loss harvesting (TLH) is widely recognized by institutional asset managers as one of the most powerful quantitative tools for preserving net investment returns. By algorithmically monitoring portfolio positions 24 hours a day, automated trading systems identify positions trading at a temporary unrealized loss and harvest them to offset capital gains tax obligations.
-
-### 1. Navigating Wash-Sale Regulations
-Executing tax-loss harvesting manually presents significant regulatory hurdles due to IRS wash-sale rules, which disallow tax deductions if a virtually identical security is repurchased within 30 days. Automated AI execution engines resolve this challenge by instantly swapping harvested positions into correlated proxy tracking funds (such as replacing an S&P 500 ETF with a Total Market Index ETF). This preserves target market exposure while securing legally compliant tax write-offs.
-
-### 2. Offsetting Dividend & Capital Gains Taxes
-Harvested capital losses directly shield taxable dividend distributions, short-term realized capital gains (STCG), and optimize income tax liabilities under Indian tax provisions (Section 54/80C/112A). Over a multi-year investment horizon, compounding these annual tax savings generates substantial tax alpha, adding an estimated 1.2% to 1.8% to net annual compound returns without altering your underlying risk profile.
-
-### 3. Continuous Year-Round Harvesting vs. Year-End Execution
-Traditional wealth management firms typically execute tax-loss harvesting exclusively in December. However, market pullbacks occur continuously throughout the year. Algorithmic tax engines scan holdings daily, booking temporary market losses during intraday dips in April, August, or October, capturing up to 3x more harvested tax credits than annual year-end sweeps.
-
-### Key Institutional Takeaways:
-• Algorithmic execution continuously tracks 30-day wash-sale timelines to guarantee strict regulatory compliance.
-• Realized tax losses offset taxable dividend income, short-term capital gains, and real estate income.
-• Systematic tax-loss harvesting adds an estimated 1.2% to 1.8% in net annual compounding performance.
-• Daily automated scans capture 3x more tax-loss opportunities than traditional year-end rebalancing.`,
-    contentHi: `टैक्स-लॉस हार्वेस्टिंग निवेशकों के लिए सबसे प्रभावी धन संरक्षण रणनीतियों में से एक है। गिरती परिसंपत्तियों पर नुकसान दर्ज करके, निवेशक लाभ पर कर देनदारियों को कम करते हैं।
-
-### 1. वॉश-सेल नियमों का अनुपालन
-स्वचालित एल्गोरिदम 30 दिनों के वॉश-सेल प्रतिबंधों का पालन करते हुए संपत्ति बदलते हैं।
-
-### 2. कर बचत और शुद्ध रिटर्न
-स्वचालित टैक्स हार्वेस्टिंग शुद्ध वार्षिक चक्रवृद्धि रिटर्न में 1.2% से 1.8% की वृद्धि करती है।
-
-### मुख्य बातें:
-• 24/7 निगरानी वॉश-सेल अनुपालन सुनिश्चित करती है।
-• दर्ज नुकसान कर योग्य आय को संतुलित करते हैं।`
-  },
-  {
-    id: "digital-assets-crypto-mechanics",
-    titleEn: "Understanding Digital Assets & Cryptocurrency Market Mechanics",
-    titleHi: "डिजिटल परिसंपत्तियों और क्रिप्टोकरेंसी बाजार तंत्र को समझना",
-    category: "Crypto Yields",
-    date: "July 15, 2026",
-    readTime: "8 min read (500 words)",
-    author: "Marcus Vance (Director of Digital Assets)",
-    url: "https://www.investopedia.com/terms/c/cryptocurrency.asp",
-    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=600&q=75",
-    imageAltEn: "Digital Assets Vault & Algorithmic Cryptocurrency Staking Yield Analytics",
-    imageAltHi: "डिजिटल संपत्ति वॉल्ट और एल्गोरिथम क्रिप्टोकरेंसी स्टेकिंग लाभ विश्लेषण",
-    excerptEn: "Digital assets like Bitcoin and Ethereum have transitioned from speculative tokens into essential non-correlated institutional wealth components. Strategic 5% to 10% risk-weighted allocations provide liquidity hedging and digital gold protection during global fiat currency debasement.",
-    excerptHi: "बिटकॉइन और एथेरियम जैसी डिजिटल परिसंपत्तियां संस्थागत परिसंपत्ति वर्गों के रूप में विकसित हुई हैं। रणनीतिक आवंटन पारंपरिक बॉन्ड के साथ कम संबंध प्रदान करते हैं।",
-    contentEn: `Digital assets such as Bitcoin (BTC) and Ethereum (ETH) have matured from speculative instruments into recognized global institutional asset classes. Quantitative portfolio managers utilize controlled digital asset allocations to capture non-correlated alpha alongside traditional equity portfolios and fixed-income reserves.
-
-### 1. Institutional Adoption & Macro Hedging
-Digital assets demonstrate low long-term correlation to traditional sovereign bonds, functioning as digital gold hedges during periods of central bank monetary expansion and fiat currency debasement. Institutional-grade dual-custody cold storage vaults protect underlying keys while automated validator algorithms capture staking yields on network reserves.
-
-### 2. Volatility-Weighted Position Budgeting
-Because digital assets experience higher historical price volatility, quantitative risk models utilize volatility-weighted position budgeting rather than fixed static allocations. Position sizing scales up automatically during historical volatility contractions and dynamically scales back into liquid treasury cash reserves during market pullbacks, safeguarding principal capital.
-
-### 3. Proof-of-Stake Yield Accumulation
-Beyond capital appreciation, liquid staking mechanisms allow institutional holders to earn native staking yields (4% - 6% APY) directly on underlying Ethereum reserves. Algorithmic smart vaults route staking rewards back into principal compound balances while maintaining instant liquidity options.
-
-### Key Institutional Takeaways:
-• Non-correlated digital asset allocation enhances overall portfolio Sharpe ratios against fiat inflation.
-• Volatility-weighted position budgeting automatically protects principal capital during market sell-offs.
-• Institutional cold-storage custody ensures bank-grade asset security for digital holdings.
-• Native Proof-of-Stake validator rewards yield 4% - 6% APY in automated compounding returns.`,
-    contentHi: `क्रिप्टोकरेंसी और विकेंद्रीकृत नेटवर्क वैश्विक परिसंपत्ति वर्गों में परिपक्व हुए हैं। संस्थागत निवेशक पारंपरिक बॉन्ड के साथ विविधता प्राप्त करने के लिए नियंत्रित आवंटन का उपयोग करते हैं।
-
-### 1. संस्थागत अपनाव और मैक्रो हेजिंग
-डिजिटल परिसंपत्तियां मुद्रास्फीति के खिलाफ डिजिटल गोल्ड हेज के रूप में कार्य करती हैं।
-
-### 2. वोलेटिलिटी-भारित आवंटन
-मात्रात्मक मॉडल बाजार pullbacks के दौरान पूंजी की रक्षा के लिए आवंटन को संतुलित करते हैं।
-
-### मुख्य बातें:
-• गैर-संबंधित आवंटन पोर्टफोलियो विविधता में सुधार करता है।
-• कोल्ड-स्टोरेज कस्टडी सुरक्षा सुनिश्चित करती है।`
-  },
-  {
-    id: "sec-investor-alerts-risk-guidance",
-    titleEn: "U.S. Securities & Exchange Commission Investor Alerts & Risk Guidance",
-    titleHi: "अमेरिकी प्रतिभूति और विनिमय आयोग निवेशक अलर्ट और जोखिम मार्गदर्शन",
-    category: "Risk Management",
-    date: "July 10, 2026",
-    readTime: "7 min read (480 words)",
-    author: "Sarah Jenkins (Regulatory & Compliance Lead)",
-    url: "https://www.sec.gov/investor/alerts",
-    image: "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=600&q=75",
-    imageAltEn: "AI Volatility Shield & Risk Hedging Market Liquidity Defense Graph",
-    imageAltHi: "एआई वोलेटिलिटी शील्ड और जोखिम हेजिंग बाजार तरलता रक्षा ग्राफ",
-    excerptEn: "Official regulatory guidelines and risk management bulletins published by the U.S. Securities and Exchange Commission (SEC) to educate investors on capital protection, automated trading compliance, fiduciary duties, and independent asset custody.",
-    excerptHi: "निवेशकों को पूंजी सुरक्षा, स्वचालित ट्रेडिंग अनुपालन और वित्तीय धोखाधड़ी रोकथाम पर शिक्षित करने के लिए SEC द्वारा प्रकाशित आधिकारिक नियामक अलर्ट।",
-    contentEn: `The U.S. Securities and Exchange Commission (SEC) issues regular investor alerts and regulatory bulletins to safeguard individual capital and maintain fair, orderly markets. Understanding regulatory frameworks is essential when evaluating automated quantitative investment platforms and wealth advisory services.
-
-### 1. Fiduciary Duties & Investor Protection
-Under the Investment Advisers Act, SEC-registered investment advisors (RIAs) are held to strict fiduciary standards. This legal mandate requires wealth managers to prioritize client best interests above all else, providing complete transparency regarding algorithmic strategy mechanics, fee structures, and execution routing.
-
-### 2. Qualified Custody & Asset Isolation
-Regulatory standards mandate that client funds must be deposited with qualified independent custodian brokerages rather than held directly on an advisory firm's balance sheet. This segregation ensures that client accounts are protected by SIPC insurance coverage and isolated from operational business risks.
-
-### 3. Transparent Algorithmic Disclosures
-The SEC emphasizes that quantitative AI platforms must disclose backtesting methodologies, risk limitations, and fee schedules to retail investors. Algorithmic transparency ensures investors understand strategy mechanics during both bull rallies and tail-risk stress events.
-
-### Key Institutional Takeaways:
-• SEC alerts provide authoritative benchmarks for verifying investment advisor credentials and registrations.
-• Fiduciary mandates legally compel advisory platforms to prioritize client financial interests.
-• Qualified independent custodians safeguard client assets against operational and counterparty risks.
-• Full algorithmic disclosures protect investors with transparent strategy backtesting data.`,
-    contentHi: `अमेरिकी प्रतिभूति और विनिमय आयोग (SEC) व्यक्तिगत निवेशकों की सुरक्षा के लिए नियामक अलर्ट जारी करता है। स्वचालित प्लेटफॉर्म का मूल्यांकन करते समय नियामक दिशानिर्देशों को समझना महत्वपूर्ण है।
-
-### 1. प्रत्ययी कर्तव्य और निवेशक सुरक्षा
-SEC-पंजीकृत सलाहकार सख्त प्रत्ययी मानकों के पाबंद हैं जो ग्राहक के सर्वोत्तम हितों को प्राथमिकता देते हैं।
-
-### 2. योग्य स्वतंत्र कस्टडी
-ग्राहक निधि स्वतंत्र कस्टोडियन खातों में अलग रखी जाती है।
-
-### मुख्य बातें:
-• SEC अलर्ट सलाहकार क्रेडेंशियल्स की पुष्टि करते हैं।
-• स्वतंत्र कस्टोडियन निधि सुरक्षा की गारंटी देते हैं।`
+    imageAltEn: "Disciplined Investment and Goal-Based SIP Financial Planning",
+    imageAltHi: "अनुशासित निवेश और लक्ष्य-आधारित एसआईपी वित्तीय योजना",
+    excerptEn: "If you are starting your financial journey, goal-based asset allocation helps build, monitor, and adjust your portfolio so your money keeps up with inflation while reducing emotional trading mistakes.",
+    excerptHi: "यदि आप अपनी वित्तीय यात्रा शुरू कर रहे हैं, तो लक्ष्य-आधारित परिसंपत्ति आवंटन आपकी परिसंपत्तियों को मुद्रास्फीति और बाजार में उतार-चढ़ाव से बचाने में मदद करता है।",
+    contentEn: `Successful investing begins with clear goals, informed decisions, and a disciplined approach. With experience in financial services since 2005, Shubh Nivesh helps individuals and families explore investment solutions for wealth creation, retirement, children's future, and tax planning.`,
+    contentHi: `सफल निवेश की शुरुआत स्पष्ट लक्ष्यों, सूचित निर्णयों और अनुशासित दृष्टिकोण के साथ होती है। 2005 से वित्तीय सेवाओं में अनुभव के साथ, शुभ निवेश धन निर्माण, सेवानिवृत्ति, बच्चों के भविष्य और कर योजना के लिए समाधान प्रदान करता है।`
   }
 ];
 
 const faqData = [
   {
-    qEn: "How does the AI Volatility Shield protect my capital during market crashes?",
-    qHi: "बाजार में गिरावट के दौरान AI वोलेटिलिटी शील्ड मेरी पूंजी की रक्षा कैसे करता है?",
-    aEn: "Our proprietary Volatility Shield continuously monitors macroeconomic indicators, order book depth, and market volatility. When structural downturns or sudden market shocks are detected, the system systematically shifts portfolio weights toward capital-preservation assets and defensive hedges before retail panic occurs.",
-    aHi: "हमारा वोलेटिलिटी शील्ड लगातार वैश्विक मैक्रोइकोनॉमिक संकेतकों और बाजार की अस्थिरता की निगरानी करता है। अत्यधिक बाजार गिरावट का पता चलने पर, प्रणाली खुदरा घबराहट से पहले आपके परिसंपत्तियों को रक्षात्मक व पूंजी सुरक्षा संपत्तियों में स्थानांतरित कर देती है।"
+    qEn: "How does Shubh Nivesh help in Goal-Based Planning?",
+    qHi: "शुभ निवेश लक्ष्य-आधारित योजना में कैसे मदद करता है?",
+    aEn: "We map your investments to specific life milestones—such as a child's higher education, purchasing a home, or creating a retirement corpus. By structuring asset allocation across equity, debt, and hybrid mutual funds based on time horizons and risk profiles, we ensure you stay on course regardless of short-term market noise.",
+    aHi: "हम आपके निवेश को विशिष्ट जीवन मील के पत्थरों से जोड़ते हैं—जैसे बच्चे की उच्च शिक्षा, घर खरीदना, या सेवानिवृत्ति कोष बनाना। हम समय सीमा और जोखिम प्रोफ़ाइल के आधार पर परिसंपत्ति आवंटन की संरचना करते हैं।"
   },
   {
-    qEn: "How does Mutual Fund Portfolio Rebalancing work on the platform?",
-    qHi: "प्लेटफॉर्म पर म्यूचुअल फंड पोर्टफोलियो रीबैलेंसिंग कैसे काम करती है?",
-    aEn: "Our algorithmic engine audits your existing mutual fund schemes for asset drift, sector concentration, and portfolio overlap. When equity or debt allocations drift past target thresholds, the platform generates 1-click tax-optimized rebalancing recommendations to restore your target asset mix without triggering avoidable exit loads or taxes.",
-    aHi: "हमारा एल्गोरिथम इंजन परिसंपत्ति विचलन (ड्रिफ्ट), सेक्टर एकाग्रता और ओवरलैप के लिए आपकी मौजूदा म्यूचुअल फंड योजनाओं की जांच करता है। लक्षित आवंटन से भटकने पर, सिस्टम कर-अनुकूलित रीबैलेंसिंग सिफारिशें तैयार करता है।"
+    qEn: "How does Mutual Fund Portfolio Rebalancing work?",
+    qHi: "म्यूचुअल फंड पोर्टफोलियो रीबैलेंसिंग कैसे काम करती है?",
+    aEn: "Our algorithmic review continuously monitors your existing mutual fund schemes for asset drift, sector concentration, and scheme overlap across AMCs. When allocations deviate from your target tolerance bands, recommendations are generated to restore the target mix in a tax-smart manner.",
+    aHi: "हमारा रीबैलेंसिंग विश्लेषण परिसंपत्ति विचलन (ड्रिफ्ट), सेक्टर एकाग्रता और ओवरलैप के लिए आपकी मौजूदा म्यूचुअल फंड योजनाओं की जांच करता है और कर-अनुकूलित रीबैलेंसिंग सिफारिशें तैयार करता है।"
   },
   {
-    qEn: "How does automated Tax-Loss Harvesting (TLH) increase net yields?",
-    qHi: "स्वचालित टैक्स-लॉस हार्वेस्टिंग (TLH) शुद्ध लाभ को कैसे बढ़ाता है?",
-    aEn: "Tax-loss harvesting identifies unrealized capital losses across your holding positions and executes compliant swaps into correlated tracking index assets. The harvested losses directly offset taxable capital gains and dividend income, adding an estimated 1.2% to 1.8% in annual net compound returns.",
-    aHi: "टैक्स-लॉस हार्वेस्टिंग आपकी होल्डिंग्स में अवास्तविक पूंजीगत नुकसान की पहचान करता है और इंडेक्स फंड में स्वैप निष्पादित करता है। यह नुकसान सीधे कर योग्य पूंजीगत लाभ को संतुलित करता है, जिससे वार्षिक शुद्ध रिटर्न में 1.2% से 1.8% की वृद्धि होती है।"
+    qEn: "Can I start small with a Systematic Investment Plan (SIP)?",
+    qHi: "क्या मैं एक व्यवस्थित निवेश योजना (SIP) के साथ छोटी शुरुआत कर सकता हूं?",
+    aEn: "Yes! You can start disciplined SIP investing with as little as ₹500 to ₹1,000 per month in top-rated equity or index mutual funds. Regular monthly investing leverages rupee cost averaging and compounds significantly over 10 to 20 years.",
+    aHi: "हां! आप शीर्ष रेटेड म्यूचुअल फंड में मात्र ₹500 से ₹1,000 प्रति माह से अनुशासित एसआईपी शुरू कर सकते हैं। नियमित मासिक निवेश रुपये की लागत औसत का लाभ उठाता है और दीर्घकाल में बढ़ता है।"
   },
   {
-    qEn: "What are the investment thresholds across Mutual Funds, PMS, and AIF?",
-    qHi: "म्यूचुअल फंड, पीएमएस और एआईएफ में निवेश सीमाएं क्या हैं?",
-    aEn: "You can start your Mutual Fund and SIP journey with as little as ₹25,000. For specialized PMS mandates, AIF & SIF institutional access, and dedicated senior portfolio management, minimum investment thresholds follow regulatory SEBI guidelines (₹50 Lakhs for PMS and ₹1 Crore for AIF).",
-    aHi: "आप अपने म्यूचुअल फंड और एसआईपी की शुरुआत मात्र ₹25,000 से कर सकते हैं। विशिष्ट पीएमएस (PMS), एआईएफ (AIF) और एसआईएफ (SIF) रणनीतियों के लिए न्यूनतम निवेश सेबी के विनियामक दिशानिर्देशों (पीएमएस के लिए ₹50 लाख और एआईएफ के लिए ₹1 करोड़) का पालन करता है।"
+    qEn: "What products and services does Shubh Nivesh offer?",
+    qHi: "शुभ निवेश कौन से उत्पाद और सेवाएं प्रदान करता है?",
+    aEn: "We offer end-to-end investment and protection solutions: Mutual Funds, SIPs, National Pension System (NPS), Portfolio Management Services (PMS), Alternative Investment Funds (AIFs), Specialised Investment Funds (SIFs), Life & Health Insurance, Fixed Deposits, Stock Broking, NCDs & Bonds, and Portfolio Rebalancing.",
+    aHi: "हम संपूर्ण समाधान प्रदान करते हैं: म्यूचुअल फंड, एसआईपी, एनपीएस (NPS), पीएमएस (PMS), एआईएफ (AIF), एसआईएफ (SIF), जीवन और स्वास्थ्य बीमा, फिक्स्ड डिपॉजिट, स्टॉक ब्रोकिंग, बॉन्ड और रीबैलेंसिंग।"
   },
   {
-    qEn: "Can I consult directly with a human Senior Advisor?",
-    qHi: "क्या मैं सीधे मानव वरिष्ठ सलाहकार से परामर्श कर सकता हूं?",
-    aEn: "Absolutely. While our AI multi-agent algorithms manage day-to-day asset allocation and rebalancing 24/7, all account holders have 1-on-1 access to human Senior Advisors via private advisory chat and scheduled video calls within the platform.",
-    aHi: "बिल्कुल। हालांकि हमारे एआई एल्गोरिदम दैनिक संपत्ति आवंटन को 24/7 प्रबंधित करते हैं, सभी खाताधारकों को प्लेटफॉर्म के भीतर निजी सलाहकार चैट और निर्धारित वीडियो कॉल के माध्यम से मानव वरिष्ठ सलाहकारों तक 1-ऑन-1 पहुंच प्राप्त है।"
+    qEn: "How do I consult directly with Ankush Jain?",
+    qHi: "क्या मैं सीधे अंकुश जैन से परामर्श कर सकता हूं?",
+    aEn: "You can book a 1-on-1 consultation directly through our website booking form, request a callback, or reach out instantly via WhatsApp. With experience in financial services since 2005, Ankush Jain personally reviews your portfolio and financial goals.",
+    aHi: "आप हमारी वेबसाइट फॉर्म के माध्यम से सीधे 1-ऑन-1 परामर्श बुक कर सकते हैं या व्हाट्सएप पर तुरंत संपर्क कर सकते हैं। 2005 से वित्तीय सेवाओं में अनुभव के साथ, अंकुश जैन व्यक्तिगत रूप से आपके पोर्टफोलियो की समीक्षा करते हैं।"
   }
 ];
 
 const LandingPage = ({ onNavigate }: LandingPageProps) => {
   const [language, setLanguage] = useState<'en' | 'hi'>('en');
-  const [blogCategory, setBlogCategory] = useState<string>('All');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
@@ -237,185 +82,343 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
         if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); }
       });
     }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-    els.forEach(el => {
-      obs.observe(el);
-    });
+    els.forEach(el => obs.observe(el));
 
-    // Check for blog deep link in URL
-    const path = window.location.pathname;
-    if (path.includes('/blogs/') || path === '/blogs') {
-      onNavigate('blogs');
-    }
+    // Fallback timer to ensure elements are visible
+    const timer = setTimeout(() => {
+      els.forEach(el => el.classList.add('is-visible'));
+    }, 300);
 
-    return () => els.forEach(el => obs.unobserve(el));
+    return () => {
+      clearTimeout(timer);
+      els.forEach(el => obs.unobserve(el));
+    };
   }, []);
-
-  const filteredBlogs = blogsData.filter(b => blogCategory === 'All' || b.category === blogCategory);
 
   const t = {
     en: {
-      nav: ['Home', 'About', 'What We Offer', 'Investment', 'Blogs', 'FAQ'],
-      heroTitle: "Intelligent Wealth Management for the Modern Investor",
-      heroSub: "Harness AI-driven algorithms, real-time market insights, and personalized strategies to grow your portfolio with confidence.",
-      getStarted: "Get Started",
-      signIn: "Sign In",
-      whyTitle: "Why Choose AI Capital Investment?",
-      whySub: "Smarter Investing, Powered by AI",
-      feat1Title: "AI Portfolio Optimization",
-      feat1Desc: "Advanced algorithms to maximize returns and minimize risk based on real-time market dynamics.",
-      feat2Title: "Risk Management",
-      feat2Desc: "Real-time risk assessment and automated balancing to protect your investments at every step.",
-      feat3Title: "Real-time Analytics",
-      feat3Desc: "Live market data streams, predictive analytics, and instant portfolio insights at your fingertips.",
-      feat4Title: "Personalized Strategies",
-      feat4Desc: "Custom investment portfolios tailored exactly to your financial goals and personal timeline.",
-      metrics1: "Assets Managed",
-      metrics2: "Active Investors",
-      metrics3: "Average Returns",
-      svcTitle: "What We Offer",
-      svcSub: "Comprehensive Solutions: Mutual Funds, PMS, AIF, SIF & Portfolio Rebalancing",
-      servicesList: [
-        {
-          id: 'mf',
-          title: "Mutual Funds",
-          badge: "SEBI Registered Distribution",
-          desc: "Curated direct equity, debt, and balanced mutual fund portfolios. Rigorously vetted through quantitative risk-adjusted performance models, alpha generation metrics, and institutional fund screening.",
-          Icon: PieChart,
-          gold: true
-        },
-        {
-          id: 'pms',
-          title: "Portfolio Management Services (PMS)",
-          badge: "Bespoke HNI Mandates",
-          desc: "Tailored, high-conviction discretionary and non-discretionary equity strategies designed for High-Net-Worth Individuals (HNIs) and family offices seeking focused market alpha.",
-          Icon: Briefcase,
-          gold: false
-        },
-        {
-          id: 'aif',
-          title: "Alternative Investment Funds (AIF)",
-          badge: "Category I, II & III",
-          desc: "Exclusive access to institutional private equity, structured debt, pre-IPO venture funds, and market-neutral long-short quantitative strategies for sophisticated investors.",
-          Icon: TrendingUp,
-          gold: true
-        },
-        {
-          id: 'sif',
-          title: "Specialized Investment Funds (SIF)",
-          badge: "Structured Wealth",
-          desc: "Niche, structured debt and market-linked debentures engineered to deliver steady non-linear returns with robust downside capital protection buffers.",
-          Icon: Cpu,
-          gold: false
-        },
-        {
-          id: 'rebalance',
-          title: "Mutual Fund Portfolio Rebalancing",
-          badge: "Automated & Algorithmic",
-          desc: "Continuous algorithmic health monitoring of your mutual fund holdings. Automatically trims asset drift, phases out persistent underperformers, and reallocates capital to optimal funds.",
-          Icon: RefreshCw,
-          gold: true
-        },
-        {
-          id: 'wealth',
-          title: "Wealth Management",
-          badge: "Family Office Grade",
-          desc: "Holistic multi-generational asset allocation, tax-harvesting strategies, risk hedging, and wealth preservation tailored to your long-term compounding objectives.",
-          Icon: ShieldCheck,
-          gold: false
-        }
-      ],
-      blogsTitle: "Market Research & AI Wealth Blogs",
-      blogsSub: "Stay informed with institutional market insights, tax optimization strategies, and algorithmic wealth research.",
+      brandName: "SHUBH NIVESH",
+      tagline: "YOUR WEALTH. YOUR GOALS. OUR GUIDANCE.",
+      distributorBadge: "MUTUAL FUND DISTRIBUTOR • ANKUSH JAIN (EXPERIENCE SINCE 2005)",
+      nav: ['Home', 'About Us', 'Products & Services', 'Specialisations', 'SIP Calculator', 'Certifications', 'MF Rebalancing', 'Contact'],
+      heroTitle: "SHUBH NIVESH",
+      heroSub: "At Shubh Nivesh, we believe successful investing begins with clear goals, informed decisions, and a disciplined approach. With experience in financial services since 2005, we help individuals and families explore investment solutions for wealth creation, retirement, children's future, and tax planning.",
+      bookConsultation: "Book a Consultation",
+      calculateSip: "SIP Calculator",
+      whatsappUs: "WhatsApp Us",
+      metric1Val: "Since 2005",
+      metric1Label: "Experience in Financial Services",
+      metric2Val: "1,500+",
+      metric2Label: "Clients & Families Guided",
+      metric3Val: "Goal-Based",
+      metric3Label: "Disciplined Investment Planning",
+      introTitle: "1. Introduction",
+      introBody: "At Shubh Nivesh, we believe successful investing begins with clear goals, informed decisions, and a disciplined approach. With experience in financial services since 2005, we help individuals and families explore investment solutions for wealth creation, retirement, children's future, and tax planning.",
+      aboutTitle: "2. About Us",
+      aboutBody: "Ankush Jain is a Mutual Fund Distributor with experience in financial services since 2005. Through Shubh Nivesh, he focuses on helping individuals and families understand investment options and plan for important financial milestones, including asset allocation, wealth creation, retirement, children's future, tax planning, and goal-based investment planning.",
+      svcTitle: "3. Products & Services",
+      svcSub: "Comprehensive investment options and financial solutions tailored to your life stage and risk tolerance.",
+      specialisationsTitle: "4. Our Specialisations",
+      specialisationsSub: "Structuring your investments across life's most essential financial milestones.",
+      credentialsTitle: "5. Certifications & Qualifications",
+      credentialsSub: "Professional credentials supplied for the website: NISM Series V-D, NISM Series V-A, NISM Series XX-A, NISM Series XV, NISM Series VIII, and IRDAI-related insurance qualification/authorisation as applicable.",
+      whyTitle: "7. Why Choose Shubh Nivesh?",
+      whySub: "Experience since 2005 • 1,500+ clients • Personalised guidance • Goal-based planning • Long-term investment perspective",
+      contactTitle: "8. Contact & Call to Action",
+      contactSub: "Let's plan your financial future. Whether you are starting your first SIP, planning your child's education, preparing for retirement, or building long-term wealth, contact Shubh Nivesh to discuss your goals.",
       faqTitle: "Frequently Asked Questions",
-      faqSub: "Everything you need to know about our algorithmic wealth management platform",
-      footerSub: "Next-generation financial solutions leveraging intelligent systems to grow your wealth.",
-      copyright: "© 2026 AI Capital Investment. All rights reserved."
+      faqSub: "Common questions about mutual funds, SIPs, and goal-based investing with Shubh Nivesh",
+      footerDisclosures: "Mutual fund investments are subject to market risks. SIP calculator outputs are illustrative only; assumed returns are not guaranteed. NPS is subject to applicable NPS rules and tax provisions. SIFs, AIFs, PMS, stocks, bonds, and other products carry different risks and eligibility requirements. Insurance products are subject to policy terms. Product availability and distribution must be consistent with applicable registrations, authorisations, and distribution arrangements. Verify credentials and product permissions before publication.",
+      copyright: "© 2026 Shubh Nivesh - Ankush Jain (Mutual Fund Distributor). All rights reserved."
     },
     hi: {
-      nav: ['मुख्य पृष्ठ', 'हमारे बारे में', 'उत्पाद व सेवाएं', 'निवेश', 'ब्लॉग व लेख', 'सामान्य प्रश्न'],
-      heroTitle: "आधुनिक निवेशकों के लिए एआई-संचालित बुद्धिमान धन प्रबंधन",
-      heroSub: "विश्वास के साथ अपने पोर्टफोलियो को बढ़ाने के लिए AI-संचालित एल्गोरिदम, वास्तविक समय बाजार अंतर्दृष्टि और व्यक्तिगत रणनीतियों का उपयोग करें।",
-      getStarted: "शुरू करें",
-      signIn: "साइन इन करें",
-      whyTitle: "एआई कैपिटल इन्वेस्टमेंट क्यों चुनें?",
-      whySub: "AI द्वारा संचालित अधिक समझदारी से निवेश",
-      feat1Title: "एआई पोर्टफोलियो अनुकूलन",
-      feat1Desc: "वास्तविक समय के बाजार गतिकी के आधार पर रिटर्न को अधिकतम करने और जोखिम को कम करने के लिए उन्नत एल्गोरिदम।",
-      feat2Title: "जोखिम प्रबंधन",
-      feat2Desc: "हर कदम पर आपके निवेश की सुरक्षा के लिए वास्तविक समय जोखिम मूल्यांकन और स्वचालित रीबैलेंसिंग।",
-      feat3Title: "वास्तविक समय विश्लेषण",
-      feat3Desc: "लाइव मार्केट डेटा स्ट्रीम, भविष्यवाणियां और आपकी उंगलियों पर तुरंत पोर्टफोलियो अंतर्दृष्टि।",
-      feat4Title: "व्यक्तिगत रणनीतियां",
-      feat4Desc: "आपके वित्तीय लक्ष्यों और व्यक्तिगत समय सीमा के अनुसार तैयार किए गए कस्टमाइज्ड पोर्टफोलियो।",
-      metrics1: "प्रबंधित संपत्तियां",
-      metrics2: "सक्रिय निवेशक",
-      metrics3: "औसत लाभ",
-      svcTitle: "हमारी सेवाएं व उत्पाद (What We Offer)",
-      svcSub: "म्यूचुअल फंड, पीएमएस, एआईएफ, एसआईएफ एवं पोर्टफोलियो रीबैलेंसिंग",
-      servicesList: [
-        {
-          id: 'mf',
-          title: "म्यूचुअल फंड्स (Mutual Funds)",
-          badge: "सेबी पंजीकृत वितरण",
-          desc: "इक्विटी, डेट और हाइब्रिड म्यूचुअल फंड्स का विशेषज्ञ चयन। मात्रात्मक जोखिम मूल्यांकन और उच्च अल्फा जनरेशन के आधार पर संरचित पोर्टफोलियो।",
-          Icon: PieChart,
-          gold: true
-        },
-        {
-          id: 'pms',
-          title: "पोर्टफोलियो मैनेजमेंट सर्विसेज (PMS)",
-          badge: "एचएनआई केंद्रित",
-          desc: "उच्च-निवल-मूल्य वाले निवेशकों (HNIs) और पारिवारिक कार्यालयों के लिए विशेष रूप से तैयार की गई विवेकाधीन और गैर-विवेकाधीन पोर्टफोलियो प्रबंधन सेवाएं।",
-          Icon: Briefcase,
-          gold: false
-        },
-        {
-          id: 'aif',
-          title: "अल्टरनेटिव इन्वेस्टमेंट फंड्स (AIF)",
-          badge: "कैटेगरी I, II & III",
-          desc: "प्राइवेट इक्विटी, संरचित ऋण, प्री-आईपीओ और लॉन्ग-शॉर्ट रणनीतियों में संस्थागत स्तर के निवेश के विशेष अवसर।",
-          Icon: TrendingUp,
-          gold: true
-        },
-        {
-          id: 'sif',
-          title: "स्पेशलाइज्ड इन्वेस्टमेंट फंड्स (SIF)",
-          badge: "स्ट्रक्चर्ड वेल्थ",
-          desc: "बाजार-लिंक्ड डिबेंचर और संरचित निवेश समाधान जो पूंजी सुरक्षा के साथ बेहतर रिटर्न प्रदान करने के लिए तैयार किए गए हैं।",
-          Icon: Cpu,
-          gold: false
-        },
-        {
-          id: 'rebalance',
-          title: "म्यूचुअल फंड पोर्टफोलियो रीबैलेंसिंग",
-          badge: "एआई व एल्गोरिदम आधारित",
-          desc: "आपके मौजूदा म्यूचुअल फंड पोर्टफोलियो का निरंतर विश्लेषण। कमजोर प्रदर्शन वाले फंडों को हटाना और लक्षित आवंटन बनाए रखने के लिए स्वचालित रीबैलेंसिंग।",
-          Icon: RefreshCw,
-          gold: true
-        },
-        {
-          id: 'wealth',
-          title: "वेल्थ मैनेजमेंट (Wealth Management)",
-          badge: "समग्र वित्तीय प्रबंधन",
-          desc: "पीढ़ियों के लिए आपकी संपत्ति को सुरक्षित रखने और बढ़ाने के लिए समग्र परिसंपत्ति आवंटन, कर अनुकूलन और दीर्घकालिक रणनीतियां।",
-          Icon: ShieldCheck,
-          gold: false
-        }
-      ],
-      blogsTitle: "बाजार अनुसंधान एवं एआई वेल्थ लेख",
-      blogsSub: "संस्थागत बाजार अंतर्दृष्टि, कर अनुकूलन रणनीतियों और एल्गोरिदम अनुसंधान से सूचित रहें।",
-      faqTitle: "अक्सर पूछे जाने वाले प्रश्न",
-      faqSub: "हमारे एल्गोरिदमिक वेल्थ मैनेजमेंट प्लेटफॉर्म के बारे में सब कुछ",
-      footerSub: "आपकी संपत्ति को बढ़ाने के लिए बुद्धिमान प्रणालियों का लाभ उठाने वाले अगली पीढ़ी के वित्तीय समाधान।",
-      copyright: "© 2026 एआई कैपिटल इन्वेस्टमेंट। सर्वाधिकार सुरक्षित।"
+      brandName: "शुभ निवेश (SHUBH NIVESH)",
+      tagline: "आपकी संपत्ति। आपके लक्ष्य। हमारा मार्गदर्शन।",
+      distributorBadge: "म्यूचुअल फंड वितरक • अंकुश जैन (2005 से अनुभव)",
+      nav: ['मुख्य पृष्ठ', 'हमारे बारे में', 'उत्पाद व सेवाएं', 'विशेषज्ञताएं', 'एसआईपी कैलकुलेटर', 'प्रमाणपत्र', 'रीबैलेंसिंग', 'संपर्क करें'],
+      heroTitle: "शुभ निवेश (SHUBH NIVESH)",
+      heroSub: "शुभ निवेश में, हमारा मानना है कि सफल निवेश की शुरुआत स्पष्ट लक्ष्यों, सूचित निर्णयों और अनुशासित दृष्टिकोण के साथ होती है। 2005 से वित्तीय सेवाओं में अनुभव के साथ, हम व्यक्तियों और परिवारों को धन निर्माण, सेवानिवृत्ति, बच्चों के भविष्य और कर योजना के लिए समाधान तलाशने में मदद करते हैं।",
+      bookConsultation: "परामर्श बुक करें",
+      calculateSip: "एसआईपी कैलकुलेटर",
+      whatsappUs: "व्हाट्सएप करें",
+      metric1Val: "2005 से",
+      metric1Label: "वित्तीय सेवाओं में अनुभव",
+      metric2Val: "1,500+",
+      metric2Label: "संतुष्ट परिवार व निवेशक",
+      metric3Val: "लक्ष्य-आधारित",
+      metric3Label: "अनुशासित वित्तीय योजना",
+      introTitle: "1. परिचय (Introduction)",
+      introBody: "शुभ निवेश में, हमारा मानना है कि सफल निवेश की शुरुआत स्पष्ट लक्ष्यों, सूचित निर्णयों और अनुशासित दृष्टिकोण के साथ होती है। 2005 से वित्तीय सेवाओं में अनुभव के साथ, हम व्यक्तियों और परिवारों को धन निर्माण, सेवानिवृत्ति, बच्चों के भविष्य और कर योजना के लिए समाधान तलाशने में मदद करते हैं।",
+      aboutTitle: "2. हमारे बारे में (About Us)",
+      aboutBody: "अंकुश जैन 2005 से वित्तीय सेवाओं में अनुभव रखने वाले एक म्यूचुअल फंड वितरक हैं। शुभ निवेश के माध्यम से, वे व्यक्तियों और परिवारों को निवेश विकल्पों को समझने और महत्वपूर्ण वित्तीय मील के पत्थरों की योजना बनाने में मदद करने पर ध्यान केंद्रित करते हैं, जिसमें परिसंपत्ति आवंटन, धन निर्माण, सेवानिवृत्ति, बच्चों का भविष्य, कर योजना और लक्ष्य-आधारित निवेश शामिल हैं।",
+      svcTitle: "3. उत्पाद व सेवाएं (Products & Services)",
+      svcSub: "आपकी जीवन प्राथमिकताओं और जोखिम क्षमता के अनुरूप संपूर्ण वित्तीय समाधान।",
+      specialisationsTitle: "4. हमारी विशेषज्ञताएं (Our Specialisations)",
+      specialisationsSub: "जीवन के सबसे महत्वपूर्ण मील के पत्थरों के लिए संरचित निवेश।",
+      credentialsTitle: "5. प्रमाणपत्र व योग्यताएं (Certifications & Qualifications)",
+      credentialsSub: "वेबसाइट के लिए आपूर्ति किए गए क्रेडेंशियल: NISM सीरीज V-D, V-A, XX-A, XV, VIII, और IRDAI-संबंधित बीमा योग्यता।",
+      whyTitle: "7. शुभ निवेश क्यों चुनें? (Why Choose Shubh Nivesh?)",
+      whySub: "2005 से अनुभव • 1,500+ ग्राहक • व्यक्तिगत मार्गदर्शन • लक्ष्य-आधारित योजना • दीर्घकालिक निवेश दृष्टिकोण",
+      contactTitle: "8. संपर्क व कॉल टू एक्शन (Contact & Call to Action)",
+      contactSub: "आइए आपके वित्तीय भविष्य की योजना बनाएं। चाहे आप अपना पहला एसआईपी शुरू कर रहे हों, बच्चे की शिक्षा, सेवानिवृत्ति या धन निर्माण की योजना बना रहे हों, शुभ निवेश से संपर्क करें।",
+      faqTitle: "अक्सर पूछे जाने वाले प्रश्न (FAQ)",
+      faqSub: "म्यूचुअल फंड, एसआईपी और लक्ष्य-आधारित निवेश के बारे में सामान्य प्रश्न",
+      footerDisclosures: "म्यूचुअल फंड निवेश बाजार जोखिमों के अधीन हैं। एसआईपी कैलकुलेटर आउटपुट केवल उदाहरणात्मक हैं; अपेक्षित रिटर्न की गारंटी नहीं है। एनपीएस लागू एनपीएस नियमों और कर प्रावधानों के अधीन है। एसआईएफ, एआईएफ, पीएमएस, स्टॉक, बॉन्ड अलग-अलग जोखिम और पात्रता आवश्यकताएं रखते हैं। बीमा उत्पाद पॉलिसी शर्तों के अधीन हैं।",
+      copyright: "© 2026 शुभ निवेश - अंकुश जैन (म्यूचुअल फंड वितरक)। सर्वाधिकार सुरक्षित।"
     }
   }[language];
+
+  // 11 Products from Section 3 Table + Rebalancing
+  const productsList = [
+    {
+      id: 'mf',
+      title: language === 'en' ? 'Mutual Funds' : 'म्यूचुअल फंड्स',
+      badge: 'Core Investment',
+      desc: language === 'en' 
+        ? 'Investment options across equity, debt, hybrid, index, and other categories.'
+        : 'इक्विटी, डेट, हाइब्रिड, इंडेक्स और अन्य श्रेणियों में निवेश विकल्प।',
+      Icon: PieChart,
+      gold: true
+    },
+    {
+      id: 'sip',
+      title: language === 'en' ? 'Systematic Investment Plans (SIP)' : 'व्यवस्थित निवेश योजना (SIP)',
+      badge: 'Disciplined Growth',
+      desc: language === 'en'
+        ? 'Regular investing to support disciplined, long-term goal planning.'
+        : 'अनुशासित, दीर्घकालिक लक्ष्य योजना का समर्थन करने के लिए नियमित निवेश।',
+      Icon: TrendingUp,
+      gold: true
+    },
+    {
+      id: 'nps',
+      title: language === 'en' ? 'National Pension System (NPS)' : 'राष्ट्रीय पेंशन प्रणाली (NPS)',
+      badge: 'Retirement Corpus',
+      desc: language === 'en'
+        ? 'A regulated retirement-focused savings scheme designed to help build a retirement corpus, subject to NPS rules and applicable tax provisions.'
+        : 'एक विनियमित सेवानिवृत्ति-केंद्रित बचत योजना जो सेवानिवृत्ति कोष बनाने में मदद करती है।',
+      Icon: Landmark,
+      gold: false
+    },
+    {
+      id: 'sif',
+      title: language === 'en' ? 'Specialised Investment Funds (SIFs)' : 'विशिष्ट निवेश फंड (SIFs)',
+      badge: 'Subject to Rules',
+      desc: language === 'en'
+        ? 'Specialised strategies for eligible investors, subject to applicable rules.'
+        : 'पात्र निवेशकों के लिए विशिष्ट रणनीतियां, लागू नियमों के अधीन।',
+      Icon: Cpu,
+      gold: false
+    },
+    {
+      id: 'aif',
+      title: language === 'en' ? 'Alternative Investment Funds (AIFs)' : 'वैकल्पिक निवेश फंड (AIFs)',
+      badge: 'Eligible Investors',
+      desc: language === 'en'
+        ? 'Alternative investment strategies for eligible investors.'
+        : 'पात्र निवेशकों के लिए वैकल्पिक निवेश रणनीतियां।',
+      Icon: Briefcase,
+      gold: true
+    },
+    {
+      id: 'pms',
+      title: language === 'en' ? 'Portfolio Management Services (PMS)' : 'पोर्टफोलियो प्रबंधन सेवाएं (PMS)',
+      badge: 'Subject to Eligibility',
+      desc: language === 'en'
+        ? 'Professionally managed portfolio solutions, subject to eligibility.'
+        : 'पेशेवर रूप से प्रबंधित पोर्टफोलियो समाधान, पात्रता के अधीन।',
+      Icon: UserCheck,
+      gold: false
+    },
+    {
+      id: 'life-ins',
+      title: language === 'en' ? 'Life Insurance' : 'जीवन बीमा',
+      badge: 'Family Protection',
+      desc: language === 'en'
+        ? 'Financial protection options to help safeguard family needs.'
+        : 'पारिवारिक जरूरतों की सुरक्षा में मदद के लिए वित्तीय सुरक्षा विकल्प।',
+      Icon: Heart,
+      gold: true
+    },
+    {
+      id: 'health-ins',
+      title: language === 'en' ? 'Health Insurance' : 'स्वास्थ्य बीमा',
+      badge: 'Medical Coverage',
+      desc: language === 'en'
+        ? 'Coverage options for eligible medical expenses, subject to policy terms.'
+        : 'पात्र चिकित्सा व्यय के लिए कवरेज विकल्प, पॉलिसी शर्तों के अधीन।',
+      Icon: Activity,
+      gold: false
+    },
+    {
+      id: 'fd',
+      title: language === 'en' ? 'Fixed Deposits' : 'फिक्स्ड डिपॉजिट (FD)',
+      badge: 'Issuer Terms',
+      desc: language === 'en'
+        ? 'Fixed-income options subject to issuer terms and conditions.'
+        : 'जारीकर्ता के नियमों और शर्तों के अधीन निश्चित आय विकल्प।',
+      Icon: Lock,
+      gold: false
+    },
+    {
+      id: 'broking',
+      title: language === 'en' ? 'Stock Broking' : 'स्टॉक ब्रोकिंग',
+      badge: 'Registered Intermediaries',
+      desc: language === 'en'
+        ? 'Equity investing and trading services through applicable registered intermediaries.'
+        : 'लागू पंजीकृत मध्यस्थों के माध्यम से इक्विटी निवेश और व्यापार सेवाएं।',
+      Icon: BarChart3,
+      gold: true
+    },
+    {
+      id: 'bonds',
+      title: language === 'en' ? 'NCDs & Bonds' : 'एनसीडी और बॉन्ड (Bonds)',
+      badge: 'Fixed-Income',
+      desc: language === 'en'
+        ? 'Fixed-income securities to consider with attention to credit, interest-rate, and liquidity risks.'
+        : 'क्रेडिट, ब्याज दर और तरलता जोखिमों पर ध्यान देते हुए निश्चित आय प्रतिभूतियां।',
+      Icon: FileText,
+      gold: false
+    },
+    {
+      id: 'rebalance',
+      title: language === 'en' ? 'Mutual Fund Portfolio Rebalancing' : 'म्यूचुअल फंड रीबैलेंसिंग',
+      badge: 'Algorithmic Drift Audit',
+      desc: language === 'en'
+        ? 'Continuous monitoring of your mutual fund schemes to prune asset drift and eliminate duplicate stock overlap.'
+        : 'एसेट ड्रिफ्ट को कम करने और ओवरलैप को खत्म करने के लिए निरंतर पोर्टफोलियो निगरानी।',
+      Icon: RefreshCw,
+      gold: true
+    }
+  ];
+
+  // 6 Specialisations from Section 4
+  const specialisationsList = [
+    {
+      title: language === 'en' ? 'Asset Allocation' : 'परिसंपत्ति आवंटन',
+      desc: language === 'en'
+        ? 'Structure investments across asset classes based on objectives, time horizon, and risk tolerance.'
+        : 'उद्देश्यों, समय सीमा और जोखिम सहनशीलता के आधार पर परिसंपत्ति वर्गों में निवेश की संरचना।',
+      Icon: PieChart,
+      gold: true
+    },
+    {
+      title: language === 'en' ? "Children's Future Planning" : 'बच्चों के भविष्य की योजना',
+      desc: language === 'en'
+        ? 'Plan for education and other milestones through disciplined investing.'
+        : 'अनुशासित निवेश के माध्यम से शिक्षा और अन्य मील के पत्थरों की योजना बनाएं।',
+      Icon: GraduationCap,
+      gold: false
+    },
+    {
+      title: language === 'en' ? 'Retirement Planning' : 'सेवानिवृत्ति योजना',
+      desc: language === 'en'
+        ? 'Build a long-term plan for retirement needs and financial independence.'
+        : 'सेवानिवृत्ति की जरूरतों और वित्तीय स्वतंत्रता के लिए एक दीर्घकालिक योजना बनाएं।',
+      Icon: Sun,
+      gold: true
+    },
+    {
+      title: language === 'en' ? 'Tax Planning' : 'कर योजना (Tax Planning)',
+      desc: language === 'en'
+        ? 'Explore suitable tax-planning options in line with prevailing tax laws.'
+        : 'प्रचलित कर कानूनों के अनुरूप उपयुक्त कर-योजना विकल्पों का अन्वेषण करें।',
+      Icon: Calculator,
+      gold: false
+    },
+    {
+      title: language === 'en' ? 'Wealth Creation' : 'धन निर्माण (Wealth Creation)',
+      desc: language === 'en'
+        ? 'Work towards long-term wealth creation through diversification and periodic reviews.'
+        : 'विविधीकरण और आवधिक समीक्षाओं के माध्यम से दीर्घकालिक धन निर्माण की दिशा में काम करें।',
+      Icon: TrendingUp,
+      gold: true
+    },
+    {
+      title: language === 'en' ? 'Goal-Based Investment Planning' : 'लक्ष्य-आधारित निवेश योजना',
+      desc: language === 'en'
+        ? 'Connect investments with goals such as education, a home, retirement, or future wealth.'
+        : 'शिक्षा, घर, सेवानिवृत्ति या भविष्य के धन जैसे वास्तविक लक्ष्यों के साथ निवेश को जोड़ें।',
+      Icon: Target,
+      gold: false
+    }
+  ];
+
+  // 5 Hallmarks from Section 7
+  const whyChooseList = [
+    {
+      title: language === 'en' ? 'Experience Since 2005' : '2005 से समृद्ध अनुभव',
+      desc: language === 'en'
+        ? 'Over 20 years of continuous financial market experience navigating bull and bear market cycles with composure.'
+        : 'बाजार के सभी चरणों में 20 से अधिक वर्षों का अटूट वित्तीय अनुभव।',
+      Icon: Calendar,
+      gold: true
+    },
+    {
+      title: language === 'en' ? '1,500+ Clients' : '1,500+ संतुष्ट परिवार',
+      desc: language === 'en'
+        ? 'Trusted by more than 1,500 individuals and families across India for personal financial milestone guidance.'
+        : 'पूरे भारत में 1,500 से अधिक व्यक्तियों और परिवारों का विश्वसनीय वित्तीय साथी।',
+      Icon: Users,
+      gold: false
+    },
+    {
+      title: language === 'en' ? 'Personalised Guidance' : 'व्यक्तिगत मार्गदर्शन',
+      desc: language === 'en'
+        ? 'Objective, fiduciary guidance tailored directly to your cash flow, family dependencies, and comfort level.'
+        : 'आपकी पारिवारिक आवश्यकताओं और लक्ष्यों के अनुरूप तैयार किया गया व्यक्तिगत परामर्श।',
+      Icon: UserCheck,
+      gold: true
+    },
+    {
+      title: language === 'en' ? 'Goal-Based Planning' : 'लक्ष्य-आधारित योजना',
+      desc: language === 'en'
+        ? 'Portfolios purposefully aligned to children education, retirement, and family security rather than speculative noise.'
+        : 'अटकलों के बजाय बच्चों की उच्च शिक्षा, घर और सेवानिवृत्ति जैसे वास्तविक लक्ष्यों पर केंद्रित निवेश।',
+      Icon: Target,
+      gold: false
+    },
+    {
+      title: language === 'en' ? 'Long-Term Perspective' : 'दीर्घकालिक दृष्टिकोण',
+      desc: language === 'en'
+        ? 'Harnessing the proven magic of compound interest through disciplined, patient, systematic investing.'
+        : 'अनुशासित और धैर्यवान निवेश के माध्यम से चक्रवृद्धि ब्याज की शक्ति का लाभ उठाना।',
+      Icon: Clock,
+      gold: true
+    }
+  ];
+
+  const whatsappDirectUrl = `https://wa.me/919810000000?text=${encodeURIComponent(
+    `Hello Shubh Nivesh (Ankush Jain),\n\nI visited your website and would like to discuss goal-based investment planning and mutual funds for my family. Please guide me.`
+  )}`;
 
   return (
     <div className="lp-wrapper">
       <ParticleBackground />
 
-      {/* Schema.org FAQPage JSON-LD Structured Data for AEO */}
+      {/* Structured Schema.org Data for Shubh Nivesh */}
+      <script 
+        type="application/ld+json" 
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FinancialService",
+            "name": "Shubh Nivesh",
+            "alternateName": "Shubh Nivesh Mutual Fund Distributor",
+            "founder": {
+              "@type": "Person",
+              "name": "Ankush Jain",
+              "jobTitle": "Mutual Fund Distributor (Experience Since 2005)"
+            },
+            "url": "https://aicapitalinvestment.com",
+            "description": "Shubh Nivesh: Mutual Fund Distribution, SIP planning, NPS, PMS, AIF, SIF, Insurance, and Goal-Based Planning with Ankush Jain (Experience Since 2005).",
+            "telephone": "+91-9810000000",
+            "areaServed": "IN"
+          })
+        }} 
+      />
+
+      {/* Schema.org FAQPage JSON-LD Structured Data */}
       <script 
         type="application/ld+json" 
         dangerouslySetInnerHTML={{
@@ -434,45 +437,17 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
         }} 
       />
 
-      {/* Schema.org BlogPosting JSON-LD Structured Data for AEO */}
-      <script 
-        type="application/ld+json" 
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Blog",
-            "name": "AI Capital Market Research & Algorithmic Wealth Insights",
-            "blogPost": blogsData.map(b => ({
-              "@type": "BlogPosting",
-              "headline": b.titleEn,
-              "datePublished": "2026-07-20",
-              "dateModified": "2026-07-22",
-              "image": b.image,
-              "author": {
-                "@type": "Person",
-                "name": b.author,
-                "jobTitle": "Head of Private Wealth / Chief Quantitative Officer",
-                "worksFor": {
-                  "@type": "Organization",
-                  "name": "AI Capital Investment LLC"
-                }
-              },
-              "publisher": {
-                "@type": "Organization",
-                "name": "AI Capital Investment LLC"
-              },
-              "description": b.excerptEn
-            }))
-          })
-        }} 
-      />
-
-      {/* ── Header ────────────────────────────────────────────────── */}
-      <header className="lp-header">
+      {/* ── Top Header Bar ─────────────────────────────────────────── */}
+      <header className="lp-header" style={{ position: 'sticky', top: 0, zIndex: 100 }}>
         <div className="lp-container lp-header-inner">
-          <div className="logo">
-            <div className="logo-symbol">AI</div>
-            <div className="logo-text">AI Capital<span>Investment</span></div>
+          <div className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{ cursor: 'pointer' }}>
+            <div className="logo-symbol" style={{ background: 'linear-gradient(135deg, #d4af37, #00e676)', color: '#030a05', fontWeight: 900 }}>SN</div>
+            <div className="logo-text">
+              SHUBH NIVESH
+              <span style={{ fontSize: '0.62rem', letterSpacing: '0.5px', color: 'var(--color-gold)', display: 'block', textTransform: 'uppercase' }}>
+                Your Wealth. Your Goals. Our Guidance.
+              </span>
+            </div>
           </div>
 
           <nav className={`lp-nav-wrapper ${mobileMenuOpen ? 'open' : ''}`}>
@@ -487,29 +462,36 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
                 <a href="#services">{t.nav[2]}</a>
               </li>
               <li onClick={() => setMobileMenuOpen(false)}>
-                <a href="/accreditation" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onNavigate('accreditation'); }}>
-                  {language === 'en' ? 'Accreditation' : 'प्रमाणन'}
-                </a>
+                <a href="#specialisations">{t.nav[3]}</a>
               </li>
               <li onClick={() => setMobileMenuOpen(false)}>
-                <a href="#investment">{t.nav[3]}</a>
+                <a href="#calculator" style={{ color: 'var(--color-gold)', fontWeight: 700 }}>{t.nav[4]}</a>
+              </li>
+              <li onClick={() => { setMobileMenuOpen(false); onNavigate('accreditation'); }}>
+                <a href="/accreditation" onClick={(e) => { e.preventDefault(); onNavigate('accreditation'); }}>{t.nav[5]}</a>
+              </li>
+              <li onClick={() => { setMobileMenuOpen(false); onNavigate('rebalancing'); }}>
+                <a href="/services/mutual-fund-rebalancing" onClick={(e) => { e.preventDefault(); onNavigate('rebalancing'); }}>{t.nav[6]}</a>
               </li>
               <li onClick={() => setMobileMenuOpen(false)}>
-                <a href="/blogs" onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); onNavigate('blogs'); }}>{t.nav[4]}</a>
-              </li>
-              <li onClick={() => setMobileMenuOpen(false)}>
-                <a href="#faq">{t.nav[5]}</a>
+                <a href="#contact">{t.nav[7]}</a>
               </li>
               <li className="mobile-only-nav-item" style={{ marginTop: '10px', gap: '10px', width: '100%', justifyContent: 'center' }}>
-                <button className="btn btn-gold" style={{ padding: '10px 24px', fontSize: '0.85rem', width: '100%' }} onClick={() => { setMobileMenuOpen(false); onNavigate('login'); }}>
-                  Launch Web App / Sign In
-                </button>
+                <a 
+                  href={whatsappDirectUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="btn btn-gold" 
+                  style={{ padding: '10px 24px', fontSize: '0.85rem', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: '#25D366', color: '#fff' }}
+                >
+                  <MessageCircle size={16} /> WhatsApp Us
+                </a>
               </li>
             </ul>
           </nav>
 
           <div className="lp-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            {/* Language Switcher Pill */}
+            {/* Language Switcher */}
             <button
               onClick={() => setLanguage(l => l === 'en' ? 'hi' : 'en')}
               className="btn btn-green-outline"
@@ -519,305 +501,533 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
               <Globe size={12} /> {language === 'en' ? 'हिंदी' : 'EN'}
             </button>
             
-            <button className="btn btn-green-outline" onClick={() => onNavigate('login')} aria-label="Sign in to platform">{t.signIn}</button>
+            {/* Direct WhatsApp CTA Pill */}
+            <a 
+              href={whatsappDirectUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn"
+              style={{
+                fontSize: '0.78rem',
+                padding: '6px 14px',
+                borderRadius: '20px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                background: 'rgba(37, 211, 102, 0.15)',
+                color: '#25D366',
+                border: '1px solid rgba(37, 211, 102, 0.4)',
+                fontWeight: 600,
+                textDecoration: 'none'
+              }}
+            >
+              <MessageCircle size={14} /> WhatsApp
+            </a>
+
+            <button 
+              className="btn btn-gold" 
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              style={{ fontSize: '0.78rem', padding: '6px 14px' }}
+            >
+              Consultation
+            </button>
             
             {/* Mobile Hamburger Button */}
             <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label="Toggle navigation menu">
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-              <span className="sr-only">Toggle navigation menu</span>
             </button>
           </div>
         </div>
       </header>
 
-      {/* ── Main Content Landmark ──────────────────────────────────────── */}
+      {/* ── Main Content ───────────────────────────────────────────── */}
       <main className="lp-main">
-        {/* ── Hero ──────────────────────────────────────────────────── */}
+
+        {/* ── Hero Section (Page 1) ────────────────────────────────── */}
         <section className="lp-hero" id="home">
-        <div className="lp-container lp-hero-inner">
-          <div className="lp-hero-text fade-in-section">
-            <h1 className="lp-hero-title">
-              {t.heroTitle}
-            </h1>
-            <p className="lp-hero-sub">
-              {t.heroSub}
-            </p>
-            <div className="lp-hero-cta-row">
-              <button className="btn btn-gradient-started" onClick={() => onNavigate('signup')}>
-                {t.getStarted}
-              </button>
-              <button className="btn btn-green-outline" onClick={() => onNavigate('login')}>
-                {t.signIn}
-              </button>
+          <div className="lp-container lp-hero-inner">
+            <div className="lp-hero-text fade-in-section">
+              {/* Distributor Authority Pill */}
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '6px 16px',
+                borderRadius: '24px',
+                background: 'rgba(212, 175, 55, 0.12)',
+                border: '1px solid rgba(212, 175, 55, 0.35)',
+                marginBottom: '16px'
+              }}>
+                <Award size={14} style={{ color: 'var(--color-gold)' }} />
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-gold)', letterSpacing: '0.8px', textTransform: 'uppercase' }}>
+                  {t.distributorBadge}
+                </span>
+              </div>
+
+              <h1 className="lp-hero-title" style={{ fontSize: '2.8rem', lineHeight: 1.15 }}>
+                SHUBH NIVESH
+                <span style={{
+                  display: 'block',
+                  fontSize: '1.25rem',
+                  fontWeight: 800,
+                  background: 'linear-gradient(90deg, #d4af37, #00e676)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  letterSpacing: '1.5px',
+                  marginTop: '10px'
+                }}>
+                  {t.tagline}
+                </span>
+              </h1>
+
+              <p className="lp-hero-sub" style={{ fontSize: '0.98rem', lineHeight: 1.65 }}>
+                {t.heroSub}
+              </p>
+
+              <div className="lp-hero-cta-row" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                <button 
+                  className="btn btn-gold" 
+                  onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                  style={{ padding: '12px 24px', fontSize: '0.92rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <Phone size={16} /> {t.bookConsultation}
+                </button>
+                <button 
+                  className="btn btn-green-outline" 
+                  onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
+                  style={{ padding: '12px 22px', fontSize: '0.92rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <Calculator size={16} /> {t.calculateSip}
+                </button>
+                <a 
+                  href={whatsappDirectUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn"
+                  style={{
+                    padding: '12px 22px',
+                    fontSize: '0.92rem',
+                    fontWeight: 700,
+                    borderRadius: '8px',
+                    background: '#25D366',
+                    color: '#ffffff',
+                    border: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <MessageCircle size={16} /> {t.whatsappUs}
+                </a>
+              </div>
+            </div>
+
+            <div className="lp-hero-graphic fade-in-section">
+              <HeroCanvas />
             </div>
           </div>
-          <div className="lp-hero-graphic fade-in-section">
-            <HeroCanvas />
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── Why Choose ────────────────────────────────────────────── */}
-      <section className="lp-section fade-in-section" id="about">
-        <div className="lp-container">
-          <h2 className="lp-section-title">{t.whyTitle}</h2>
-          <p className="lp-section-sub">{t.whySub}</p>
-          <div className="lp-features-grid">
-            {[
-              { Icon: Cpu,        label: t.feat1Title, desc: t.feat1Desc, gold: true  },
-              { Icon: ShieldCheck,label: t.feat2Title, desc: t.feat2Desc, gold: false },
-              { Icon: TrendingUp, label: t.feat3Title, desc: t.feat3Desc, gold: true  },
-              { Icon: UserCheck,  label: t.feat4Title, desc: t.feat4Desc, gold: false },
-            ].map(({ Icon, label, desc, gold }) => (
-              <div key={label} className={`glass-card lp-feature-card ${gold ? 'gold-border' : 'green-border'}`}>
-                <div className={`lp-feat-icon ${gold ? 'gold' : 'green'}`}><Icon size={22} /></div>
-                <h3>{label}</h3>
-                <p>{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Metrics ───────────────────────────────────────────────── */}
-      <section className="lp-metrics fade-in-section">
-        <div className="lp-container lp-metrics-inner">
-          {[
-            { Icon: Wallet,  val: '₹2,500 Cr+', label: t.metrics1, gold: true  },
-            { Icon: Users,   val: '50K+',   label: t.metrics2, gold: false },
-            { Icon: Percent, val: '18.4%',  label: t.metrics3, gold: true  },
-          ].map(({ Icon, val, label, gold }) => (
-            <div key={label} className="lp-metric-item">
-              <div className={`lp-metric-icon ${gold ? 'gold' : 'green'}`}><Icon size={22} /></div>
+        {/* ── Highlights Ribbon (Page 1 Proposal Header) ────────────── */}
+        <section className="lp-metrics fade-in-section" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)', padding: '24px 0' }}>
+          <div className="lp-container lp-metrics-inner">
+            <div className="lp-metric-item">
+              <div className="lp-metric-icon gold"><Calendar size={22} /></div>
               <div>
-                <div className="lp-metric-val">{val}</div>
-                <p className="lp-metric-label">{label}</p>
+                <div className="lp-metric-val">EXPERIENCE SINCE 2005</div>
+                <p className="lp-metric-label">20+ Years in Financial Services</p>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Services / What We Offer ──────────────────────────────── */}
-      <section className="lp-section fade-in-section" id="services">
-        <div className="lp-container">
-          <h2 className="lp-section-title">{t.svcTitle}</h2>
-          <p className="lp-section-sub">{t.svcSub}</p>
-          <div className="lp-services-grid">
-            {t.servicesList.map(({ id, title, badge, desc, Icon, gold }) => (
-              <div key={id} className={`glass-card lp-service-card ${gold ? 'gold-border' : 'green-border'}`} style={{ display: 'flex', flexDirection: 'column' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
-                  <div className={`lp-svc-icon ${gold ? 'gold' : 'green'}`} style={{ marginBottom: 0 }}><Icon size={22} /></div>
-                  <span className={`lp-service-badge ${gold ? 'gold' : 'green'}`}>{badge}</span>
-                </div>
-                <h3 style={{ fontSize: '1.15rem', marginBottom: '10px', color: '#ffffff' }}>{title}</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.55', flex: 1 }}>{desc}</p>
-                {id === 'rebalance' && (
-                  <button 
-                    type="button"
-                    onClick={() => onNavigate('rebalancing')}
-                    className="btn btn-gold"
-                    style={{ marginTop: '16px', fontSize: '0.82rem', padding: '8px 18px', borderRadius: '18px', display: 'inline-flex', alignItems: 'center', gap: '6px', alignSelf: 'flex-start', cursor: 'pointer', fontWeight: 600 }}
-                  >
-                    {language === 'en' ? 'Explore Rebalancing Portal' : 'रीबैलेंसिंग पोर्टल देखें'} <ArrowRight size={14} />
-                  </button>
-                )}
+            <div className="lp-metric-item">
+              <div className="lp-metric-icon green"><Users size={22} /></div>
+              <div>
+                <div className="lp-metric-val">1,500+ CLIENTS</div>
+                <p className="lp-metric-label">Trusted Individuals & Families</p>
               </div>
-            ))}
+            </div>
+            <div className="lp-metric-item">
+              <div className="lp-metric-icon gold"><Target size={22} /></div>
+              <div>
+                <div className="lp-metric-val">GOAL-BASED PLANNING</div>
+                <p className="lp-metric-label">Milestone-Oriented Wealth Strategies</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── Lead Capture / Fiduciary Consultation Section ───────────── */}
-      <section className="lp-section fade-in-section" id="consultation">
-        <div className="lp-container" style={{ maxWidth: '850px' }}>
-          <LeadCaptureForm language={language} />
-        </div>
-      </section>
+        {/* ── Section 1: Introduction & Section 2: About Us (Page 1) ── */}
+        <section className="lp-section fade-in-section" id="about">
+          <div className="lp-container">
+            <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', color: 'var(--color-gold)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>
+                <Award size={14} /> Shubh Nivesh Guidance Philosophy
+              </div>
+              <h2 className="lp-section-title">{t.aboutTitle}</h2>
+              <p className="lp-section-sub" style={{ maxWidth: '780px', margin: '0 auto' }}>
+                Your Wealth. Your Goals. Our Guidance.
+              </p>
+            </div>
 
-      {/* ── Blogs & Market Research Section ──────────────────────── */}
-      <section className="lp-section fade-in-section" id="blogs">
-        <div className="lp-container">
-          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-            <h2 className="lp-section-title">{t.blogsTitle}</h2>
-            <p className="lp-section-sub" style={{ maxWidth: '650px', margin: '0 auto' }}>{t.blogsSub}</p>
-          </div>
-
-          {/* Category Filter Pills */}
-          <div className="blog-filters" style={{ justifyContent: 'center', marginBottom: '28px' }}>
-            {['All', 'AI Wealth', 'Tax Strategy', 'Crypto Yields', 'Risk Management'].map(cat => (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => setBlogCategory(cat)}
-                className={`blog-filter-btn ${blogCategory === cat ? 'active' : ''}`}
-                aria-label={`Filter blogs by category ${cat}`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {/* Blogs Grid */}
-          <div className="blogs-grid">
-            {filteredBlogs.map(b => (
-              <div key={b.id} className="glass-card blog-card gold-border" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                <div className="blog-img-thumb-container">
-                  <img 
-                    src={b.image} 
-                    alt={language === 'en' ? b.imageAltEn : b.imageAltHi} 
-                    className="blog-img-thumb"
-                    loading="lazy"
-                    decoding="async"
-                    width="600"
-                    height="338"
-                  />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '28px', marginBottom: '36px' }}>
+              {/* Introduction Card */}
+              <div className="glass-card gold-border" style={{ padding: '32px', borderRadius: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                  <div className="lp-feat-icon gold" style={{ marginBottom: 0 }}><Target size={22} /></div>
+                  <h3 style={{ fontSize: '1.25rem', color: '#ffffff', margin: 0 }}>{t.introTitle}</h3>
                 </div>
-                <div className="blog-card-content" style={{ padding: '20px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                    <span className="blog-badge">{b.category}</span>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Clock size={12} /> {b.readTime}
-                    </span>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.94rem', lineHeight: 1.7 }}>
+                  {t.introBody}
+                </p>
+                <div style={{ display: 'flex', gap: '10px', marginTop: '20px', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '0.75rem', background: 'rgba(0,230,118,0.1)', color: 'var(--color-green)', padding: '4px 10px', borderRadius: '12px', border: '1px solid rgba(0,230,118,0.2)' }}>✓ Wealth Creation</span>
+                  <span style={{ fontSize: '0.75rem', background: 'rgba(212,175,55,0.1)', color: 'var(--color-gold)', padding: '4px 10px', borderRadius: '12px', border: '1px solid rgba(212,175,55,0.2)' }}>✓ Retirement Corpus</span>
+                  <span style={{ fontSize: '0.75rem', background: 'rgba(56,189,248,0.1)', color: '#38bdf8', padding: '4px 10px', borderRadius: '12px', border: '1px solid rgba(56,189,248,0.2)' }}>✓ Children's Future</span>
+                  <span style={{ fontSize: '0.75rem', background: 'rgba(168,85,247,0.1)', color: '#c084fc', padding: '4px 10px', borderRadius: '12px', border: '1px solid rgba(168,85,247,0.2)' }}>✓ Tax Planning</span>
+                </div>
+              </div>
+
+              {/* About Ankush Jain Card */}
+              <div className="glass-card green-border" style={{ padding: '32px', borderRadius: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                  <div className="lp-feat-icon green" style={{ marginBottom: 0 }}><UserCheck size={22} /></div>
+                  <h3 style={{ fontSize: '1.25rem', color: '#ffffff', margin: 0 }}>Ankush Jain (Mutual Fund Distributor)</h3>
+                </div>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.94rem', lineHeight: 1.7 }}>
+                  {t.aboutBody}
+                </p>
+                <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '16px', marginTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>AMFI & NISM Certifications:</span>
+                    <div style={{ fontSize: '0.82rem', color: '#ffffff', fontWeight: 600 }}>Series V-A, V-D, XX-A, XV, VIII, IRDAI</div>
                   </div>
+                  <button 
+                    onClick={() => onNavigate('accreditation')}
+                    className="btn btn-green-outline"
+                    style={{ fontSize: '0.76rem', padding: '6px 12px', borderRadius: '16px' }}
+                  >
+                    View Credentials
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-                  <h3 className="blog-card-title" style={{ fontSize: '1.1rem', fontWeight: 700, color: '#fff', marginBottom: '8px' }}>
-                    {language === 'en' ? b.titleEn : b.titleHi}
-                  </h3>
+        {/* ── Section 3: Products & Services (Page 1) ───────────────── */}
+        <section className="lp-section fade-in-section" id="services">
+          <div className="lp-container">
+            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', color: 'var(--color-gold)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>
+                <Briefcase size={14} /> Full Spectrum Solutions
+              </div>
+              <h2 className="lp-section-title">{t.svcTitle}</h2>
+              <p className="lp-section-sub" style={{ maxWidth: '680px', margin: '0 auto' }}>
+                {t.svcSub}
+              </p>
+            </div>
 
-                  <p className="blog-card-abstract" style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '16px', flex: 1 }}>
-                    {language === 'en' ? b.excerptEn : b.excerptHi}
-                  </p>
-
-                  <div className="blog-meta-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '12px' }}>
-                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{b.date}</span>
-                    <button
+            <div className="lp-services-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+              {productsList.map(({ id, title, badge, desc, Icon, gold }) => (
+                <div key={id} className={`glass-card lp-service-card ${gold ? 'gold-border' : 'green-border'}`} style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
+                    <div className={`lp-svc-icon ${gold ? 'gold' : 'green'}`} style={{ marginBottom: 0 }}><Icon size={22} /></div>
+                    <span className={`lp-service-badge ${gold ? 'gold' : 'green'}`}>{badge}</span>
+                  </div>
+                  <h3 style={{ fontSize: '1.12rem', marginBottom: '10px', color: '#ffffff', fontWeight: 700 }}>{title}</h3>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: '1.55', flex: 1 }}>{desc}</p>
+                  
+                  {id === 'rebalance' && (
+                    <button 
                       type="button"
-                      onClick={() => {
-                        if (window.location.pathname !== b.url) {
-                          window.history.pushState({ blogId: b.id }, '', b.url);
-                        }
-                      }}
-                      className="blog-read-link"
-                      style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
-                      aria-label={`Read article: ${language === 'en' ? b.titleEn : b.titleHi}`}
+                      onClick={() => onNavigate('rebalancing')}
+                      className="btn btn-gold"
+                      style={{ marginTop: '16px', fontSize: '0.82rem', padding: '8px 18px', borderRadius: '18px', display: 'inline-flex', alignItems: 'center', gap: '6px', alignSelf: 'flex-start', cursor: 'pointer', fontWeight: 600 }}
                     >
-                      {language === 'en' ? 'Read Article' : 'लेख पढ़ें'} <ArrowRight size={14} />
+                      {language === 'en' ? 'Explore Rebalancing Portal' : 'रीबैलेंसिंग पोर्टल देखें'} <ArrowRight size={14} />
                     </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Standalone Blog Page Navigation Banner */}
-          <div style={{ marginTop: '36px', textAlign: 'center' }}>
-            <button 
-              type="button" 
-              className="btn btn-gold"
-              onClick={() => onNavigate('blogs')}
-              style={{ fontSize: '0.92rem', padding: '12px 28px', borderRadius: '24px', display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer', boxShadow: '0 4px 20px rgba(212, 175, 55, 0.25)' }}
-              aria-label="Explore All Research Reports & Blogs"
-            >
-              📖 Explore All Research Reports & Blogs <ArrowRight size={16} />
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Frequently Asked Questions (FAQ) Section ─────────────── */}
-      <section className="lp-section fade-in-section" id="faq">
-        <div className="lp-container">
-          <div style={{ textAlign: 'center', marginBottom: '36px' }}>
-            <h2 className="lp-section-title">{t.faqTitle}</h2>
-            <p className="lp-section-sub" style={{ maxWidth: '650px', margin: '0 auto' }}>{t.faqSub}</p>
-          </div>
-
-          <div className="faq-accordion-container">
-            {faqData.map((item, idx) => {
-              const isOpen = openFaqIndex === idx;
-              return (
-                <div key={idx} className={`faq-item ${isOpen ? 'open' : ''}`}>
-                  <button 
-                    type="button"
-                    className="faq-question-btn"
-                    onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                    aria-expanded={isOpen}
-                    aria-label={`Toggle FAQ: ${language === 'en' ? item.qEn : item.qHi}`}
-                  >
-                    <span>{language === 'en' ? item.qEn : item.qHi}</span>
-                    {isOpen ? <ChevronUp size={18} style={{ color: 'var(--color-gold)' }} /> : <ChevronDown size={18} style={{ color: 'var(--text-muted)' }} />}
-                  </button>
-                  {isOpen && (
-                    <div className="faq-answer-panel">
-                      <p>{language === 'en' ? item.aEn : item.aHi}</p>
-                    </div>
+                  )}
+                  {id === 'sip' && (
+                    <button 
+                      type="button"
+                      onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
+                      className="btn btn-green-outline"
+                      style={{ marginTop: '16px', fontSize: '0.82rem', padding: '8px 18px', borderRadius: '18px', display: 'inline-flex', alignItems: 'center', gap: '6px', alignSelf: 'flex-start', cursor: 'pointer', fontWeight: 600 }}
+                    >
+                      <Calculator size={14} /> {language === 'en' ? 'Open SIP Calculator' : 'एसआईपी कैलकुलेटर खोलें'}
+                    </button>
                   )}
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* ── Section 4: Our Specialisations (Page 1 & 2) ────────────── */}
+        <section className="lp-section fade-in-section" id="specialisations" style={{ background: 'rgba(0,0,0,0.25)', padding: '60px 0' }}>
+          <div className="lp-container">
+            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', color: 'var(--color-green)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>
+                <Target size={14} /> Goal-Based Investment Pillars
+              </div>
+              <h2 className="lp-section-title">{t.specialisationsTitle}</h2>
+              <p className="lp-section-sub" style={{ maxWidth: '640px', margin: '0 auto' }}>
+                {t.specialisationsSub}
+              </p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+              {specialisationsList.map(({ title, desc, Icon, gold }) => (
+                <div key={title} className={`glass-card ${gold ? 'gold-border' : 'green-border'}`} style={{ padding: '28px', borderRadius: '18px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '14px' }}>
+                    <div className={`lp-feat-icon ${gold ? 'gold' : 'green'}`} style={{ marginBottom: 0 }}>
+                      <Icon size={20} />
+                    </div>
+                    <h3 style={{ fontSize: '1.15rem', color: '#ffffff', margin: 0, fontWeight: 700 }}>{title}</h3>
+                  </div>
+                  <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
+                    {desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Section 6: Interactive SIP Calculator (Page 3) ─────────── */}
+        <section className="lp-section fade-in-section" id="calculator" style={{ padding: '60px 0' }}>
+          <div className="lp-container" style={{ maxWidth: '1000px' }}>
+            <SipCalculator 
+              language={language}
+              onConsult={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            />
+          </div>
+        </section>
+
+        {/* ── Section 5: Certifications & Qualifications (Page 2) ───── */}
+        <section className="lp-section fade-in-section" id="credentials">
+          <div className="lp-container">
+            <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', color: 'var(--color-gold)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>
+                <Award size={14} /> Fiduciary Verification
+              </div>
+              <h2 className="lp-section-title">{t.credentialsTitle}</h2>
+              <p className="lp-section-sub" style={{ maxWidth: '720px', margin: '0 auto' }}>
+                {t.credentialsSub}
+              </p>
+            </div>
+
+            {/* Embedded Wealth Manager & Certificate Badges */}
+            <WealthManagerCertificates />
+
+            <div style={{ textAlign: 'center', marginTop: '24px' }}>
+              <button 
+                onClick={() => onNavigate('accreditation')}
+                className="btn btn-gold"
+                style={{ padding: '10px 24px', fontSize: '0.88rem', borderRadius: '20px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+              >
+                <Award size={16} /> View Verified Certificate Documents & Regulatory Licenses <ArrowRight size={14} />
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Section 7: Why Choose Shubh Nivesh? (Page 3) ──────────── */}
+        <section className="lp-section fade-in-section" id="why-us" style={{ background: 'rgba(0,0,0,0.2)', padding: '60px 0' }}>
+          <div className="lp-container">
+            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', color: 'var(--color-gold)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>
+                <ShieldCheck size={14} /> The Shubh Nivesh Advantage
+              </div>
+              <h2 className="lp-section-title">{t.whyTitle}</h2>
+              <p className="lp-section-sub" style={{ maxWidth: '640px', margin: '0 auto' }}>
+                {t.whySub}
+              </p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+              {whyChooseList.map(({ title, desc, Icon, gold }) => (
+                <div key={title} className={`glass-card ${gold ? 'gold-border' : 'green-border'}`} style={{ padding: '24px', borderRadius: '16px' }}>
+                  <div className={`lp-feat-icon ${gold ? 'gold' : 'green'}`} style={{ marginBottom: '14px' }}>
+                    <Icon size={22} />
+                  </div>
+                  <h3 style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '8px', fontWeight: 700 }}>{title}</h3>
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.55, margin: 0 }}>{desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Section 8: Contact & Call to Action (Page 3) ──────────── */}
+        <section className="lp-section fade-in-section" id="contact" style={{ padding: '60px 0' }}>
+          <div className="lp-container" style={{ maxWidth: '850px' }}>
+            <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', color: 'var(--color-green)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px' }}>
+                <Phone size={14} /> Get In Touch
+              </div>
+              <h2 className="lp-section-title">{t.contactTitle}</h2>
+              <p className="lp-section-sub" style={{ maxWidth: '680px', margin: '0 auto', fontSize: '0.95rem' }}>
+                {t.contactSub}
+              </p>
+
+              {/* 3 Quick Buttons matching proposal */}
+              <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap', marginTop: '24px' }}>
+                <button 
+                  onClick={() => {
+                    const el = document.getElementById('consultation-form-wrap');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="btn btn-gold"
+                  style={{ padding: '12px 24px', fontSize: '0.9rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <Phone size={16} /> Book a Consultation
+                </button>
+                <button 
+                  onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="btn btn-green-outline"
+                  style={{ padding: '12px 24px', fontSize: '0.9rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <TrendingUp size={16} /> Start a SIP
+                </button>
+                <a 
+                  href={whatsappDirectUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn"
+                  style={{
+                    padding: '12px 24px',
+                    fontSize: '0.9rem',
+                    fontWeight: 700,
+                    borderRadius: '8px',
+                    background: '#25D366',
+                    color: '#ffffff',
+                    border: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    textDecoration: 'none'
+                  }}
+                >
+                  <MessageCircle size={16} /> WhatsApp Us
+                </a>
+              </div>
+            </div>
+
+            <div id="consultation-form-wrap">
+              <LeadCaptureForm language={language} />
+            </div>
+          </div>
+        </section>
+
+        {/* ── Frequently Asked Questions (FAQ) Section ─────────────── */}
+        <section className="lp-section fade-in-section" id="faq">
+          <div className="lp-container">
+            <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+              <h2 className="lp-section-title">{t.faqTitle}</h2>
+              <p className="lp-section-sub" style={{ maxWidth: '650px', margin: '0 auto' }}>{t.faqSub}</p>
+            </div>
+
+            <div className="faq-accordion-container">
+              {faqData.map((item, idx) => {
+                const isOpen = openFaqIndex === idx;
+                return (
+                  <div key={idx} className={`faq-item ${isOpen ? 'open' : ''}`}>
+                    <button 
+                      type="button"
+                      className="faq-question-btn"
+                      onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                      aria-expanded={isOpen}
+                      aria-label={`Toggle FAQ: ${language === 'en' ? item.qEn : item.qHi}`}
+                    >
+                      <span>{language === 'en' ? item.qEn : item.qHi}</span>
+                      {isOpen ? <ChevronUp size={18} style={{ color: 'var(--color-gold)' }} /> : <ChevronDown size={18} style={{ color: 'var(--text-muted)' }} />}
+                    </button>
+                    {isOpen && (
+                      <div className="faq-answer-panel">
+                        <p>{language === 'en' ? item.aEn : item.aHi}</p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
       </main>
 
-      {/* ── Footer ────────────────────────────────────────────────── */}
+      {/* ── Footer with Verbatim Proposal Disclosures ──────────────── */}
       <footer className="lp-footer">
         <div className="lp-container lp-footer-grid">
           <div className="lp-footer-brand">
-            <div className="logo">
-              <div className="logo-symbol">AI</div>
-              <div className="logo-text">AI Capital<span>Investment</span></div>
+            <div className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{ cursor: 'pointer' }}>
+              <div className="logo-symbol" style={{ background: 'linear-gradient(135deg, #d4af37, #00e676)', color: '#030a05', fontWeight: 900 }}>SN</div>
+              <div className="logo-text">SHUBH NIVESH<span>{t.tagline}</span></div>
             </div>
-            <p>{t.footerSub}</p>
+            <p style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', marginTop: '10px' }}>
+              Mutual Fund Distributor website for Ankush Jain (Experience in financial services since 2005). Helping individuals and families achieve their life goals with disciplined investing.
+            </p>
           </div>
+
           <div>
             <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Quick Links</div>
             <ul className="lp-footer-links">
-              {['home', 'about', 'services', 'blogs'].map((id, idx) => (
-                <li key={id}><a href={`#${id}`}>{t.nav[idx]}</a></li>
-              ))}
+              <li><a href="#home">Home</a></li>
+              <li><a href="#about">About Us</a></li>
+              <li><a href="#services">Products & Services</a></li>
+              <li><a href="#specialisations">Specialisations</a></li>
+              <li><a href="#calculator">SIP Calculator</a></li>
+              <li><a href="/accreditation" onClick={(e) => { e.preventDefault(); onNavigate('accreditation'); }}>Certifications</a></li>
+              <li><a href="/services/mutual-fund-rebalancing" onClick={(e) => { e.preventDefault(); onNavigate('rebalancing'); }}>MF Rebalancing</a></li>
             </ul>
           </div>
+
           <div>
-            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>What We Offer</div>
+            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Products Offered</div>
             <ul className="lp-footer-links">
-              <li>Mutual Funds</li>
-              <li>Portfolio Management Services (PMS)</li>
+              <li>Mutual Funds & SIPs</li>
+              <li>National Pension System (NPS)</li>
+              <li>Portfolio Management (PMS)</li>
               <li>Alternative Investment Funds (AIF)</li>
-              <li>Specialized Investment Funds (SIF)</li>
-              <li>Mutual Fund Portfolio Rebalancing</li>
-              <li>Wealth Management</li>
+              <li>Specialised Investment Funds (SIF)</li>
+              <li>Life & Health Insurance</li>
+              <li>Fixed Deposits, NCDs & Bonds</li>
             </ul>
           </div>
+
           <div>
-            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Contact & Regulatory</div>
+            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Contact & Credentials</div>
             <ul className="lp-footer-links">
-              <li>SEBI Reg: INA000098765</li>
-              <li>NSE / BSE Intermediary</li>
-              <li>CDSL / NSDL Qualified Custody</li>
-              <li>compliance@aicapitalinvestment.com</li>
+              <li>Ankush Jain (Mutual Fund Distributor)</li>
+              <li>Financial Services Since 2005</li>
+              <li>NISM Series V-A, V-D, XX-A, XV, VIII</li>
+              <li>IRDAI Insurance Authorisation</li>
+              <li><a href={whatsappDirectUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#25D366' }}>Chat on WhatsApp</a></li>
             </ul>
-          </div>
-          <div>
-            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Follow Us</div>
-            <div className="lp-social-row">
-              {['𝕏','in','📸','f'].map(s => <a key={s} className="lp-social-icon" href="#" aria-label={`Follow us on ${s}`}>{s}</a>)}
-            </div>
           </div>
         </div>
 
-        {/* Global YMYL Disclaimer */}
-        <div className="lp-container" style={{ paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.05)', marginTop: '20px' }}>
-          <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', lineHeight: 1.5, textAlign: 'center' }}>
-            <strong>YMYL Investment Compliance Disclosure:</strong> AI Capital Investment is an institutional wealth management and algorithmic advisory intermediary. Mutual funds, PMS, AIF, and SIF securities investments are subject to market risks. Read all scheme and offer-related documents carefully before investing. Client assets are held in segregated investor demat accounts at SEBI/RBI qualified depositories (CDSL/NSDL) and scheduled commercial custodian partner banks. Past performance does not guarantee future results.
-          </p>
+        {/* Verbatim Page 3 Important Disclosures */}
+        <div className="lp-container" style={{ paddingTop: '24px', borderTop: '1px solid rgba(255,255,255,0.06)', marginTop: '24px' }}>
+          <div style={{ background: 'rgba(0,0,0,0.3)', padding: '16px 20px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+            <span style={{ fontSize: '0.74rem', color: 'var(--color-gold)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', display: 'block', marginBottom: '6px' }}>
+              Important Regulatory Disclosures
+            </span>
+            <p style={{ fontSize: '0.74rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>
+              {t.footerDisclosures}
+            </p>
+          </div>
         </div>
 
         <div className="lp-footer-bottom">
           <div className="lp-container">
             <span>{t.copyright}</span>
-            <div className="lp-footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Disclosures</a></div>
+            <div className="lp-footer-bottom-links">
+              <a href="#">Privacy Policy</a>
+              <a href="#">Terms of Service</a>
+              <a href="#">Disclosures</a>
+            </div>
           </div>
         </div>
       </footer>

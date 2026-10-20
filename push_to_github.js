@@ -18,7 +18,7 @@ try {
   
   console.log('Committing changes...');
   try {
-    execSync('git commit -m "feat: redesign AI Advisory tab to match Nova companion reference UI with 4 metric cards, plan check-in gauge, and asset radar"', { cwd: __dirname, stdio: 'inherit' });
+    execSync('git commit -m "feat: complete website overhaul to Shubh Nivesh (Ankush Jain, Mutual Fund Distributor) with 8 proposal sections, interactive SIP calculator, and statutory disclosures"', { cwd: __dirname, stdio: 'inherit' });
   } catch (err) {
     console.log('Commit note: Nothing new to commit or already committed.');
   }

@@ -29,17 +29,17 @@ const wealthManagersData: WealthManager[] = [
   {
     id: 'ankush-jain',
     name: 'Ankush Jain',
-    role: 'Senior Portfolio Manager & Chief Quantitative Analyst',
-    experience: '8+ Years Institutional Wealth Management',
-    sebiReg: 'SEBI Reg ID: NISM-201700064070',
+    role: 'Mutual Fund Distributor & Founder, Shubh Nivesh',
+    experience: 'Financial Services Experience Since 2005',
+    sebiReg: 'AMFI / NISM Certified Distributor | Reg ID: NISM-201700064070',
     avatar: 'AJ',
     image: '/ankush_jain.png',
     stats: [
-      { label: 'Experience', value: '8+ Years' },
-      { label: 'NISM Exams', value: '3 Series' },
-      { label: 'Mandate', value: 'PMS & Research' }
+      { label: 'Experience', value: 'Since 2005' },
+      { label: 'Clients Guided', value: '1,500+' },
+      { label: 'Specialisation', value: 'Goal-Based' }
     ],
-    bio: 'Leads algorithmic asset allocation, neural network portfolio strategies, and discretionary Portfolio Management Services (PMS) for High-Net-Worth Individuals.',
+    bio: 'With experience in financial services since 2005, Ankush Jain focuses on helping individuals and families understand investment options and plan for important milestones, including asset allocation, wealth creation, retirement, children\'s future, and tax planning.',
     certificates: [
       {
         title: 'Portfolio Management Services (PMS) Distributors',
@@ -70,6 +70,42 @@ const wealthManagersData: WealthManager[] = [
         imageUrl: '/certificates/ankush_jain_nism_va_mutual_funds.jpg',
         pdfUrl: '/certificates/ankush_jain_nism_va_mutual_funds.pdf',
         description: 'Certified under SEBI Regulations 2007 via CPE (Ranchi). Specializes in mutual fund risk evaluation, portfolio construction, and tax-efficient strategies.'
+      },
+      {
+        title: 'Mutual Fund Foundation & Distribution',
+        series: 'NISM Series V-D',
+        regNo: 'NISM Authorised',
+        issuedDate: 'Certified',
+        validity: 'Active',
+        imageUrl: '/certificates/ankush_jain_nism_va_mutual_funds.jpg',
+        description: 'Covers fundamentals of mutual fund schemes, risk profiles, regulatory guidelines, and investor suitability analysis.'
+      },
+      {
+        title: 'Commercial Banking & Market Intermediation',
+        series: 'NISM Series XX-A',
+        regNo: 'NISM Authorised',
+        issuedDate: 'Certified',
+        validity: 'Active',
+        imageUrl: '/certificates/ankush_jain_nism_xxia_pms_advisor.png',
+        description: 'Certified for financial intermediation, banking distribution products, fixed income, and credit risk evaluation.'
+      },
+      {
+        title: 'Equity Derivatives Certification',
+        series: 'NISM Series VIII',
+        regNo: 'NISM Authorised',
+        issuedDate: 'Certified',
+        validity: 'Active',
+        imageUrl: '/certificates/ankush_jain_nism_xv_research_analyst.png',
+        description: 'Certified for equity derivatives hedging, risk management, and market mechanism analysis.'
+      },
+      {
+        title: 'Life & General Insurance Authorisation',
+        series: 'IRDAI Certified',
+        regNo: 'IRDAI Authorised',
+        issuedDate: 'Licensed',
+        validity: 'Active',
+        imageUrl: '/certificates/ankush_jain_nism_va_mutual_funds.jpg',
+        description: 'Authorised for personal financial risk protection, term life insurance planning, and comprehensive health insurance coverage.'
       }
     ]
   },

@@ -65,11 +65,11 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
     }
   };
 
-  const defaultTitleEn = compact ? "Request Advisor Callback" : "Schedule a Fiduciary AI Portfolio Consultation";
-  const defaultSubEn = compact ? "Speak with a SEBI & SEC registered advisor." : "Get a customized quantitative asset allocation plan tailored to your wealth goals.";
+  const defaultTitleEn = compact ? "Request Advisor Callback" : "Book a Consultation with Shubh Nivesh";
+  const defaultSubEn = compact ? "Speak with Ankush Jain (Experience Since 2005)." : "Let's plan your financial future: children's education, retirement, wealth creation, or tax planning.";
   
-  const defaultTitleHi = compact ? "सलाहकार से कॉल की पुष्टि करें" : "एआई पोर्टफोलियो परामर्श का अनुरोध करें";
-  const defaultSubHi = compact ? "हमारे पंजीकृत वित्तीय सलाहकार से बात करें।" : "अपने लक्ष्यों के लिए अनुकूलित परिसंपत्ति आवंटन योजना प्राप्त करें।";
+  const defaultTitleHi = compact ? "सलाहकार से कॉल की पुष्टि करें" : "शुभ निवेश के साथ परामर्श बुक करें";
+  const defaultSubHi = compact ? "अंकुश जैन (अनुभव 2005 से) से सीधे बात करें।" : "अपने वित्तीय भविष्य की योजना बनाएं: बच्चों की शिक्षा, सेवानिवृत्ति और धन निर्माण।";
 
   return (
     <div 
@@ -112,11 +112,11 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
           </h3>
           <p style={{ fontSize: '0.92rem', color: '#cbd5e1', lineHeight: 1.6, maxWidth: '480px', margin: '0 auto 20px auto' }}>
             {language === 'en' 
-              ? `Thank you, ${formData.name}! A SEBI & SEC registered fiduciary advisor will contact you shortly at ${formData.phone} to review your customized AI investment strategy.` 
-              : `धन्यवाद, ${formData.name}! एक पंजीकृत वित्तीय सलाहकार शीघ्र ही आपसे परामर्श के लिए संपर्क करेगा।`}
+              ? `Thank you, ${formData.name}! Ankush Jain and the Shubh Nivesh advisory desk will contact you shortly at ${formData.phone} to discuss your goal-based investment plan.` 
+              : `धन्यवाद, ${formData.name}! अंकुश जैन और शुभ निवेश टीम शीघ्र ही आपसे ${formData.phone} पर संपर्क करेगी।`}
           </p>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: 'rgba(212, 175, 55, 0.1)', border: '1px solid rgba(212, 175, 55, 0.3)', borderRadius: '20px', fontSize: '0.78rem', color: '#ffe066' }}>
-            <ShieldCheck size={14} /> SEBI Reg: INA000098765 | SEC RIA #801-123456
+            <ShieldCheck size={14} /> Shubh Nivesh • Mutual Fund Distributor (Experience Since 2005)
           </div>
         </div>
       ) : (
@@ -255,12 +255,17 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
                       boxSizing: 'border-box', cursor: 'pointer'
                     }}
                   >
-                    <option value="Mutual Funds">Mutual Funds (Direct Equity & Debt Alpha)</option>
-                    <option value="Portfolio Management Services (PMS)">Portfolio Management Services (PMS - ₹50L+)</option>
-                    <option value="Alternative Investment Funds (AIF)">Alternative Investment Funds (AIF Category I, II & III)</option>
-                    <option value="Specialized Investment Funds (SIF)">Specialized Investment Funds (SIF Structured)</option>
-                    <option value="Mutual Fund Portfolio Rebalancing">Mutual Fund Portfolio Rebalancing (Algorithmic)</option>
-                    <option value="Wealth Management">Comprehensive Wealth Management & Family Office</option>
+                    <option value="Mutual Funds">Mutual Funds (Equity, Debt, Hybrid, Index)</option>
+                    <option value="Systematic Investment Plans (SIP)">Systematic Investment Plans (SIP) - Start / Review</option>
+                    <option value="National Pension System (NPS)">National Pension System (NPS) - Retirement Scheme</option>
+                    <option value="Specialised Investment Funds (SIFs)">Specialised Investment Funds (SIFs)</option>
+                    <option value="Alternative Investment Funds (AIFs)">Alternative Investment Funds (AIFs)</option>
+                    <option value="Portfolio Management Services (PMS)">Portfolio Management Services (PMS)</option>
+                    <option value="Life & Health Insurance">Life & Health Insurance Protection</option>
+                    <option value="Fixed Deposits & Bonds">Fixed Deposits, NCDs & Bonds</option>
+                    <option value="Stock Broking">Stock Broking & Equity Trading</option>
+                    <option value="Mutual Fund Portfolio Rebalancing">Mutual Fund Portfolio Rebalancing</option>
+                    <option value="Comprehensive Goal-Based Planning">Comprehensive Goal-Based Financial Planning</option>
                   </select>
                 </div>
               </div>
