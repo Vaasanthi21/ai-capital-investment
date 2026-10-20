@@ -6,7 +6,7 @@ import ParticleBackground from './ParticleBackground';
 import LeadCaptureForm from './LeadCaptureForm';
 import WealthManagerCertificates from './WealthManagerCertificates';
 
-type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'payment' | 'forgot-password' | 'dashboard' | 'blogs';
+type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'payment' | 'forgot-password' | 'dashboard' | 'blogs' | 'accreditation' | 'rebalancing';
 
 interface StandaloneBlogPageProps {
   onNavigate: (v: View) => void;

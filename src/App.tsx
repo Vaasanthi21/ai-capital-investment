@@ -10,6 +10,7 @@ const ForgotPassword = lazy(() => import('./components/ForgotPassword'));
 const PaymentPage = lazy(() => import('./components/PaymentPage'));
 const StandaloneBlogPage = lazy(() => import('./components/StandaloneBlogPage'));
 const StandaloneAccreditationPage = lazy(() => import('./components/StandaloneAccreditationPage'));
+const MutualFundRebalancingPage = lazy(() => import('./components/MutualFundRebalancingPage'));
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -62,7 +63,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 }
 
-type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'payment' | 'forgot-password' | 'dashboard' | 'blogs' | 'accreditation';
+type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'payment' | 'forgot-password' | 'dashboard' | 'blogs' | 'accreditation' | 'rebalancing';
 
 interface UserProfile {
   name: string;
@@ -83,6 +84,7 @@ function App() {
     if (path.includes('/dashboard') || path.includes('/advisor') || path.includes('/app')) return 'dashboard';
     if (path.includes('/blogs') || path.includes('/blog')) return 'blogs';
     if (path.includes('/accreditation') || path.includes('/certificates')) return 'accreditation';
+    if (path.includes('/rebalancing') || path.includes('/mutual-fund-rebalancing')) return 'rebalancing';
     return 'landing';
   };
 
@@ -108,7 +110,8 @@ function App() {
       'forgot-password': '/forgot-password',
       'dashboard': '/app',
       'blogs': '/blogs',
-      'accreditation': '/accreditation'
+      'accreditation': '/accreditation',
+      'rebalancing': '/services/mutual-fund-rebalancing'
     };
     const targetPath = pathMap[newView] || '/';
     if (window.location.pathname !== targetPath) {
@@ -131,6 +134,7 @@ function App() {
         {view === 'landing'       && <LandingPage onNavigate={setView} />}
         {view === 'blogs'         && <StandaloneBlogPage onNavigate={setView} />}
         {view === 'accreditation' && <StandaloneAccreditationPage onNavigate={setView} />}
+        {view === 'rebalancing'   && <MutualFundRebalancingPage onNavigate={setView} />}
         {view === 'login'         && <LoginPage onLoginSuccess={(user) => { setUserProfile(user); setView('dashboard'); }} onNavigate={setView} setTempEmail={setTempEmail} />}
         {view === 'signup'        && <SignupPage onSignupSuccess={(email, role) => { setTempEmail(email); setRegRole(role); setView('otp-verify'); }} onNavigate={setView} />}
         {view === 'otp-verify'    && <OtpVerification email={tempEmail} onVerificationSuccess={() => {

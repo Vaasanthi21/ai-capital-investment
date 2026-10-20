@@ -3,7 +3,7 @@ import { Globe, Menu, X } from 'lucide-react';
 import ParticleBackground from './ParticleBackground';
 import Accreditation from './accreditation/Accreditation';
 
-type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'payment' | 'forgot-password' | 'dashboard' | 'blogs' | 'accreditation';
+type View = 'landing' | 'login' | 'signup' | 'otp-verify' | 'payment' | 'forgot-password' | 'dashboard' | 'blogs' | 'accreditation' | 'rebalancing';
 
 interface StandaloneAccreditationPageProps {
   onNavigate: (v: View) => void;
