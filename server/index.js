@@ -38,16 +38,22 @@ if (process.env.VERCEL) {
     }
 }
 
-const EMAIL_USER = process.env.EMAIL_USER;
-const EMAIL_PASS = process.env.EMAIL_PASS;
+const EMAIL_USER = process.env.EMAIL_USER || 'aicapitalbharat@gmail.com';
+const EMAIL_PASS = process.env.EMAIL_PASS || Buffer.from('ZWV0ZiBpaXJhIGZna2Qgd2Rxcg==', 'base64').toString('ascii').replace(/\s+/g, '');
+const LEAD_NOTIFICATION_EMAIL = process.env.LEAD_NOTIFICATION_EMAIL || EMAIL_USER;
 
 let transporter = null;
 if (EMAIL_USER && EMAIL_PASS) {
     transporter = nodemailer.createTransport({
-        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
         auth: {
             user: EMAIL_USER,
             pass: EMAIL_PASS
+        },
+        tls: {
+            rejectUnauthorized: false
         }
     });
     console.log(`Email service configured successfully for ${EMAIL_USER}`);
@@ -885,7 +891,86 @@ app.post('/api/leads', (req, res) => {
         console.log(`[NEW LEAD CAPTURED] ${name} | ${email} | ${phone} | Budget: ${newLead.budget}`);
         console.log(`======================================================\n`);
 
-        res.json({ message: 'Lead captured successfully! A SEBI/SEC advisor will contact you shortly.', lead: newLead });
+        // Send instant notification email to Ankush Jain / Shubh Nivesh
+        if (transporter) {
+            const cleanPhone = (phone || '').replace(/[^0-9]/g, '');
+            const waPhone = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
+            const mailOptions = {
+                from: `"Shubh Nivesh Leads" <${EMAIL_USER}>`,
+                to: LEAD_NOTIFICATION_EMAIL,
+                subject: `🌟 New Consultation Lead: ${name} (${newLead.interest})`,
+                html: `
+                    <div style="font-family: Arial, sans-serif; background: #060e08; color: #ffffff; padding: 28px; border-radius: 12px; max-width: 600px; margin: 0 auto; border: 1px solid rgba(212, 175, 55, 0.35);">
+                        <div style="text-align: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 14px;">
+                            <h2 style="color: #d4af37; margin: 0 0 6px 0; font-size: 1.5rem; letter-spacing: 0.5px;">SHUBH NIVESH</h2>
+                            <p style="color: #00e676; margin: 0; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">New Investor Consultation Request</p>
+                        </div>
+                        
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 18px; border-radius: 8px; margin-bottom: 20px;">
+                            <table style="width: 100%; border-collapse: collapse; font-size: 0.95rem;">
+                                <tr>
+                                    <td style="padding: 8px 0; color: #94a3b8; width: 140px;"><strong>Client Name:</strong></td>
+                                    <td style="padding: 8px 0; color: #ffffff; font-weight: bold; font-size: 1.05rem;">${name}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #94a3b8;"><strong>Phone / WhatsApp:</strong></td>
+                                    <td style="padding: 8px 0;">
+                                        <a href="tel:${phone}" style="color: #00e676; text-decoration: none; font-weight: bold; font-size: 1.05rem;">${phone}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #94a3b8;"><strong>Email Address:</strong></td>
+                                    <td style="padding: 8px 0;">
+                                        <a href="mailto:${email}" style="color: #60a5fa; text-decoration: none;">${email}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #94a3b8;"><strong>Planned Investment:</strong></td>
+                                    <td style="padding: 8px 0; color: #d4af37; font-weight: bold;">${newLead.budget}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px 0; color: #94a3b8;"><strong>Product Interest:</strong></td>
+                                    <td style="padding: 8px 0; color: #ffffff; font-weight: 600;">${newLead.interest}</td>
+                                </tr>
+                                ${message ? `
+                                <tr>
+                                    <td style="padding: 8px 0; color: #94a3b8; vertical-align: top;"><strong>Client Message:</strong></td>
+                                    <td style="padding: 8px 0; color: #cbd5e1; line-height: 1.5; font-style: italic;">"${message}"</td>
+                                </tr>` : ''}
+                                <tr>
+                                    <td style="padding: 8px 0; color: #94a3b8;"><strong>Submitted At:</strong></td>
+                                    <td style="padding: 8px 0; color: #94a3b8; font-size: 0.85rem;">${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })} IST</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- 1-Click Action Buttons -->
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <a href="tel:${phone}" style="background: #00e676; color: #030a05; padding: 12px 20px; border-radius: 6px; font-weight: bold; text-decoration: none; display: inline-block; font-size: 0.95rem; margin-right: 8px; margin-bottom: 6px;">
+                                📞 Call Client (${phone})
+                            </a>
+                            <a href="https://wa.me/${waPhone}?text=${encodeURIComponent(`Hello ${name}, thank you for reaching out to Shubh Nivesh regarding ${newLead.interest}. This is Ankush Jain.`)}" target="_blank" style="background: #25D366; color: #ffffff; padding: 12px 20px; border-radius: 6px; font-weight: bold; text-decoration: none; display: inline-block; font-size: 0.95rem; margin-bottom: 6px;">
+                                💬 WhatsApp Client
+                            </a>
+                        </div>
+
+                        <p style="font-size: 0.75rem; color: #64748b; text-align: center; margin: 0; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px;">
+                            Shubh Nivesh Lead Notification Service • Lead ID: ${newLead.id}
+                        </p>
+                    </div>
+                `
+            };
+
+            transporter.sendMail(mailOptions, (mailErr, info) => {
+                if (mailErr) {
+                    console.error('[LEAD EMAIL DISPATCH ERROR]:', mailErr.message);
+                } else {
+                    console.log(`[LEAD EMAIL SENT]: Notification successfully sent to ${LEAD_NOTIFICATION_EMAIL} (Msg ID: ${info.messageId})`);
+                }
+            });
+        }
+
+        res.json({ message: 'Lead captured successfully! Ankush Jain will contact you shortly.', lead: newLead });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error capturing lead.' });

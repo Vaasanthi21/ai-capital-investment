@@ -18,7 +18,7 @@ try {
   
   console.log('Committing changes...');
   try {
-    execSync('git commit -m "fix: unclutter navbar layout, prevent logo tagline wrapping, add Sign Up and Sign In buttons across header, hero, and footer, and update auth portals to Shubh Nivesh"', { cwd: __dirname, stdio: 'inherit' });
+    execSync('git commit -m "feat: enable instant Gmail lead alerts to aicapitalbharat@gmail.com with 1-click call and WhatsApp client buttons"', { cwd: __dirname, stdio: 'inherit' });
   } catch (err) {
     console.log('Commit note: Nothing new to commit or already committed.');
   }
