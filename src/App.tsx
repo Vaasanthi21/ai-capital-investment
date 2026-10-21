@@ -92,8 +92,8 @@ function App() {
   const [tempEmail, setTempEmail] = useState('');
   const [regRole, setRegRole] = useState<'investor' | 'advisor'>('investor');
   const [userProfile, setUserProfile] = useState<UserProfile>({
-    name: 'John Doe',
-    email: 'john@example.com',
+    name: 'Demo Investor',
+    email: 'investor@example.com',
     investmentAmount: 25000,
     riskTolerance: 'Balanced',
     goal: 'Growth',

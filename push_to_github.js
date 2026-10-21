@@ -18,7 +18,7 @@ try {
   
   console.log('Committing changes...');
   try {
-    execSync('git commit -m "feat: enable instant Gmail lead alerts to aicapitalbharat@gmail.com with 1-click call and WhatsApp client buttons"', { cwd: __dirname, stdio: 'inherit' });
+    execSync('git commit -m "fix: eliminate dummy values, USD currencies, and legacy advisor placeholders across investor, advisor CRM, and AI advisory portals"', { cwd: __dirname, stdio: 'inherit' });
   } catch (err) {
     console.log('Commit note: Nothing new to commit or already committed.');
   }

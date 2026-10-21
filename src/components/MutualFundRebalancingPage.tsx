@@ -648,7 +648,7 @@ export default function MutualFundRebalancingPage({ onNavigate }: MutualFundReba
           <div>
             <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Regulatory</div>
             <ul className="lp-footer-links">
-              <li>SEBI Reg: INA000098765</li>
+              <li>AMFI / NISM Registered Distributor</li>
               <li>NSE / BSE Intermediary</li>
               <li>CDSL / NSDL Qualified Custody</li>
               <li>compliance@aicapitalinvestment.com</li>

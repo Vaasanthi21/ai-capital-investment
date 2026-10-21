@@ -391,8 +391,8 @@ const AdvisorDashboard = ({ userData, onLogout }: AdvisorDashboardProps) => {
             <div className="dashboard-container">
                 <aside className="dash-sidebar">
                     <div className="logo">
-                        <div className="logo-symbol">AI</div>
-                        <div className="logo-text">AI Capital<span>Advisor</span></div>
+                        <div className="logo-symbol" style={{ background: "linear-gradient(135deg, #d4af37, #00e676)", color: "#030a05", fontWeight: 900, borderRadius: "8px", width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center" }}>SN</div>
+                        <div className="logo-text" style={{ whiteSpace: "nowrap" }}>SHUBH NIVESH<span style={{ color: "var(--color-gold)" }}>Advisor CRM</span></div>
                     </div>
 
                     <ul className="dash-menu">
@@ -1204,7 +1204,7 @@ const AdvisorDepositsSection = ({ clients }: { clients: Client[] }) => {
                                 <CheckCircle2 size={26} />
                             </div>
                             <h3 style={{ color: '#fff', fontSize: '1.25rem', fontWeight: 800, margin: 0 }}>Advisor Audit Receipt</h3>
-                            <span style={{ fontSize: '0.75rem', color: 'var(--color-gold)', fontWeight: 600 }}>SEC Compliance Deposit Log</span>
+                            <span style={{ fontSize: '0.75rem', color: 'var(--color-gold)', fontWeight: 600 }}>AMFI / SEBI Compliance Deposit Ledger</span>
                         </div>
 
                         <div style={{ background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '10px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.84rem' }}>
@@ -1308,7 +1308,7 @@ const AdvisorConsultationsSection = ({ clients, userData }: { clients: Client[];
                     date,
                     time,
                     topic,
-                    meetLink: `https://meet.aicapital.com/room-${Math.floor(1000 + Math.random() * 9000)}`
+                    meetLink: `https://meet.google.com/shubh-nivesh-${Math.floor(1000 + Math.random() * 9000)}`
                 })
             });
             if (res.ok) {
@@ -1534,7 +1534,7 @@ const AdvisorAnalyticsSection = ({ clients }: { clients: Client[] }) => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                     <div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.84rem', color: '#fff', marginBottom: '6px' }}>
-                            <span><strong>AI Capital Managed Wealth Portfolios</strong> (Aggressive / Growth Vaults)</span>
+                            <span><strong>Shubh Nivesh Managed Portfolios</strong> (Mutual Funds, SIP & PMS)</span>
                             <span style={{ color: 'var(--color-green)', fontWeight: 800 }}>+18.40% YTD</span>
                         </div>
                         <div style={{ background: 'rgba(255,255,255,0.05)', height: '12px', borderRadius: '6px', overflow: 'hidden' }}>

@@ -233,7 +233,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
         let logs: string[] = [];
         if (crisis === '2008') {
             logs = [
-                `[${timeStr}] ALERT: S&P 500 Index drawdown exceeds -4.5%.`,
+                `[${timeStr}] ALERT: NIFTY 50 Index drawdown exceeds -4.5%.`,
                 `[${timeStr}] INFO: VIX volatility index spiking to 48.`,
                 `[${timeStr}] SYSTEM: Activating defensive volatility hedge.`,
                 `[${timeStr}] ROTATION: Reduced Equities exposure to 15%.`,
@@ -244,7 +244,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
             logs = [
                 `[${timeStr}] ALERT: Extreme equity liquidation triggered globally.`,
                 `[${timeStr}] SYSTEM: Deploying rapid response liquid hedges.`,
-                `[${timeStr}] REALLOCATION: Pruned equities; shifted 20% to USD and Gold.`,
+                `[${timeStr}] REALLOCATION: Pruned equities; shifted 20% to Liquid Funds and Gold.`,
                 `[${timeStr}] CAPTURE: Re-entered equities at Q3 bottoms automatically.`,
                 `[${timeStr}] SUCCESS: Net year-end return stabilized at +6.4% VS Market decline.`
             ];
@@ -490,8 +490,8 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
             <div className="dashboard-container">
                 <aside className="dash-sidebar">
                     <div className="logo">
-                        <div className="logo-symbol">AI</div>
-                        <div className="logo-text">AI Capital<span>Investment</span></div>
+                        <div className="logo-symbol" style={{ background: "linear-gradient(135deg, #d4af37, #00e676)", color: "#030a05", fontWeight: 900, borderRadius: "8px", width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center" }}>SN</div>
+                        <div className="logo-text" style={{ whiteSpace: "nowrap" }}>SHUBH NIVESH<span style={{ color: "var(--color-gold)" }}>Investor Portal</span></div>
                     </div>
 
                     <p style={{ fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.08em', color: '#64748b', textTransform: 'uppercase', padding: '0 16px', margin: '14px 0 6px 0' }}>YOUR WORKSPACE</p>
@@ -675,7 +675,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                                                     onChange={e => setBacktestComparisonType(e.target.value as 'SP500' | '6040')}
                                                     style={{ background: 'rgba(6,18,10,0.95)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '4px 8px', color: '#fff', fontSize: '0.74rem', outline: 'none' }}
                                                 >
-                                                    <option value="SP500">vs S&P 500 Index</option>
+                                                    <option value="SP500">vs NIFTY 50 Index (Benchmark)</option>
                                                     <option value="6040">vs standard 60/40 Portfolio</option>
                                                 </select>
                                             </div>
@@ -698,7 +698,7 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                                                             fill: true
                                                         },
                                                         {
-                                                            label: backtestComparisonType === 'SP500' ? 'S&P 500 Index (SPY)' : 'Standard 60/40 Portfolio',
+                                                            label: backtestComparisonType === 'SP500' ? 'NIFTY 50 Total Return Index' : 'Standard 60/40 Hybrid Allocation',
                                                             data: benchmarkValues,
                                                             borderColor: 'rgba(255,255,255,0.35)',
                                                             backgroundColor: 'transparent',
@@ -816,8 +816,8 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                                                             <span style={{ color: 'var(--color-green)', fontSize: '0.8rem', fontWeight: 600 }}>{progress.toFixed(0)}%</span>
                                                         </div>
                                                         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.76rem', color: 'var(--text-secondary)', marginBottom: '8px' }}>
-                                                            <span>Target: ${g.target.toLocaleString()}</span>
-                                                            <span>Current: ${g.current.toLocaleString()}</span>
+                                                            <span>Target: ₹{g.target.toLocaleString('en-IN')}</span>
+                                                            <span>Current: ₹{g.current.toLocaleString('en-IN')}</span>
                                                         </div>
                                                         {/* Progress bar */}
                                                         <div style={{ height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden', marginBottom: '8px' }}>
@@ -1130,13 +1130,13 @@ const Dashboard = ({ userData, onLogout, onUpdateUser }: DashboardProps) => {
                         <span>RBI SCHEDULED PARTNER BANKS</span>
                     </div>
                     <p style={{ margin: 0, maxWidth: '900px', alignSelf: 'center' }}>
-                        AI Capital Investment is a SEBI registered investment intermediary and portfolio advisory platform. Demat securities custody is held directly via CDSL/NSDL qualified depositories.
+                        Shubh Nivesh is an AMFI-Registered Mutual Fund Distributor (Ankush Jain, Since 2005). Client mutual fund units and demat securities are held directly at SEBI/RBI registered AMCs and qualified depositories (CDSL/NSDL).
                         Investor capital is segregated and protected under investor protection fund (IPF) guidelines.
                         Past performance is no guarantee of future results. All yield estimates, target projections, and historical stress-test scenarios are simulated returns for illustrative purposes and do not represent actual performance.
                         Please read all scheme-related offer documents and risk disclosures carefully before investing.
                     </p>
                     <p style={{ margin: 0, fontSize: '0.68rem', opacity: 0.6 }}>
-                        © 2026 AI Capital Investment LLC. All rights reserved.
+                        © 2026 Shubh Nivesh - Ankush Jain (Mutual Fund Distributor). All rights reserved.
                     </p>
                 </footer>
 
@@ -1851,13 +1851,13 @@ const BlogsSection = () => {
                                     🔗 Shareable Link
                                 </div>
                                 <div style={{ fontSize: '0.68rem', color: '#ffffff', fontFamily: 'monospace', wordBreak: 'break-all' }}>
-                                    {`https://ai-capital-investment.vercel.app/blogs/${activeArticle.id}`}
+                                    {`https://aicapitalinvestment.com/blogs/${activeArticle.id}`}
                                 </div>
                             </div>
                             <button 
                                 type="button"
                                 onClick={() => {
-                                    const shareUrl = `https://ai-capital-investment.vercel.app/blogs/${activeArticle.id}`;
+                                    const shareUrl = `https://aicapitalinvestment.com/blogs/${activeArticle.id}`;
                                     navigator.clipboard.writeText(shareUrl);
                                     setCopiedArticleUrl(activeArticle.id);
                                     setTimeout(() => setCopiedArticleUrl(null), 2500);
@@ -1875,7 +1875,7 @@ const BlogsSection = () => {
                             borderLeft: '2px solid var(--color-gold)', borderRadius: '4px', fontSize: '0.64rem',
                             color: 'var(--text-muted)', lineHeight: 1.4
                         }}>
-                            <strong>Notice:</strong> Insights provided by AI Capital LLC. Past performance does not guarantee future returns. Educational purposes only.
+                            <strong>Notice:</strong> Insights provided by Shubh Nivesh. Past performance of mutual funds does not guarantee future returns. Educational purposes only.
                         </div>
                         
                         <div style={{ marginTop: '12px', textAlign: 'center' }}>
@@ -2271,7 +2271,7 @@ const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpda
                                             </div>
                                         </div>
                                         <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--color-green)' }}>
-                                            ${t.amount.toLocaleString()}
+                                            ₹{t.amount.toLocaleString('en-IN')}
                                         </div>
                                     </div>
                                 ))}
@@ -2313,7 +2313,7 @@ const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpda
                             <span style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>Payment Authorization</span>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                                 <label style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>Cardholder Name</label>
-                                <input type="text" placeholder="John Doe" value={cardName} onChange={e => setCardName(e.target.value)} required style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '10px 12px', color: '#fff', fontSize: '0.86rem', outline: 'none' }} />
+                                <input type="text" placeholder="Rahul Sharma" value={cardName} onChange={e => setCardName(e.target.value)} required style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '10px 12px', color: '#fff', fontSize: '0.86rem', outline: 'none' }} />
                             </div>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                                 <label style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>Card Number</label>
@@ -2374,7 +2374,7 @@ const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpda
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Yield & Dividend Credits:</span>
-                            <span style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--color-green)' }}>+${(totalCreditedYield || 1770.50).toLocaleString()}</span>
+                            <span style={{ fontSize: '0.95rem', fontWeight: 800, color: 'var(--color-green)' }}>+₹{(totalCreditedYield || 1770.50).toLocaleString('en-IN')}</span>
                         </div>
                     </div>
                 </div>
@@ -2459,7 +2459,7 @@ const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpda
                                             <td>{isCredit ? 'Yield' : isDeposit ? 'Deposit' : 'Withdrawal'}</td>
                                             <td>{new Date(txn.date).toLocaleDateString()}</td>
                                             <td>{txn.tier}</td>
-                                            <td style={{ color: 'var(--color-green)', fontWeight: 700 }}>+${txn.amount.toLocaleString()}</td>
+                                            <td style={{ color: 'var(--color-green)', fontWeight: 700 }}>+₹{txn.amount.toLocaleString('en-IN')}</td>
                                             <td>{txn.status}</td>
                                             <td style={{ textAlign: 'right' }}>
                                                 <button onClick={() => setSelectedReceipt(txn)} style={{ background: 'none', border: '1px solid var(--color-green)', color: 'var(--color-green)', padding: '2px 8px', borderRadius: '4px', cursor: 'pointer' }}>View</button>
@@ -2496,8 +2496,8 @@ const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpda
                         
                         <div style={{ textAlign: 'center', marginBottom: '20px', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '16px' }}>
                             <span style={{ fontSize: '0.76rem', color: 'var(--color-gold)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Official Transaction Voucher</span>
-                            <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#fff', margin: '4px 0 0' }}>AI Capital Investment</h3>
-                            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>SEC Registered Adviser • FDIC Swept Bank Partner</span>
+                            <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#fff', margin: '4px 0 0' }}>Shubh Nivesh Wealth Services</h3>
+                            <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>AMFI Registered Mutual Fund Distributor • Ankush Jain (Since 2005)</span>
                         </div>
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.84rem' }}>
@@ -2522,7 +2522,7 @@ const DepositSection = ({ userData, onUpdateUser }: { userData: UserData; onUpda
                             </div>
                             <div style={{ borderTop: '1px dashed rgba(255,255,255,0.1)', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <span style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 700 }}>Total Transaction Amount</span>
-                                <span style={{ fontSize: '1.3rem', color: 'var(--color-green)', fontWeight: 800 }}>+${(selectedReceipt.amount || 0).toLocaleString()}</span>
+                                <span style={{ fontSize: '1.3rem', color: 'var(--color-green)', fontWeight: 800 }}>+₹{(selectedReceipt.amount || 0).toLocaleString('en-IN')}</span>
                             </div>
                         </div>
 
@@ -2766,7 +2766,7 @@ const AIChatbotSection = ({
     const fetchAdvisorMessages = async () => {
         const clientEmail = userData?.email || 'john@example.com';
         try {
-            const res = await fetch(`/api/chat/history?user1=${encodeURIComponent(clientEmail)}&user2=johndoe@gmail.com`);
+            const res = await fetch(`/api/chat/history?user1=${encodeURIComponent(clientEmail)}&user2=aicapitalbharat@gmail.com`);
             if (res.ok) {
                 const data = await res.json();
                 setAdvisorMessages(data);
@@ -2795,7 +2795,7 @@ const AIChatbotSection = ({
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     sender: userData?.email || 'john@example.com',
-                    receiver: 'johndoe@gmail.com',
+                    receiver: 'aicapitalbharat@gmail.com',
                     text
                 })
             });
@@ -2816,7 +2816,7 @@ const AIChatbotSection = ({
         } else if (query.includes('risk') || query.includes('explain my risk level')) {
             return `Your profile is set to Moderate / Balanced. This targets an annualized yield of ~9.5% with an expected volatility limit of ~8%. It aims to capture equity upside while using fixed income and gold hedges to cushion against acute market drawdowns.`;
         } else if (query.includes('fee') || query.includes('fees') || query.includes('cost')) {
-            return "AI Capital Investment charges an ultra-low 0.25% annual advisory fee. There are zero transaction fees for automated AI algorithmic rebalancing.";
+            return "Shubh Nivesh provides research-backed mutual fund distribution and goal-based asset allocation planning. Regular mutual fund plans do not charge separate platform commissions, and periodic rebalancing reviews are provided.";
         } else if (query.includes('crypto') || query.includes('btc') || query.includes('bitcoin')) {
             return "In your balanced allocation trajectory, digital assets are constrained to 5% with strict volatility stop-loss buffers to protect the underlying retirement corpus.";
         } else if (query.includes('hello') || query.includes('hi')) {
@@ -3170,11 +3170,11 @@ const AIChatbotSection = ({
                         /* Advisor Secure Chat Tab */
                         <div style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: '20px' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: 'rgba(212,175,55,0.06)', borderRadius: '10px', border: '1px solid rgba(212,175,55,0.2)', marginBottom: '16px' }}>
-                                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--color-gold)', color: '#041208', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '1rem' }}>
-                                    JD
+                                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg, #d4af37, #00e676)', color: '#041208', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '1rem' }}>
+                                    AJ
                                 </div>
                                 <div>
-                                    <h5 style={{ margin: 0, color: '#fff', fontSize: '0.9rem' }}>John Doe (Senior Wealth Advisor)</h5>
+                                    <h5 style={{ margin: 0, color: '#fff', fontSize: '0.9rem' }}>Ankush Jain (Mutual Fund Distributor)</h5>
                                     <p style={{ margin: '2px 0 0 0', fontSize: '0.72rem', color: 'var(--text-muted)' }}>Direct encrypted advisor correspondence channel</p>
                                 </div>
                             </div>
@@ -3182,7 +3182,7 @@ const AIChatbotSection = ({
                             <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '12px', minHeight: '300px', maxHeight: '380px', paddingRight: '6px' }}>
                                 {advisorMessages.length === 0 ? (
                                     <div style={{ margin: 'auto', textAlign: 'center', color: '#64748b', fontSize: '0.82rem' }}>
-                                        No correspondence history yet. Send a direct inquiry to John Doe below.
+                                        No correspondence history yet. Send a direct inquiry to Ankush Jain below.
                                     </div>
                                 ) : (
                                     advisorMessages.map((m, i) => {
@@ -3200,7 +3200,7 @@ const AIChatbotSection = ({
                                                     textAlign: 'left'
                                                 }}>
                                                     <div style={{ fontSize: '0.66rem', color: isMe ? 'var(--color-gold)' : '#00e676', fontWeight: 600, marginBottom: '2px' }}>
-                                                        {isMe ? 'You' : 'John Doe (Advisor)'}
+                                                        {isMe ? 'You' : 'Ankush Jain (Distributor)'}
                                                     </div>
                                                     {m.text}
                                                 </div>
@@ -3215,7 +3215,7 @@ const AIChatbotSection = ({
                                     type="text"
                                     value={advisorInput}
                                     onChange={e => setAdvisorInput(e.target.value)}
-                                    placeholder="Type secure message to John Doe..."
+                                    placeholder="Type secure message to Ankush Jain..."
                                     style={{ flex: 1, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '10px 14px', color: '#fff', fontSize: '0.9rem', outline: 'none' }}
                                 />
                                 <button type="submit" className="btn btn-gold" style={{ padding: '0 20px', fontSize: '0.84rem' }}>
@@ -3381,7 +3381,7 @@ const AIChatbotSection = ({
                                     <Check size={14} /> 3. Volatility Absorption: Stable
                                 </div>
                                 <p style={{ fontSize: '0.78rem', color: '#94a3b8', margin: 0 }}>
-                                    Portfolio Beta is calculated at 0.82 relative to the S&P 500, dampening drawdowns during sharp equity pullbacks.
+                                    Portfolio Beta is calculated at 0.82 relative to the NIFTY 50, dampening drawdowns during sharp equity pullbacks.
                                 </p>
                             </div>
                         </div>

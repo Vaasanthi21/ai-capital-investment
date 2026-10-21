@@ -33,7 +33,7 @@ export const standaloneBlogArticles: BlogArticle[] = [
     id: 'ai-wealth-management-revolution',
     title: 'AI-Driven Asset Allocation: Outperforming Inflation & Market Volatility in 2026',
     category: 'AI & Tech',
-    author: 'Dr. Aris Thorne (Chief Quantitative Strategist)',
+    author: 'Ankush Jain (Mutual Fund Distributor)',
     date: 'July 20, 2026',
     readTime: '6 min read (460 words)',
     abstract: 'How graduates and first-time investors can leverage AI asset allocation, automated rebalancing, and risk shields to build financial resilience against market inflation.',
@@ -261,7 +261,7 @@ export const standaloneBlogArticles: BlogArticle[] = [
     id: 'rebalancing-drift-algorithms',
     title: 'Portfolio Drift Analysis & Dynamic Rebalancing Thresholds',
     category: 'AI & Tech',
-    author: 'Dr. Aris Thorne (Chief Quantitative Strategist)',
+    author: 'Ankush Jain (Mutual Fund Distributor)',
     date: 'June 02, 2026',
     readTime: '6 min read (570 words)',
     abstract: 'Optimizing asset allocation drift tolerances, transaction cost trade-offs, and volatility-triggered rebalancing algorithms.',
@@ -946,8 +946,8 @@ export default function StandaloneBlogPage({ onNavigate }: StandaloneBlogPagePro
           <div>
             <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Contact & Regulatory</div>
             <ul className="lp-footer-links">
-              <li>SEBI Reg: INA000098765</li>
-              <li>SEC RIA #801-123456</li>
+              <li>AMFI / NISM Certified Distributor</li>
+              <li>Financial Services Since 2005</li>
               <li>info@aicapital.com</li>
               <li>+1 (555) 123-4567</li>
             </ul>

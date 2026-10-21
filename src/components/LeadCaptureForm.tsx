@@ -326,7 +326,7 @@ const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({
           </div>
           
           <p style={{ fontSize: '0.72rem', color: '#64748b', textAlign: 'center', marginTop: '12px', margin: '12px 0 0 0' }}>
-            🔒 {language === 'en' ? 'Your details are encrypted and will never be shared. SEBI INA000098765 / SEC RIA #801-123456 compliant.' : 'आपकी जानकारी सुरक्षित है और कभी साझा नहीं की जाएगी।'}
+            🔒 {language === 'en' ? 'Your details are encrypted and will never be shared. AMFI / NISM Registered Mutual Fund Distributor compliant.' : 'आपकी जानकारी सुरक्षित है और कभी साझा नहीं की जाएगी।'}
           </p>
         </form>
       )}
