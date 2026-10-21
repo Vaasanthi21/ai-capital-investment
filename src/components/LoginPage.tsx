@@ -59,20 +59,22 @@ const LoginPage = ({ onLoginSuccess, onNavigate, setTempEmail }: LoginPageProps)
         <div className="auth-brand-panel">
           <div className="auth-brand-inner">
             <div className="logo" style={{ marginBottom: '32px' }}>
-              <div className="logo-symbol" style={{ fontSize: '2rem' }}>AI</div>
-              <div className="logo-text" style={{ fontSize: '1.1rem' }}>AI Capital<span>Investment</span></div>
+              <div className="logo-symbol" style={{ background: 'linear-gradient(135deg, #d4af37, #00e676)', color: '#030a05', fontWeight: 900, borderRadius: '9px', width: '42px', height: '42px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>SN</div>
+              <div className="logo-text" style={{ fontSize: '1.15rem', fontWeight: 700, color: '#ffffff' }}>
+                SHUBH NIVESH
+                <span style={{ fontSize: '0.62rem', color: 'var(--color-gold)', letterSpacing: '0.5px' }}>YOUR WEALTH. YOUR GOALS. OUR GUIDANCE.</span>
+              </div>
             </div>
 
-            <h2 className="auth-brand-headline">Welcome Back to Smarter Investing</h2>
+            <h2 className="auth-brand-headline">Welcome Back to Shubh Nivesh</h2>
             <p className="auth-brand-sub">
-              Your AI-powered portfolio is waiting. Log in to access real-time insights,
-              manage your holdings, and track your financial goals.
+              Log in to review your mutual funds, check your SIP milestones, and access your goal-based investment portfolio guided by Ankush Jain (Since 2005).
             </p>
             <div className="auth-perks">
               {[
-                { Icon: TrendingUp,  text: 'Live market data & portfolio analytics' },
-                { Icon: ShieldCheck, text: 'Bank-grade security for your assets' },
-                { Icon: Zap,         text: 'AI-driven investment recommendations' },
+                { Icon: TrendingUp,  text: 'Track Mutual Funds, SIPs & Asset Allocation' },
+                { Icon: ShieldCheck, text: 'AMFI-Registered Distributor (Since 2005)' },
+                { Icon: Zap,         text: 'Disciplined reviews & rebalancing guidance' },
               ].map(({ Icon, text }) => (
                 <div key={text} className="auth-perk-item">
                   <div className="auth-perk-icon"><Icon size={18} /></div>

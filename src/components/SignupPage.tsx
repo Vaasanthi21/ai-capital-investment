@@ -114,19 +114,21 @@ const SignupPage = ({ onSignupSuccess, onNavigate }: SignupPageProps) => {
         <div className="auth-brand-panel">
           <div className="auth-brand-inner">
             <div className="logo" style={{ marginBottom: '32px' }}>
-              <div className="logo-symbol" style={{ fontSize: '2rem' }}>AI</div>
-              <div className="logo-text" style={{ fontSize: '1.1rem' }}>AI Capital<span>Investment</span></div>
+              <div className="logo-symbol" style={{ background: 'linear-gradient(135deg, #d4af37, #00e676)', color: '#030a05', fontWeight: 900, borderRadius: '9px', width: '42px', height: '42px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>SN</div>
+              <div className="logo-text" style={{ fontSize: '1.15rem', fontWeight: 700, color: '#ffffff' }}>
+                SHUBH NIVESH
+                <span style={{ fontSize: '0.62rem', color: 'var(--color-gold)', letterSpacing: '0.5px' }}>YOUR WEALTH. YOUR GOALS. OUR GUIDANCE.</span>
+              </div>
             </div>
             <h2 className="auth-brand-headline">Start Your Investment Journey Today</h2>
             <p className="auth-brand-sub">
-              Join 50,000+ investors who trust AI Capital to grow and protect their wealth.
-              Create your account in minutes and let our AI do the heavy lifting.
+              Partner with Shubh Nivesh and Ankush Jain, Mutual Fund Distributor with financial services experience since 2005. Guided planning for wealth creation, retirement, and family goals.
             </p>
             <div className="auth-perks">
               {[
-                { Icon: TrendingUp,  text: 'Personalized portfolio in minutes' },
-                { Icon: ShieldCheck, text: 'Regulated & fully insured platform' },
-                { Icon: Zap,         text: 'AI rebalancing 24/7 on your behalf' },
+                { Icon: TrendingUp,  text: 'Goal-based SIP & Mutual Fund planning' },
+                { Icon: ShieldCheck, text: 'AMFI-Registered & Certified Distributor' },
+                { Icon: Zap,         text: 'Disciplined portfolio review & rebalancing' },
               ].map(({ Icon, text }) => (
                 <div key={text} className="auth-perk-item">
                   <div className="auth-perk-icon"><Icon size={18} /></div>

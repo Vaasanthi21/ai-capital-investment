@@ -3,7 +3,8 @@ import {
   Cpu, ShieldCheck, TrendingUp, UserCheck, Wallet, Users, Percent, 
   PieChart, Briefcase, Award, Globe, BookOpen, Clock, ArrowRight, X, Menu,
   RefreshCw, ChevronDown, ChevronUp, Calculator, Calendar, Landmark, Heart, Activity,
-  Lock, BarChart3, Target, Phone, MessageCircle, CheckCircle2, GraduationCap, Sun, FileText, Sparkles
+  Lock, BarChart3, Target, Phone, MessageCircle, CheckCircle2, GraduationCap, Sun, FileText, Sparkles,
+  UserPlus, LogIn
 } from 'lucide-react';
 import HeroCanvas from './HeroCanvas';
 import ParticleBackground from './ParticleBackground';
@@ -100,9 +101,10 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
       brandName: "SHUBH NIVESH",
       tagline: "YOUR WEALTH. YOUR GOALS. OUR GUIDANCE.",
       distributorBadge: "MUTUAL FUND DISTRIBUTOR • ANKUSH JAIN (EXPERIENCE SINCE 2005)",
-      nav: ['Home', 'About Us', 'Products & Services', 'Specialisations', 'SIP Calculator', 'Certifications', 'MF Rebalancing', 'Contact'],
-      heroTitle: "SHUBH NIVESH",
-      heroSub: "At Shubh Nivesh, we believe successful investing begins with clear goals, informed decisions, and a disciplined approach. With experience in financial services since 2005, we help individuals and families explore investment solutions for wealth creation, retirement, children's future, and tax planning.",
+      nav: ['About Us', 'Products', 'Specialisations', 'SIP Calculator', 'Certifications', 'Contact'],
+      signIn: "Sign In",
+      signUp: "Sign Up",
+      getStarted: "Get Started",
       bookConsultation: "Book a Consultation",
       calculateSip: "SIP Calculator",
       whatsappUs: "WhatsApp Us",
@@ -135,9 +137,10 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
       brandName: "शुभ निवेश (SHUBH NIVESH)",
       tagline: "आपकी संपत्ति। आपके लक्ष्य। हमारा मार्गदर्शन।",
       distributorBadge: "म्यूचुअल फंड वितरक • अंकुश जैन (2005 से अनुभव)",
-      nav: ['मुख्य पृष्ठ', 'हमारे बारे में', 'उत्पाद व सेवाएं', 'विशेषज्ञताएं', 'एसआईपी कैलकुलेटर', 'प्रमाणपत्र', 'रीबैलेंसिंग', 'संपर्क करें'],
-      heroTitle: "शुभ निवेश (SHUBH NIVESH)",
-      heroSub: "शुभ निवेश में, हमारा मानना है कि सफल निवेश की शुरुआत स्पष्ट लक्ष्यों, सूचित निर्णयों और अनुशासित दृष्टिकोण के साथ होती है। 2005 से वित्तीय सेवाओं में अनुभव के साथ, हम व्यक्तियों और परिवारों को धन निर्माण, सेवानिवृत्ति, बच्चों के भविष्य और कर योजना के लिए समाधान तलाशने में मदद करते हैं।",
+      nav: ['हमारे बारे में', 'उत्पाद व सेवाएं', 'विशेषज्ञताएं', 'एसआईपी कैलकुलेटर', 'प्रमाणपत्र', 'संपर्क करें'],
+      signIn: "लॉग इन",
+      signUp: "साइन अप",
+      getStarted: "शुरू करें",
       bookConsultation: "परामर्श बुक करें",
       calculateSip: "एसआईपी कैलकुलेटर",
       whatsappUs: "व्हाट्सएप करें",
@@ -440,12 +443,12 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
       {/* ── Top Header Bar ─────────────────────────────────────────── */}
       <header className="lp-header" style={{ position: 'sticky', top: 0, zIndex: 100 }}>
         <div className="lp-container lp-header-inner">
-          <div className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{ cursor: 'pointer' }}>
-            <div className="logo-symbol" style={{ background: 'linear-gradient(135deg, #d4af37, #00e676)', color: '#030a05', fontWeight: 900 }}>SN</div>
-            <div className="logo-text">
-              SHUBH NIVESH
-              <span style={{ fontSize: '0.62rem', letterSpacing: '0.5px', color: 'var(--color-gold)', display: 'block', textTransform: 'uppercase' }}>
-                Your Wealth. Your Goals. Our Guidance.
+          <div className="logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{ cursor: 'pointer', flexShrink: 0 }}>
+            <div className="logo-symbol" style={{ background: 'linear-gradient(135deg, #d4af37, #00e676)', color: '#030a05', fontWeight: 900, borderRadius: '8px', width: '38px', height: '38px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>SN</div>
+            <div className="logo-text" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
+              <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff', letterSpacing: '0.4px', display: 'block' }}>SHUBH NIVESH</span>
+              <span style={{ fontSize: '0.62rem', letterSpacing: '0.5px', color: 'var(--color-gold)', display: 'block', textTransform: 'uppercase', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                Your Wealth • Your Goals • Our Guidance
               </span>
             </div>
           </div>
@@ -453,36 +456,44 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
           <nav className={`lp-nav-wrapper ${mobileMenuOpen ? 'open' : ''}`}>
             <ul className="lp-nav">
               <li onClick={() => setMobileMenuOpen(false)}>
-                <a href="#home">{t.nav[0]}</a>
+                <a href="#about">{t.nav[0]}</a>
               </li>
               <li onClick={() => setMobileMenuOpen(false)}>
-                <a href="#about">{t.nav[1]}</a>
+                <a href="#services">{t.nav[1]}</a>
               </li>
               <li onClick={() => setMobileMenuOpen(false)}>
-                <a href="#services">{t.nav[2]}</a>
+                <a href="#specialisations">{t.nav[2]}</a>
               </li>
               <li onClick={() => setMobileMenuOpen(false)}>
-                <a href="#specialisations">{t.nav[3]}</a>
-              </li>
-              <li onClick={() => setMobileMenuOpen(false)}>
-                <a href="#calculator" style={{ color: 'var(--color-gold)', fontWeight: 700 }}>{t.nav[4]}</a>
+                <a href="#calculator" style={{ color: 'var(--color-gold)', fontWeight: 700 }}>{t.nav[3]}</a>
               </li>
               <li onClick={() => { setMobileMenuOpen(false); onNavigate('accreditation'); }}>
-                <a href="/accreditation" onClick={(e) => { e.preventDefault(); onNavigate('accreditation'); }}>{t.nav[5]}</a>
-              </li>
-              <li onClick={() => { setMobileMenuOpen(false); onNavigate('rebalancing'); }}>
-                <a href="/services/mutual-fund-rebalancing" onClick={(e) => { e.preventDefault(); onNavigate('rebalancing'); }}>{t.nav[6]}</a>
+                <a href="/accreditation" onClick={(e) => { e.preventDefault(); onNavigate('accreditation'); }}>{t.nav[4]}</a>
               </li>
               <li onClick={() => setMobileMenuOpen(false)}>
-                <a href="#contact">{t.nav[7]}</a>
+                <a href="#contact">{t.nav[5]}</a>
               </li>
-              <li className="mobile-only-nav-item" style={{ marginTop: '10px', gap: '10px', width: '100%', justifyContent: 'center' }}>
+              <li className="mobile-only-nav-item" style={{ marginTop: '16px', flexDirection: 'column', gap: '10px', width: '100%' }}>
+                <button 
+                  className="btn btn-gradient-started" 
+                  onClick={() => { setMobileMenuOpen(false); onNavigate('signup'); }}
+                  style={{ width: '100%', justifyContent: 'center', padding: '12px', fontSize: '0.9rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                >
+                  <UserPlus size={16} /> {t.signUp} / {t.getStarted}
+                </button>
+                <button 
+                  className="btn btn-green-outline" 
+                  onClick={() => { setMobileMenuOpen(false); onNavigate('login'); }}
+                  style={{ width: '100%', justifyContent: 'center', padding: '12px', fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                >
+                  <LogIn size={16} /> {t.signIn}
+                </button>
                 <a 
                   href={whatsappDirectUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="btn btn-gold" 
-                  style={{ padding: '10px 24px', fontSize: '0.85rem', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: '#25D366', color: '#fff' }}
+                  className="btn" 
+                  style={{ padding: '12px', fontSize: '0.9rem', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: '#25D366', color: '#fff', textDecoration: 'none', borderRadius: '8px' }}
                 >
                   <MessageCircle size={16} /> WhatsApp Us
                 </a>
@@ -490,12 +501,12 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             </ul>
           </nav>
 
-          <div className="lp-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="lp-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
             {/* Language Switcher */}
             <button
               onClick={() => setLanguage(l => l === 'en' ? 'hi' : 'en')}
               className="btn btn-green-outline"
-              style={{ fontSize: '0.72rem', padding: '4px 8px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '3px' }}
+              style={{ fontSize: '0.74rem', padding: '5px 8px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '3px' }}
               aria-label="Switch language"
             >
               <Globe size={12} /> {language === 'en' ? 'हिंदी' : 'EN'}
@@ -504,32 +515,43 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
             {/* Direct WhatsApp CTA Pill */}
             <a 
               href={whatsappDirectUrl}
-              target="_blank"
+              target="_blank" 
               rel="noopener noreferrer"
               className="btn"
+              title="Chat on WhatsApp"
               style={{
-                fontSize: '0.78rem',
-                padding: '6px 14px',
+                fontSize: '0.76rem',
+                padding: '6px 11px',
                 borderRadius: '20px',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '6px',
-                background: 'rgba(37, 211, 102, 0.15)',
+                gap: '5px',
+                background: 'rgba(37, 211, 102, 0.12)',
                 color: '#25D366',
-                border: '1px solid rgba(37, 211, 102, 0.4)',
+                border: '1px solid rgba(37, 211, 102, 0.35)',
                 fontWeight: 600,
                 textDecoration: 'none'
               }}
             >
-              <MessageCircle size={14} /> WhatsApp
+              <MessageCircle size={13} /> WhatsApp
             </a>
 
+            {/* Sign In Button */}
             <button 
-              className="btn btn-gold" 
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              style={{ fontSize: '0.78rem', padding: '6px 14px' }}
+              className="btn btn-green-outline" 
+              onClick={() => onNavigate('login')}
+              style={{ fontSize: '0.78rem', padding: '6px 13px', borderRadius: '20px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
             >
-              Consultation
+              <LogIn size={13} /> {t.signIn}
+            </button>
+
+            {/* Sign Up Button (Requested!) */}
+            <button 
+              className="btn btn-gradient-started" 
+              onClick={() => onNavigate('signup')}
+              style={{ fontSize: '0.78rem', padding: '6px 15px', borderRadius: '20px', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+            >
+              <UserPlus size={13} /> {t.signUp}
             </button>
             
             {/* Mobile Hamburger Button */}
@@ -584,34 +606,41 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
                 {t.heroSub}
               </p>
 
-              <div className="lp-hero-cta-row" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              <div className="lp-hero-cta-row" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
                 <button 
-                  className="btn btn-gold" 
-                  onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="btn btn-gradient-started" 
+                  onClick={() => onNavigate('signup')}
                   style={{ padding: '12px 24px', fontSize: '0.92rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                 >
-                  <Phone size={16} /> {t.bookConsultation}
+                  <UserPlus size={16} /> {t.signUp} / {t.getStarted}
                 </button>
                 <button 
-                  className="btn btn-green-outline" 
+                  className="btn btn-gold" 
                   onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
-                  style={{ padding: '12px 22px', fontSize: '0.92rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                  style={{ padding: '12px 22px', fontSize: '0.92rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                 >
                   <Calculator size={16} /> {t.calculateSip}
                 </button>
+                <button 
+                  className="btn btn-green-outline" 
+                  onClick={() => onNavigate('login')}
+                  style={{ padding: '12px 20px', fontSize: '0.92rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <LogIn size={16} /> {t.signIn}
+                </button>
                 <a 
                   href={whatsappDirectUrl}
-                  target="_blank"
+                  target="_blank" 
                   rel="noopener noreferrer"
                   className="btn"
                   style={{
-                    padding: '12px 22px',
+                    padding: '12px 20px',
                     fontSize: '0.92rem',
-                    fontWeight: 700,
+                    fontWeight: 600,
                     borderRadius: '8px',
-                    background: '#25D366',
-                    color: '#ffffff',
-                    border: 'none',
+                    background: 'rgba(37, 211, 102, 0.15)',
+                    color: '#25D366',
+                    border: '1px solid rgba(37, 211, 102, 0.4)',
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '8px',
@@ -884,11 +913,11 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
                   <Phone size={16} /> Book a Consultation
                 </button>
                 <button 
-                  onClick={() => document.getElementById('calculator')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="btn btn-green-outline"
-                  style={{ padding: '12px 24px', fontSize: '0.9rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                  onClick={() => onNavigate('signup')}
+                  className="btn btn-gradient-started"
+                  style={{ padding: '12px 24px', fontSize: '0.9rem', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                 >
-                  <TrendingUp size={16} /> Start a SIP
+                  <UserPlus size={16} /> Start a SIP / Sign Up
                 </button>
                 <a 
                   href={whatsappDirectUrl}
@@ -973,13 +1002,14 @@ const LandingPage = ({ onNavigate }: LandingPageProps) => {
           <div>
             <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginBottom: '14px', letterSpacing: '0.5px' }}>Quick Links</div>
             <ul className="lp-footer-links">
-              <li><a href="#home">Home</a></li>
               <li><a href="#about">About Us</a></li>
               <li><a href="#services">Products & Services</a></li>
               <li><a href="#specialisations">Specialisations</a></li>
               <li><a href="#calculator">SIP Calculator</a></li>
               <li><a href="/accreditation" onClick={(e) => { e.preventDefault(); onNavigate('accreditation'); }}>Certifications</a></li>
               <li><a href="/services/mutual-fund-rebalancing" onClick={(e) => { e.preventDefault(); onNavigate('rebalancing'); }}>MF Rebalancing</a></li>
+              <li><a href="/login" onClick={(e) => { e.preventDefault(); onNavigate('login'); }} style={{ color: 'var(--color-gold)' }}>Client Sign In</a></li>
+              <li><a href="/signup" onClick={(e) => { e.preventDefault(); onNavigate('signup'); }} style={{ color: 'var(--color-green)' }}>Open Account (Sign Up)</a></li>
             </ul>
           </div>
 
